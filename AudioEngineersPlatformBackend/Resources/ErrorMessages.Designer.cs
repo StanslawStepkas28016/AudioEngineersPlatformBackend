@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace AudioEngineersPlatformBackend.Resources {
+    using System;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -105,6 +108,12 @@ namespace AudioEngineersPlatformBackend.Resources {
         public static string VerificationCodeExpired {
             get {
                 return ResourceManager.GetString("VerificationCodeExpired", resourceCulture);
+            }
+        }
+        
+        public static string UserWithSpecifiedEmailNotFound {
+            get {
+                return ResourceManager.GetString("UserWithSpecifiedEmailNotFound", resourceCulture);
             }
         }
     }

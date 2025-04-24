@@ -26,26 +26,32 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
-        catch (LocalizedGeneralException ex)
+        catch (LocalizedArgumentException ex)
         {
-            await HandleLocalizedGeneralException(context, ex);
+            await HandleLocalizedArgumentException(context, ex);
         }
         catch (ArgumentException ex)
         {
             await HandleArgumentExceptionAsync(context, ex);
+        }
+        catch (LocalizedGeneralException ex)
+        {
+            await HandleLocalizedGeneralException(context, ex);
         }
         catch (Exception ex)
         {
             await HandleGeneralExceptionAsync(context, ex);
         }
     }
-    
-    private Task HandleLocalizedGeneralException(HttpContext context, LocalizedGeneralException localizedGeneralException)
+
+    private Task HandleLocalizedGeneralException(HttpContext context,
+        LocalizedGeneralException localizedGeneralException)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-        var localizedMessage = _localizer[localizedGeneralException.ErrorKey, localizedGeneralException.FormatParameters];
+        var localizedMessage =
+            _localizer[localizedGeneralException.ErrorKey, localizedGeneralException.FormatParameters];
         return context.Response.WriteAsync(new ErrorDetailsDto
         {
             StatusCode = context.Response.StatusCode,
@@ -53,7 +59,23 @@ public class ExceptionMiddleware
             ExceptionMessage = localizedMessage
         }.ToString());
     }
-    
+
+    private Task HandleLocalizedArgumentException(HttpContext context,
+        LocalizedArgumentException localizedArgumentException)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+
+        var localizedMessage =
+            _localizer[localizedArgumentException.ErrorKey, localizedArgumentException.FormatParameters];
+        return context.Response.WriteAsync(new ErrorDetailsDto
+        {
+            StatusCode = context.Response.StatusCode,
+            Message = "Internal Server Error from custom middleware (localized).",
+            ExceptionMessage = localizedMessage
+        }.ToString());
+    }
+
     private Task HandleArgumentExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";

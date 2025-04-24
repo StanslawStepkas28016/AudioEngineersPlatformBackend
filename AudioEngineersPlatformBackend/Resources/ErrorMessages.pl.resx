@@ -44,4 +44,7 @@
     <data name="VerificationCodeExpired" xml:space="preserve">
         <value>Wprowadzony kod weryfikacji jest nieważny</value>
     </data>
+    <data name="UserWithSpecifiedEmailNotFound" xml:space="preserve">
+        <value>Użytkownik o adresie email: {0} nie został znaleziony</value>
+    </data>
 </root>
