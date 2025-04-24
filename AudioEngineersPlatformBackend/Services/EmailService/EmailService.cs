@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -47,7 +48,8 @@ public class EmailService : IEmailService
         CancellationToken cancellationToken)
     {
         var locale = CultureInfo.CurrentCulture.Name;
-        var path = Path.Combine(_env.ContentRootPath, "Templates" + "/" + locale, "VerificationEmail.html");
+        await Console.Out.WriteLineAsync(locale + "LOCALE!!!!");
+        var path = Path.Combine(_env.ContentRootPath, "EmailTemplates" + "/" + locale, "VerificationEmail.html");
         var template = await File.ReadAllTextAsync(path, cancellationToken);
         var preparedTemplate = template.Replace("{userName}", verifyEmailUserDataDto.Username)
             .Replace("{verificationCode}", verifyEmailUserDataDto.VerificationCode);

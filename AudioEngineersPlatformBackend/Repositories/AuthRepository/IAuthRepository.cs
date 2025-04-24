@@ -15,8 +15,10 @@ public interface IAuthRepository
 
     public Task<Role?> FindRoleByName(string roleName, CancellationToken cancellationToken);
 
-    public Task<UserAndUserLogDto?> StoreUserAndUserLogInDatabase(User user, UserLog userLog,
+    public Task<User?> StoreUser(User user,
         CancellationToken cancellationToken);
+
+    public Task<UserLog?> StoreUserLog(UserLog userLog, CancellationToken cancellationToken);
 
     public Task<UserLog?> FindUserLogByVerificationCode(string verificationCode,
         CancellationToken cancellationToken);

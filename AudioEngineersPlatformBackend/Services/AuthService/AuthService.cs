@@ -21,19 +21,20 @@ public class AuthService : IAuthService
     private readonly IAuthRepository _authRepository;
     private readonly IEmailService _emailService;
     private readonly AuthVariables _authVariables;
+    private readonly MasterContext _context;
 
     public class AuthVariables
     {
         public string AdminSecret { get; set; }
     }
 
-
     public AuthService(IAuthRepository authRepository, IOptions<AuthVariables> authVariables,
-        IEmailService emailService)
+        IEmailService emailService, MasterContext context)
     {
         _authRepository = authRepository;
         _emailService = emailService;
         _authVariables = authVariables.Value;
+        _context = context;
     }
 
     public async Task<RegisterResponseDto> Register(RegisterRequestDto registerRequestDto,
@@ -137,7 +138,20 @@ public class AuthService : IAuthService
         user.Password = hashedPassword;
 
         // Store user and userLog in database
-        var res = (await _authRepository.StoreUserAndUserLogInDatabase(user, userLog, cancellationToken))!;
+        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+        User storedUser;
+        try
+        {
+            var storedUserLog = await _authRepository.StoreUserLog(userLog, cancellationToken);
+            user.IdUserLog = storedUserLog!.IdUserLog;
+            storedUser = (await _authRepository.StoreUser(user, cancellationToken))!;
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
 
         // Send a register verification email
         await _emailService.SendVerificationEmailAsync(
@@ -151,10 +165,10 @@ public class AuthService : IAuthService
 
         return new RegisterResponseDto
         {
-            IdUser = res.User.IdUser,
-            FirstName = res.User.FirstName,
-            LastName = res.User.LastName,
-            Username = res.User.Username
+            IdUser = storedUser!.IdUser,
+            FirstName = storedUser.FirstName,
+            LastName = storedUser.LastName,
+            Username = storedUser.Username
         };
     }
 
@@ -193,7 +207,7 @@ public class AuthService : IAuthService
         await _authRepository.SetUserLogToVerifiedAndAdjustAssociatedData(userLog.IdUserLog, cancellationToken);
 
         // Send a welcome email...
-        
+
         return new VerifyEmailResponseDto()
         {
             Message = "Successfully verified your email address",
@@ -203,46 +217,46 @@ public class AuthService : IAuthService
     public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto, CancellationToken cancellationToken)
     {
         // Check for nulls or empty strings
-        if (string.IsNullOrEmpty(loginRequestDto.Username) || string.IsNullOrEmpty(loginRequestDto.Password))
+        if (string.IsNullOrEmpty(loginRequestDto.Email) || string.IsNullOrEmpty(loginRequestDto.Password))
         {
-            throw new ArgumentException("Provided data cannot be null or empty");
+            throw new LocalizedArgumentException(ErrorMessages.ProvidedDataIsNullOrEmpty);
         }
 
-        // Check if the user with the specified username exists
-        var userByUsername = await _authRepository.FindUserByUsername(loginRequestDto.Username, cancellationToken);
+        // Check if the user with the specified email exists
+        var userByEmail = await _authRepository.FindUserByEmail(loginRequestDto.Email, cancellationToken);
 
-        if (userByUsername is null)
+        if (userByEmail is null)
         {
-            throw new Exception($"User with the specified username: {loginRequestDto.Username} is not found");
+            throw new LocalizedArgumentException(ErrorMessages.UserWithSpecifiedEmailNotFound, loginRequestDto.Email);
         }
 
         // Check if the user is unverified 
         var userLogByIdUserLog =
-            await _authRepository.FindUserLogByIdUserLog(userByUsername.IdUserLog, cancellationToken);
+            await _authRepository.FindUserLogByIdUserLog(userByEmail.IdUserLog, cancellationToken);
 
         if (!userLogByIdUserLog!.IsVerified)
         {
-            throw new Exception($"User is not verified");
+            throw new LocalizedGeneralException($"User is not verified");
         }
 
         // Check if the user is deleted 
         if (userLogByIdUserLog.IsDeleted)
         {
-            throw new Exception($"User is deleted");
+            throw new LocalizedGeneralException($"User is deleted");
         }
 
         // See if the provided password is correct
         var verificationResult =
-            new PasswordHasher<User>().VerifyHashedPassword(userByUsername, userByUsername.Password,
+            new PasswordHasher<User>().VerifyHashedPassword(userByEmail, userByEmail.Password,
                 loginRequestDto.Password);
 
         if (verificationResult != PasswordVerificationResult.Success)
         {
-            throw new Exception($"Password {loginRequestDto.Password} is invalid");
+            throw new LocalizedGeneralException($"Password {loginRequestDto.Password} is invalid");
         }
 
         // Set the LastLoginDate in UserLog Table
-        await _authRepository.SetUserLogLastLoginDateByIdUserLog(userByUsername.IdUserLog, cancellationToken);
+        await _authRepository.SetUserLogLastLoginDateByIdUserLog(userByEmail.IdUserLog, cancellationToken);
 
         return new LoginResponseDto
         {

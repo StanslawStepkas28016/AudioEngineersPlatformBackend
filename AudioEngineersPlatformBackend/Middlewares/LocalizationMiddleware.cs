@@ -1,7 +1,9 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace AudioEngineersPlatformBackend.Middlewares;
 
@@ -19,6 +21,7 @@ public class LocalizationMiddleware
     public async Task Invoke(HttpContext context)
     {
         var acceptLang = context.Request.Headers.AcceptLanguage.ToString();
+
         if (string.IsNullOrWhiteSpace(acceptLang))
         {
             acceptLang = "en-US";

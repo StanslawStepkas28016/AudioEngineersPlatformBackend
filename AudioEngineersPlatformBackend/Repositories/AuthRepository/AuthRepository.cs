@@ -40,35 +40,21 @@ public class AuthRepository : IAuthRepository
             cancellationToken: cancellationToken);
     }
 
-    public async Task<UserAndUserLogDto?> StoreUserAndUserLogInDatabase(User user, UserLog userLog,
+    public async Task<UserLog?> StoreUserLog(UserLog userLog, CancellationToken cancellationToken)
+    {
+        // Save user data to UserLog table
+        var userLogRes = await _context.UserLogs.AddAsync(userLog, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        return userLogRes.Entity;
+    }
+
+    public async Task<User?> StoreUser(User user,
         CancellationToken cancellationToken)
     {
-        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-
-        try
-        {
-            // Save user data to UserLog table
-            var userLogRes = await _context.UserLogs.AddAsync(userLog, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            // Save user data to User table 
-            user.IdUserLog = userLogRes.Entity.IdUserLog;
-            var userRes = await _context.Users.AddAsync(user, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            await transaction.CommitAsync(cancellationToken);
-
-            return new UserAndUserLogDto
-            {
-                User = userRes.Entity,
-                UserLog = userLogRes.Entity,
-            };
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        // Save user data to User table 
+        var userRes = await _context.Users.AddAsync(user, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        return userRes.Entity;
     }
 
     public async Task<UserLog?> FindUserLogByVerificationCode(string verificationCode,

@@ -11,3 +11,5 @@ dotnet ef migrations add NAME (create migracji)
 dotnet ef database update (migration to database)
 
 dotnet ef migrations remove (remove migration)
+
+https://youtrack.jetbrains.com/issue/RIDER-110499/Localization-Manager-not-working-properly (for locale issues)
