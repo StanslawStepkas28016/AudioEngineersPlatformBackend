@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBacke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.Infrastructure", "AudioEngineersPlatformBackend.Infrastructure\AudioEngineersPlatformBackend.Infrastructure.csproj", "{777A316B-B3D1-47E8-8FEA-CBA8BE1977E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,11 @@ Global
 		{777A316B-B3D1-47E8-8FEA-CBA8BE1977E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{777A316B-B3D1-47E8-8FEA-CBA8BE1977E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{777A316B-B3D1-47E8-8FEA-CBA8BE1977E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0ACD8802-4064-4156-B8FE-AFADF0EF3452} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
+		{BC24CCA0-176C-47DC-B2AC-EB6C1CA01445} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
+		{F01FA87D-6B47-4049-855B-32F06875C6A4} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
+		{777A316B-B3D1-47E8-8FEA-CBA8BE1977E3} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 	EndGlobalSection
 EndGlobal
