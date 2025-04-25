@@ -1,13 +1,9 @@
-using System.Threading;
-using System.Threading.Tasks;
-using AudioEngineersPlatformBackend.Dtos.Auth.Login;
-using AudioEngineersPlatformBackend.Dtos.Auth.Register;
-using AudioEngineersPlatformBackend.Dtos.Auth.VerifyEmail;
-using AudioEngineersPlatformBackend.Services.AuthService;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+/*using Backup.Dtos.Auth.Login;
+using Backup.Dtos.Auth.Register;
+using Backup.Dtos.Auth.VerifyEmail;
+using Backup.Services.AuthService;
 
-namespace AudioEngineersPlatformBackend.Controllers;
+namespace Backup.Controllers;
 
 [Route("/api/auth")]
 [ApiController]
@@ -43,4 +39,4 @@ public class AuthController : ControllerBase
         var loginResponseDto = await _authService.Login(loginRequestDto, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, loginResponseDto);
     }
-}
+}*/

@@ -1,6 +1,0 @@
-@AudioEngineersPlatformBackend_HostAddress = http://localhost:5090
-
-GET {{AudioEngineersPlatformBackend_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

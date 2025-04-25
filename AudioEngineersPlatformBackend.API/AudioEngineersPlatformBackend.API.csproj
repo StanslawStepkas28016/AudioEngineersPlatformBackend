@@ -21,14 +21,4 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
         <PackageReference Include="System.Net.Http" Version="4.3.4"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Providers\Email\"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="Resources\ErrorMessages.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
-    </ItemGroup>
 </Project>
