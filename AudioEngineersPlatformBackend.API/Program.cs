@@ -1,15 +1,24 @@
+using API.Middlewares.Exception;
+using AudioEngineersPlatformBackend.Application;
+using AudioEngineersPlatformBackend.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Clean Architecture layers
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
+
+// Add all controllers (those who inherit ControllerBase class)
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.UseExceptionMiddleware();
+// Use custom middlewares
+app.UseMiddleware<ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -19,6 +28,3 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.Run();
-
-// TODO - Fix based on Gakko and BackupBeforeDDD
-// TODO - Clean Architecture + DDD, ask Mr. Gago for examples
