@@ -16,8 +16,8 @@ public class EmailService : IEmailService
         _apiToken = configuration.Value.ApiToken;
     }
 
-    public Task Send()
+    public Task SendVerificationEmail(string recipient, string verificationCode)
     {
-        return Task.CompletedTask;
+        return;
     }
 }
