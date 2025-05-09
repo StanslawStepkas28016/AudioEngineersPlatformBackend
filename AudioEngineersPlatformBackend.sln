@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}"
+	ProjectSection(SolutionItems) = preProject
+		Commands.txt = Commands.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.API", "AudioEngineersPlatformBackend.API\AudioEngineersPlatformBackend.API.csproj", "{6DBE958A-0E89-4AF1-9CA6-E5EC46202D3E}"
 EndProject
@@ -9,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.Infrastructure", "AudioEngineersPlatformBackend.Infrastructure\AudioEngineersPlatformBackend.Infrastructure.csproj", "{95E6F712-6FC7-4B52-A89E-8C481F9C4DB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.Domain", "AudioEngineersPlatformBackend.Domain\AudioEngineersPlatformBackend.Domain.csproj", "{FC6AE930-AAEB-47E0-82DC-6A559714074C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.Contracts", "AudioEngineersPlatformBackend.Contracts\AudioEngineersPlatformBackend.Contracts.csproj", "{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,11 +37,16 @@ Global
 		{FC6AE930-AAEB-47E0-82DC-6A559714074C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC6AE930-AAEB-47E0-82DC-6A559714074C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC6AE930-AAEB-47E0-82DC-6A559714074C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6DBE958A-0E89-4AF1-9CA6-E5EC46202D3E} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 		{34B5FF54-22D0-4D8D-B439-0F39F4B6AC7A} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 		{95E6F712-6FC7-4B52-A89E-8C481F9C4DB4} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 		{FC6AE930-AAEB-47E0-82DC-6A559714074C} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
+		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 	EndGlobalSection
 EndGlobal

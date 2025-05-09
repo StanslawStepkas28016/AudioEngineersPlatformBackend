@@ -1,0 +1,7 @@
+dotnet ef migrations add InitialCreate \
+    --project AudioEngineersPlatformBackend.Infrastructure \
+    --startup-project AudioEngineersPlatformBackend.API
+
+dotnet ef database update InitialCreate \
+  --project AudioEngineersPlatformBackend.Infrastructure \
+  --startup-project AudioEngineersPlatformBackend.API

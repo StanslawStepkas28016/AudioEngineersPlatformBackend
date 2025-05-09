@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace API.Middlewares.Exception;
+namespace API.Middlewares.ExceptionMiddleware;
 
 public class ErrorDetailsDto
 {

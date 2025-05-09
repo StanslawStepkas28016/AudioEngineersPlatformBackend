@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace API.Middlewares.Exception;
+namespace API.Middlewares.ExceptionMiddleware;
 
 public class ExceptionMiddleware
 {
@@ -21,13 +21,13 @@ public class ExceptionMiddleware
         {
             await HandleArgumentExceptionAsync(context, ex);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             await HandleGeneralExceptionAsync(context, ex);
         }
     }
 
-    private Task HandleArgumentExceptionAsync(HttpContext context, System.Exception exception)
+    private Task HandleArgumentExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -40,7 +40,7 @@ public class ExceptionMiddleware
         }.ToString());
     }
 
-    private Task HandleGeneralExceptionAsync(HttpContext context, System.Exception exception)
+    private Task HandleGeneralExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
