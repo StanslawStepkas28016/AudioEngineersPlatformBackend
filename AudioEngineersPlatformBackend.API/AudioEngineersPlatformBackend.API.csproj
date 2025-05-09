@@ -9,12 +9,17 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
-    
-    <!-- Include dependecy from Application layer -->
+
     <ItemGroup>
+        <ProjectReference Include="..\AudioEngineersPlatformBackend.Contracts\AudioEngineersPlatformBackend.Contracts.csproj"/>
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Application\AudioEngineersPlatformBackend.Application.csproj"/>
+        <!-- Purely for dependecy injection for setting a connection string -->
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Infrastructure\AudioEngineersPlatformBackend.Infrastructure.csproj"/>
     </ItemGroup>
 
