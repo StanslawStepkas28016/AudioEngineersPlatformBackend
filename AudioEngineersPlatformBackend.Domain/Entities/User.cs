@@ -74,4 +74,14 @@ public class User
         IdRole = idRole;
         IdUserLog = idUserLog;
     }
+
+    public void SetHashedPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException("Password cannot be empty", nameof(password));
+        }
+
+        Password = password;
+    }
 }

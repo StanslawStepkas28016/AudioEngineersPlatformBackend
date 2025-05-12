@@ -21,7 +21,7 @@ public class EngineersPlatformDbContext : DbContext
         if (Database.ProviderName == "Microsoft.EntityFrameworkCore.SqlServer")
         {
             // Seed Role Entity
-            var adminRole = new Role(new Guid("5C9A3C43-8F4E-4C1E-A5F3-8E3CDBE0158A"), "Admin");
+            var adminRole = new Role(new Guid("5C9A3C43-8F4E-4C1E-A5F3-8E3CDBE0158A"), "Administrator");
             var clientRole = new Role(new Guid("AAAA3C43-8F4E-4C1E-A5F3-8E3CDBE0158A"), "Client");
             var audioEngineerRole = new Role(new Guid("BBBB3C43-8F4E-4C1E-A5F3-8E3CDBE0158A"), "Audio engineer");
             modelBuilder.Entity<Role>().HasData(
