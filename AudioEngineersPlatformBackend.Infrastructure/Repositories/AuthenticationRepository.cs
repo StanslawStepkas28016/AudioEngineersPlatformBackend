@@ -53,4 +53,24 @@ public class AuthenticationRepository : IAuthenticationRepository
         return
             res.Entity;
     }
+
+    public async Task<User?> FindUserAndUserLogByIdAndVerificationCode(Guid idUser, string verificationCode,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .Users
+            .Include(u => u.UserLog)
+            .FirstOrDefaultAsync(u => u.IdUser == idUser && u.UserLog.VerificationCode == verificationCode,
+                cancellationToken);
+    }
+
+    public async Task<User?> FindUserAndUserLogAndRoleByEmail(string email,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context
+            .Users
+            .Include(u => u.Role)
+            .Include(u => u.UserLog)
+            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+    }
 }

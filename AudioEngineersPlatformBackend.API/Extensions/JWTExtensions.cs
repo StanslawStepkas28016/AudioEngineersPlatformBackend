@@ -1,0 +1,54 @@
+using System.Text;
+using AudioEngineersPlatformBackend.Application.Util;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
+namespace API.Extensions;
+
+public static class JWTExtensions
+{
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                var jwtSettings = configuration
+                    .GetSection("JWTSettings")
+                    .Get<JWTSettings>()!;
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+                };
+            });
+
+        return services;
+    }
+
+    public static IServiceCollection AddRoleAuthorization(this IServiceCollection services)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdministratorOnly", p =>
+                p.RequireRole("Administrator"));
+
+            options.AddPolicy("Everyone", p =>
+                p.RequireRole("Administrator", "Client", "Audio Engineer"));
+        });
+
+        return services;
+    }
+}
