@@ -1,8 +1,8 @@
-namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices;
+namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService;
 
 public class MailtrapSettings
 {
-    public string RestClientURL { get; set; }
+    public string RestClientUrl { get; set; }
     public string ApiToken { get; set; }
     public string FromEmail { get; set; }
     public string FromName { get; set; }

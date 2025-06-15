@@ -1,10 +1,10 @@
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class GeneralIdVO
+public class GeneralIdVo
 {
     private readonly Guid _id;
 
-    public GeneralIdVO(Guid id)
+    public GeneralIdVo(Guid id)
     {
         if (id == Guid.Empty)
         {

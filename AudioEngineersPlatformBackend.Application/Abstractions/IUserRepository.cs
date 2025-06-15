@@ -2,7 +2,7 @@ using AudioEngineersPlatformBackend.Domain.Entities;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
-public interface IJWTFactory
+public interface IUserRepository
 {
-    string CreateJWT(User user);
+
 }

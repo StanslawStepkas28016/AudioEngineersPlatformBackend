@@ -45,6 +45,14 @@ public class UserLogEfConfig : IEntityTypeConfiguration<UserLog>
             .IsRequired(false);
 
         builder
+            .Property(ul => ul.RefreshToken)
+            .IsRequired(false);
+
+        builder
+            .Property(ul => ul.RefreshTokenExp)
+            .IsRequired(false);
+
+        builder
             .ToTable("UserLog");
     }
 }
