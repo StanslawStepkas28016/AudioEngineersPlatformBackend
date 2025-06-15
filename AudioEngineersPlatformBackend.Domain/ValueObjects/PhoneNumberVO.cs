@@ -2,11 +2,11 @@ using PhoneNumbers;
 
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class PhoneNumberVO
+public class PhoneNumberVo
 {
     private readonly string _number;
 
-    public PhoneNumberVO(string phoneNumber)
+    public PhoneNumberVo(string phoneNumber)
     {
         var phoneNumberUtil = PhoneNumberUtil.GetInstance();
         try

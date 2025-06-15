@@ -1,15 +1,17 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.Repositories;
 
-public class AuthenticationRepository : IAuthenticationRepository
+public class AuthRepository : IAuthRepository
 {
     private readonly EngineersPlatformDbContext _context;
 
-    public AuthenticationRepository(EngineersPlatformDbContext context)
+    public AuthRepository(EngineersPlatformDbContext context)
     {
         _context = context;
     }
@@ -54,13 +56,13 @@ public class AuthenticationRepository : IAuthenticationRepository
             res.Entity;
     }
 
-    public async Task<User?> FindUserAndUserLogByIdAndVerificationCode(Guid idUser, string verificationCode,
+    public async Task<User?> FindUserAndUserLogByVerificationCode(string verificationCode,
         CancellationToken cancellationToken)
     {
         return await _context
             .Users
             .Include(u => u.UserLog)
-            .FirstOrDefaultAsync(u => u.IdUser == idUser && u.UserLog.VerificationCode == verificationCode,
+            .FirstOrDefaultAsync(u => u.UserLog.VerificationCode == verificationCode,
                 cancellationToken);
     }
 
@@ -72,5 +74,31 @@ public class AuthenticationRepository : IAuthenticationRepository
             .Include(u => u.Role)
             .Include(u => u.UserLog)
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+    }
+
+    public async Task<User?> FindUserAndUserLogByIdUser(Guid idUser, CancellationToken cancellationToken = default)
+    {
+        return await _context
+            .Users
+            .Include(u => u.UserLog)
+            .FirstOrDefaultAsync(u => u.IdUser == idUser, cancellationToken);
+    }
+
+    public async Task<UserAssociatedDataDto?> GetUserAssociatedData(Guid idUser, CancellationToken cancellationToken)
+    {
+        return await _context
+            .Users
+            .Where(u => u.IdUser == idUser)
+            .Select(u => new UserAssociatedDataDto
+            {
+                IdUser = u.IdUser!,
+                Email = u.Email,
+                FirstName = u.FirstName!,
+                LastName = u.LastName!,
+                PhoneNumber = u.PhoneNumber!,
+                IdRole = u.IdRole,
+                RoleName = u.Role.RoleName!
+            })
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

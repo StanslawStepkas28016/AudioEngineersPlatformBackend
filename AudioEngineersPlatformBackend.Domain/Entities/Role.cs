@@ -4,8 +4,6 @@ public class Role
 {
     public Guid IdRole { get; private set; }
     public string RoleName { get; private set; }
-    
-    // References
     public ICollection<User> Users { get; private set; }
 
     // Constants
@@ -15,13 +13,8 @@ public class Role
     {
     }
 
-    public Role(Guid idRole, string roleName)
+    public Role(string roleName)
     {
-        if (idRole == Guid.Empty)
-        {
-            throw new ArgumentException("You must provide a GUID", nameof(roleName));
-        }
-
         if (string.IsNullOrWhiteSpace(roleName))
         {
             throw new ArgumentException("You must provide a roleName", nameof(roleName));
@@ -33,7 +26,7 @@ public class Role
                                         nameof(roleName));
         }
 
-        IdRole = idRole;
+        IdRole = Guid.NewGuid();
         RoleName = roleName;
     }
 }

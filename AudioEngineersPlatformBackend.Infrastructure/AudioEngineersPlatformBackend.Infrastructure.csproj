@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AWSSDK.S3" Version="4.0.1.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
             <PrivateAssets>all</PrivateAssets>
@@ -26,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="ExternalServices\Templates\VerificationEmail.html"/>
+      <EmbeddedResource Include="ExternalServices\MailService\Templates\VerificationEmail.html" />
     </ItemGroup>
 
 </Project>

@@ -40,12 +40,12 @@ public class User
             throw new ArgumentException("Last name cannot be empty", nameof(lastName));
         }
 
-        if (new EmailVO(email).GetValidEmail() != email)
+        if (new EmailVo(email).GetValidEmail() != email)
         {
             throw new ArgumentException("Invalid email address", nameof(email));
         }
 
-        if (new PhoneNumberVO(phoneNumber).GetValidPhoneNumber() != phoneNumber)
+        if (new PhoneNumberVo(phoneNumber).GetValidPhoneNumber() != phoneNumber)
         {
             throw new ArgumentException("Invalid phone number", nameof(phoneNumber));
         }

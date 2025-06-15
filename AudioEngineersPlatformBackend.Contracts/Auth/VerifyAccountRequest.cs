@@ -1,4 +1,4 @@
-namespace AudioEngineersPlatformBackend.Contracts.Authentication;
+namespace AudioEngineersPlatformBackend.Contracts.Auth;
 
 public record VerifyAccountRequest(
     Guid IdUser,

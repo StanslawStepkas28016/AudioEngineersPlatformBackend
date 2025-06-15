@@ -4,11 +4,11 @@ using System.Text.RegularExpressions;
 
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class EmailVO
+public class EmailVo
 {
     private readonly string _address;
 
-    public EmailVO(string address)
+    public EmailVo(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
         {

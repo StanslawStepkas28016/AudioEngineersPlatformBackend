@@ -1,6 +1,6 @@
 namespace API.Extensions;
 
-public static class CORSExtensions
+public static class CorsExtensions
 {
     public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
     {

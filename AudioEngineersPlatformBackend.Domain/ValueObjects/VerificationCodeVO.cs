@@ -1,10 +1,10 @@
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class VerificationCodeVO
+public class VerificationCodeVo
 {
-    private string _verificationCode { get; set; }
+    private string VerificationCode { get; set; }
 
-    public VerificationCodeVO(string verificationCode)
+    public VerificationCodeVo(string verificationCode)
     {
         if (string.IsNullOrWhiteSpace(verificationCode))
         {
@@ -16,11 +16,11 @@ public class VerificationCodeVO
             throw new ArgumentException("Verification code must be 6 characters long", nameof(verificationCode));
         }
 
-        _verificationCode = verificationCode;
+        VerificationCode = verificationCode;
     }
 
     public string GetValidVerificationCode()
     {
-        return _verificationCode;
+        return VerificationCode;
     }
 }

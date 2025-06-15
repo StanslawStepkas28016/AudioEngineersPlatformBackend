@@ -1,11 +1,9 @@
 using System.Reflection;
 using AudioEngineersPlatformBackend.Application.Abstractions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
-namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices;
+namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService;
 
 public class EmailService : IEmailService
 {
@@ -16,7 +14,7 @@ public class EmailService : IEmailService
 
     public EmailService(IOptions<MailtrapSettings> configuration)
     {
-        _client = new RestClient(configuration.Value.RestClientURL);
+        _client = new RestClient(configuration.Value.RestClientUrl);
         _apiToken = configuration.Value.ApiToken;
         _fromEmail = configuration.Value.FromEmail;
         _fromName = configuration.Value.FromName;
