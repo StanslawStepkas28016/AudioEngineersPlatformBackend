@@ -1,15 +1,16 @@
 namespace AudioEngineersPlatformBackend.Contracts.Advert;
 
 public record GetAdvertResponse(
+    Guid IdUser,
     Guid IdAdvert,
     string Title,
     string Description,
-    decimal Price,
+    double Price,
     string CategoryName,
     string CoverImageUrl,
-    string PlaylistUrl,
+    string PortfolioUrl,
     string UserFirstName,
     string UserLastName,
-    DateTime CreatedAt,
-    DateTime UpdatedAt
+    DateTime DateCreated,
+    DateTime? DateModified
 );

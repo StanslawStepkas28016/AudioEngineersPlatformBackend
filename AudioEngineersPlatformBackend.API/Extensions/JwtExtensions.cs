@@ -35,12 +35,13 @@ public static class JwtExtensions
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
                 };
 
+                // TODO: Check this
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>
                     {
                         // Only pulls accessToken from the cookies if it exists
-                        context.Token ??= context.Request.Cookies[CookieName.accessToken.ToString()];
+                        context.Token ??= context.Request.Cookies[nameof(CookieName.accessToken)];
                         return Task.CompletedTask;
                     }
                 };

@@ -84,9 +84,35 @@ public class AdvertService : IAdvertService
     public async Task<GetAdvertResponse> GetAdvert(Guid idAdvert, CancellationToken cancellationToken)
     {
         // Validate the advert ID and its existence
-        // Retrieve the advert data from repository
+        if (idAdvert == Guid.Empty)
+        {
+            throw new ArgumentException("Advert ID cannot be empty.", nameof(idAdvert));
+        }
+
+        var advert = await _advertRepository.GetAdvertAssociatedDataByIdAdvert(idAdvert, cancellationToken);
+
+        if (advert == null)
+        {
+            throw new Exception("You have not posted an advert yet.");
+        }
+
         // Generate a presigned URL for the cover image
+        var preSignedUrl = await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
+
         // Map the response to GetAdvertResponse
-        throw new NotImplementedException();
+        return new GetAdvertResponse(
+            advert.IdUser,
+            advert.IdAdvert,
+            advert.Title!,
+            advert.Description!,
+            advert.Price,
+            advert.CategoryName!,
+            preSignedUrl,
+            advert.PortfolioUrl!,
+            advert.UserFirstName!,
+            advert.UserLastName!,
+            advert.DateCreated,
+            advert.DateModified
+        );
     }
 }
