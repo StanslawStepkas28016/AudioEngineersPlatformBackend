@@ -2,17 +2,21 @@ namespace AudioEngineersPlatformBackend.Domain.Entities;
 
 public class Advert
 {
+    // Properties
     public Guid IdAdvert { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
-    public string CoverImageUrl { get; private set; }
+    public Guid CoverImageKey { get; private set; }
     public string PortfolioUrl { get; private set; }
     public double Price { get; private set; }
 
+    // References (Foreign Keys)
     public Guid IdAdvertCategory { get; private set; }
     public AdvertCategory AdvertCategory { get; private set; }
     public Guid IdAdvertLog { get; private set; }
     public AdvertLog AdvertLog { get; private set; }
+    public Guid IdUser { get; private set; }
+    public User User { get; private set; }
 
     // Constants
     private const double MaxPrice = 1500.0;
@@ -23,8 +27,16 @@ public class Advert
     {
     }
 
-    public Advert(string title, string description, string coverImageUrl, string portfolioUrl, double price,
-        Guid idAdvertCategory, Guid idAdvertLog)
+    public Advert(
+        string title,
+        string description,
+        Guid coverImageKey,
+        string portfolioUrl,
+        double price,
+        Guid idUser,
+        Guid idAdvertCategory,
+        Guid idAdvertLog
+    )
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -47,9 +59,9 @@ public class Advert
                 nameof(description));
         }
 
-        if (string.IsNullOrWhiteSpace(coverImageUrl))
+        if (coverImageKey == Guid.Empty)
         {
-            throw new ArgumentException("Cover image URL cannot be null or whitespace.", nameof(coverImageUrl));
+            throw new ArgumentException("Cover image URL cannot be null or whitespace.", nameof(coverImageKey));
         }
 
         if (string.IsNullOrWhiteSpace(portfolioUrl))
@@ -67,6 +79,11 @@ public class Advert
             throw new ArgumentException($"Price cannot be greater than {MaxPrice}.", nameof(price));
         }
 
+        if (idUser == Guid.Empty)
+        {
+            throw new ArgumentException("User ID cannot be empty.", nameof(idUser));
+        }
+
         if (idAdvertCategory == Guid.Empty)
         {
             throw new ArgumentException("Category ID cannot be empty.", nameof(idAdvertCategory));
@@ -80,9 +97,10 @@ public class Advert
         IdAdvert = Guid.NewGuid();
         Title = title;
         Description = description;
-        CoverImageUrl = coverImageUrl;
+        CoverImageKey = coverImageKey;
         PortfolioUrl = portfolioUrl;
         Price = price;
+        IdUser = idUser;
         IdAdvertCategory = idAdvertCategory;
         IdAdvertLog = idAdvertLog;
     }

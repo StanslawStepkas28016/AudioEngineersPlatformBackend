@@ -30,4 +30,8 @@
       <EmbeddedResource Include="ExternalServices\MailService\Templates\VerificationEmail.html" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
 </Project>

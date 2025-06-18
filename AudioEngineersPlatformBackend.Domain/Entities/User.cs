@@ -1,15 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
-using PhoneNumbers;
-using PhoneNumber = PhoneNumbers.PhoneNumber;
 
 namespace AudioEngineersPlatformBackend.Domain.Entities;
 
 public class User
 {
+    // Properties
     public Guid IdUser { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
@@ -17,18 +12,28 @@ public class User
     public string PhoneNumber { get; private set; }
     public string Password { get; private set; }
 
-    // References
+    // References (Foreign Keys)
     public Guid IdRole { get; private set; }
     public virtual Role Role { get; private set; }
     public Guid IdUserLog { get; private set; }
     public virtual UserLog UserLog { get; private set; }
 
+    // References (Navigation Properties)
+    public ICollection<Advert> Adverts { get; private set; }
+
     private User()
     {
     }
 
-    public User(string firstName, string lastName, string email, string phoneNumber, string password,
-        Guid idRole, Guid idUserLog)
+    public User(
+        string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        string password,
+        Guid idRole,
+        Guid idUserLog
+    )
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {

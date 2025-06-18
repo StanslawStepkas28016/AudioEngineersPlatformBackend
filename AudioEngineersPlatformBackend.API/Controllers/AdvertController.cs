@@ -18,7 +18,7 @@ public class AdvertController : ControllerBase
 
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpPost("create")]
-    public async Task<IActionResult> CreateAdvert(CreateAdvertRequest createAdvertRequest,
+    public async Task<IActionResult> CreateAdvert([FromForm] CreateAdvertRequest createAdvertRequest,
         CancellationToken cancellationToken)
     {
         var createAdvertResponse = await _advertService.CreateAdvert(createAdvertRequest, cancellationToken);
@@ -29,9 +29,18 @@ public class AdvertController : ControllerBase
     [HttpGet("get/{idAdvert:guid}")]
     public async Task<IActionResult> GetAdvert(Guid idAdvert, CancellationToken cancellationToken)
     {
-        // var getAdvertResponse = await _advertService.GetAdvert(idAdvert, cancellationToken);
-        // return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
+        var getAdvertResponse = await _advertService.GetAdvert(idAdvert, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
+    }
+
+    // TODO: Add with pagination and filtering
+    [AllowAnonymous]
+    [HttpGet("get-all")]
+    public async Task<IActionResult> GetAllAdverts(CancellationToken cancellationToken)
+    {
         throw new NotImplementedException("This method is not implemented yet.");
+        // var getAllAdvertsResponse = await _advertService.GetAllAdverts(cancellationToken);
+        // return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
     }
 
     [Authorize(Roles = "Admin, Audio engineer")]
@@ -50,14 +59,5 @@ public class AdvertController : ControllerBase
         throw new NotImplementedException("This method is not implemented yet.");
         // var editAdvertResponse = await _advertService.EditAdvert(idAdvert, createAdvertRequest, cancellationToken);
         // return StatusCode(StatusCodes.Status200OK, editAdvertResponse);
-    }
-
-    [AllowAnonymous]
-    [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAdverts(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException("This method is not implemented yet.");
-        // var getAllAdvertsResponse = await _advertService.GetAllAdverts(cancellationToken);
-        // return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
     }
 }

@@ -1,12 +1,13 @@
-using Amazon.Util.Internal;
+using Microsoft.AspNetCore.Http;
 
 namespace AudioEngineersPlatformBackend.Contracts.Advert;
 
 public record CreateAdvertRequest(
+    Guid IdUser,
     string Title,
     string Description,
-    IFile CoverImage,
+    IFormFile CoverImageFile,
     string PortfolioUrl,
     double Price,
-    string Category
+    string CategoryName
 );

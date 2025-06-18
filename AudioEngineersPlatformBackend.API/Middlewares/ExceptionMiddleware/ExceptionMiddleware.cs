@@ -17,9 +17,18 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
+        catch (ArgumentNullException ex)
+        {
+            await HandleArgumentNullExceptionAsync(context, ex);
+        }
         catch (ArgumentException ex)
         {
             await HandleArgumentExceptionAsync(context, ex);
+        }
+
+        catch (UnauthorizedAccessException ex)
+        {
+            await HandleUnauthorizedAccessExceptionAsync(context, ex);
         }
         catch (Exception ex)
         {
@@ -36,6 +45,33 @@ public class ExceptionMiddleware
         {
             StatusCode = context.Response.StatusCode,
             Message = "Error caused by incorrect arguments.",
+            ExceptionMessage = exception.Message
+        }.ToString());
+    }
+
+    private Task HandleArgumentNullExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+
+        return context.Response.WriteAsync(new ErrorDetailsDto
+        {
+            StatusCode = context.Response.StatusCode,
+            Message = "Error caused by incorrect (null) arguments.",
+            ExceptionMessage = exception.Message
+        }.ToString());
+    }
+
+
+    private Task HandleUnauthorizedAccessExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+
+        return context.Response.WriteAsync(new ErrorDetailsDto
+        {
+            StatusCode = context.Response.StatusCode,
+            Message = "Unauthorized access.",
             ExceptionMessage = exception.Message
         }.ToString());
     }

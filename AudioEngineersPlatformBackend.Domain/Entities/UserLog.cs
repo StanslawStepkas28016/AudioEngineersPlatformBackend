@@ -10,6 +10,7 @@ public enum VerificationOutcome
 
 public class UserLog
 {
+    // Properties
     public Guid IdUserLog { get; private set; }
     public DateTime? DateCreated { get; private set; }
     public DateTime? DateDeleted { get; private set; }
@@ -20,6 +21,8 @@ public class UserLog
     public DateTime? DateLastLogin { get; private set; }
     public string? RefreshToken { get; private set; }
     public DateTime? RefreshTokenExp { get; private set; }
+
+    // References (Navigation Properties)
     public ICollection<User> Users { get; private set; }
 
     private UserLog()

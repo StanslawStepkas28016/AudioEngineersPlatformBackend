@@ -2,8 +2,11 @@ namespace AudioEngineersPlatformBackend.Domain.Entities;
 
 public class Role
 {
+    // Properties
     public Guid IdRole { get; private set; }
     public string RoleName { get; private set; }
+    
+    // References (Navigation Properties)
     public ICollection<User> Users { get; private set; }
 
     // Constants

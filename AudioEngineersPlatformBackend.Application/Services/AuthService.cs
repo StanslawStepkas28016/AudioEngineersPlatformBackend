@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Application.Util.Cookies;
 using AudioEngineersPlatformBackend.Contracts.Auth;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
@@ -69,7 +71,7 @@ public class AuthService : IAuthService
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
 
-        return new RegisterResponse(user.IdUser, user.Email, "");
+        return new RegisterResponse(user.IdUser, user.Email);
     }
 
     public async Task<VerifyAccountResponse> VerifyAccount(VerifyAccountRequest verifyAccountRequest,
@@ -88,8 +90,6 @@ public class AuthService : IAuthService
 
         // Business logic - verify users account
         var verificationOutcome = user.UserLog.VerifyUserAccount();
-
-        // Exception rzucać w klasie biznesowej!!!!
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -112,7 +112,7 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            throw new ArgumentException("User with provided email does not exist", nameof(loginRequest.Email));
+            throw new ArgumentException("User with provided email does not exist");
         }
 
         // Business logic - check if user is deleted or unverified
@@ -127,65 +127,69 @@ public class AuthService : IAuthService
 
         if (passwordVerificationResult != PasswordVerificationResult.Success)
         {
-            throw new ArgumentException("Invalid password", nameof(loginRequest.Email));
+            throw new ArgumentException("Invalid password");
         }
 
         // Create the Access Token
         var jwtAccessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write both tokens as cookies
-        _cookieUtil.WriteAsCookie("accessToken", new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
+        _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
             jwtAccessToken.ValidTo);
-        _cookieUtil.WriteAsCookie("refreshToken", user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExp);
+        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExp);
 
         // Persist the changes in the database
         await _unitOfWork.CompleteAsync(cancellationToken);
 
-        // Send the access token in the normal repose
-        return new LoginResponse(user.IdUser);
+        // Send the user data in the response
+        return new LoginResponse(
+            user.IdUser,
+            user.FirstName,
+            user.LastName,
+            user.Email,
+            user.PhoneNumber,
+            user.Role.RoleName,
+            user.Role.IdRole
+        );
     }
 
     public Task Logout()
     {
-        _cookieUtil.DeleteCookie("refreshToken");
-        _cookieUtil.DeleteCookie("accessToken");
+        _cookieUtil.DeleteCookie(CookieName.accessToken);
+        _cookieUtil.DeleteCookie(CookieName.refreshToken);
         return Task.CompletedTask;
     }
 
-    public async Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest,
-        CancellationToken cancellationToken = default)
+    public async Task<RefreshTokenResponse> RefreshToken(CancellationToken cancellationToken = default)
     {
-        // Get the token from the cookie
-        var refreshToken = _cookieUtil.TryGetCookie("refreshToken");
+        // Get the token from the cookie, method will throw an exception if the cookie is not present
+        var refreshToken = _cookieUtil.TryGetCookie(CookieName.refreshToken);
 
-        // See if the refresh token is valid
-        var user = await _authRepository.FindUserAndUserLogByIdUser(refreshTokenRequest.IdUser, cancellationToken);
+        // Find a user by the refresh token
+        var user = await _authRepository.FindUserAndUserLogByRefreshToken(refreshToken, cancellationToken);
 
         if (user == null)
         {
             throw new Exception("User does not exist");
         }
 
-        if (user.UserLog.RefreshToken != refreshToken)
-        {
-            throw new Exception("Invalid refresh token");
-        }
-
+        // Check if the refresh token is expired - this should never happen, because the token is stored in the cookie
+        // and the cookies are being deleted after their expiration date from the browser
         if (user.UserLog.RefreshTokenExp < DateTime.UtcNow)
         {
-            throw new Exception("Refresh token expired, please login again");
+            throw new UnauthorizedAccessException("Refresh token expired, please login again");
         }
 
-        // Persists new refresh token and its expiration date in the database
+        // Set new login associated data (token and expiration date)
         user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
 
         // Generate a new access token
         var accessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write new access token and refresh token as cookies
-        _cookieUtil.WriteAsCookie("accessToken", new JwtSecurityTokenHandler().WriteToken(accessToken),
+        _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
             accessToken.ValidTo);
-        _cookieUtil.WriteAsCookie("refreshToken", user.UserLog.RefreshToken, user.UserLog.RefreshTokenExp);
+        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExp);
 
         // Persist the changes in the database
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -196,7 +200,7 @@ public class AuthService : IAuthService
 
     public async Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default)
     {
-        var userAssociatedData = await _authRepository.GetUserAssociatedData(idUser, cancellationToken);
+        var userAssociatedData = await _authRepository.GetUserAssociatedDataByIdUser(idUser, cancellationToken);
 
         // This should never happen, but just in case
         if (userAssociatedData == null)
@@ -206,12 +210,12 @@ public class AuthService : IAuthService
 
         return new CheckAuthResponse(
             idUser,
-            userAssociatedData.Email,
-            userAssociatedData.FirstName,
-            userAssociatedData.LastName,
-            userAssociatedData.PhoneNumber,
+            userAssociatedData.Email!,
+            userAssociatedData.FirstName!,
+            userAssociatedData.LastName!,
+            userAssociatedData.PhoneNumber!,
             userAssociatedData.IdRole,
-            userAssociatedData.RoleName
+            userAssociatedData.RoleName!
         );
     }
 }
