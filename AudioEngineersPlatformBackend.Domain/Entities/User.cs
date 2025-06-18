@@ -25,6 +25,7 @@ public class User
     {
     }
 
+    // TODO: Setters like on MAS
     public User(
         string firstName,
         string lastName,

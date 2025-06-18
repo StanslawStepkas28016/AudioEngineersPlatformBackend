@@ -1,4 +1,5 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,30 @@ public class AdvertRepository : IAdvertRepository
         return await _context
             .Adverts
             .FirstOrDefaultAsync(a => a.IdUser == idUser, cancellationToken);
+    }
+
+    public async Task<AdvertAssociatedData?> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .Adverts
+            .Where(a => a.IdAdvert == idAdvert)
+            .Select(a => new AdvertAssociatedData
+            {
+                IdAdvert = a.IdAdvert,
+                IdUser = a.IdUser,
+                UserFirstName = a.User.FirstName,
+                UserLastName = a.User.LastName,
+                Title = a.Title,
+                Description = a.Description,
+                Price = a.Price,
+                CategoryName = a.AdvertCategory.CategoryName,
+                CoverImageKey = a.CoverImageKey,
+                PortfolioUrl = a.PortfolioUrl,
+                DateCreated = a.AdvertLog.DateCreated,
+                DateModified = a.AdvertLog.DateModified
+            })
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<AdvertCategory?> GetAdvertCategoryByCategoryName(string categoryName,

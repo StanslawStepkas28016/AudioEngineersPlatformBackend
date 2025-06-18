@@ -26,7 +26,7 @@ public class AdvertController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet("get/{idAdvert:guid}")]
+    [HttpGet()]
     public async Task<IActionResult> GetAdvert(Guid idAdvert, CancellationToken cancellationToken)
     {
         var getAdvertResponse = await _advertService.GetAdvert(idAdvert, cancellationToken);

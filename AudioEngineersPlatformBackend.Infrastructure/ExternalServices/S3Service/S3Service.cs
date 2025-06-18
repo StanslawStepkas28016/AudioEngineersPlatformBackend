@@ -48,7 +48,7 @@ public class S3Service : IS3Service
         return key;
     }
 
-    public async Task<string> GetPreSignedUrlAsync(Guid key,
+    public async Task<string> TryGetPreSignedUrlAsync(Guid key,
         CancellationToken cancellationToken = default)
     {
         if (key == Guid.Empty)
