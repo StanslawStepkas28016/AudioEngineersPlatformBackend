@@ -2,8 +2,11 @@ namespace AudioEngineersPlatformBackend.Domain.Entities;
 
 public class AdvertCategory
 {
+    // Properties
     public Guid IdAdvertCategory { get; set; }
     public string CategoryName { get; set; }
+    
+    // References (Navigation Properties)
     public ICollection<Advert> Adverts { get; set; }
 
     public AdvertCategory(string categoryName)

@@ -14,15 +14,6 @@ public static class CorsExtensions
                     .AllowAnyMethod()
                     .AllowCredentials();
             });
-
-            /*options.Add(configuration.GetSection("FrontendSettings:PolicyName").Value!, policy =>
-            {
-                policy
-                    .WithOrigins(configuration.GetSection("FrontendSettings:URL").Value!)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });*/
         });
 
         return services;

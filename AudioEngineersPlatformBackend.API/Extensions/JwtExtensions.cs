@@ -1,5 +1,6 @@
 using System.Text;
-using AudioEngineersPlatformBackend.Application.Util;
+using AudioEngineersPlatformBackend.Application.Util.Cookies;
+using AudioEngineersPlatformBackend.Application.Util.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -39,7 +40,7 @@ public static class JwtExtensions
                     OnMessageReceived = context =>
                     {
                         // Only pulls accessToken from the cookies if it exists
-                        context.Token ??= context.Request.Cookies["accessToken"];
+                        context.Token ??= context.Request.Cookies[CookieName.accessToken.ToString()];
                         return Task.CompletedTask;
                     }
                 };

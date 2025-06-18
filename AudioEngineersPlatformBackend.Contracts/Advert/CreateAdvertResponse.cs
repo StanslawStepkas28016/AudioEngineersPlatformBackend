@@ -1,3 +1,6 @@
 namespace AudioEngineersPlatformBackend.Contracts.Advert;
 
-public record CreateAdvertResponse();
+public record CreateAdvertResponse(
+    Guid IdAdvert,
+    Guid IdUser
+);

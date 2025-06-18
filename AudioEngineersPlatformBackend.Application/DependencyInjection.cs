@@ -1,6 +1,8 @@
 ﻿using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Services;
 using AudioEngineersPlatformBackend.Application.Util;
+using AudioEngineersPlatformBackend.Application.Util.Cookies;
+using AudioEngineersPlatformBackend.Application.Util.Tokens;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,7 @@ public static class DependencyInjection
         // Add application layer services
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAdvertService, AdvertService>();
 
         // Add settings for JWT
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

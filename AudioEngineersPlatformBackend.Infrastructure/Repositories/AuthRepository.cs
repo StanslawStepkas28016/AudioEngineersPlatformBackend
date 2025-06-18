@@ -76,15 +76,16 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User?> FindUserAndUserLogByIdUser(Guid idUser, CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserAndUserLogByRefreshToken(string refreshToken,
+        CancellationToken cancellationToken = default)
     {
         return await _context
             .Users
             .Include(u => u.UserLog)
-            .FirstOrDefaultAsync(u => u.IdUser == idUser, cancellationToken);
+            .FirstOrDefaultAsync(u => u.UserLog.RefreshToken == refreshToken, cancellationToken);
     }
 
-    public async Task<UserAssociatedDataDto?> GetUserAssociatedData(Guid idUser, CancellationToken cancellationToken)
+    public async Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Users

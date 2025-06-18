@@ -1,4 +1,5 @@
 ﻿using Amazon;
+using Amazon.Runtime;
 using Amazon.S3;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
@@ -25,9 +26,10 @@ public static class DependencyInjection
         // Add Repositories
         services.AddScoped<IAuthRepository, AuthRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IAdvertRepository, AdvertRepository>();
 
         // Add external Services
-        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IEmailService, MailService>();
         services.Configure<MailtrapSettings>(
             configuration.GetSection("MailtrapSettings")
         );
@@ -40,13 +42,17 @@ public static class DependencyInjection
         services.AddSingleton<IAmazonS3>(sp =>
         {
             var s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
+
+            var credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
+
             var config = new AmazonS3Config
             {
                 RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
             };
 
-            return new AmazonS3Client(config);
+            return new AmazonS3Client(credentials, config);
         });
+
 
         // Add a unit of work
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();

@@ -5,14 +5,14 @@ using RestSharp;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService;
 
-public class EmailService : IEmailService
+public class MailService : IEmailService
 {
     private readonly RestClient _client;
     private readonly string _apiToken;
     private readonly string _fromEmail;
     private readonly string _fromName;
 
-    public EmailService(IOptions<MailtrapSettings> configuration)
+    public MailService(IOptions<MailtrapSettings> configuration)
     {
         _client = new RestClient(configuration.Value.RestClientUrl);
         _apiToken = configuration.Value.ApiToken;
@@ -25,7 +25,7 @@ public class EmailService : IEmailService
         await using var stream = Assembly
                                      .GetExecutingAssembly()
                                      .GetManifestResourceStream(
-                                         "AudioEngineersPlatformBackend.Infrastructure.ExternalServices.Templates.VerificationEmail.html"
+                                         "AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService.Templates.VerificationEmail.html"
                                      )
                                  ?? throw new InvalidOperationException("Could not find embedded resource.");
 

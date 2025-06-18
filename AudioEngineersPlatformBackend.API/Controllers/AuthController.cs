@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Contracts.Auth;
@@ -22,7 +21,8 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest registerRequest, CancellationToken cancellationToken)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest,
+        CancellationToken cancellationToken)
     {
         var registerResponse = await _authService.Register(registerRequest, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, registerResponse);
@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("verify-account")]
-    public async Task<IActionResult> VerifyAccount(VerifyAccountRequest verifyAccountRequest,
+    public async Task<IActionResult> VerifyAccount([FromBody] VerifyAccountRequest verifyAccountRequest,
         CancellationToken cancellationToken)
     {
         var verifyAccountResponse = await _authService.VerifyAccount(verifyAccountRequest, cancellationToken);
@@ -39,20 +39,20 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest loginRequest, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
     {
         var loginResponse = await _authService.Login(loginRequest, cancellationToken);
         return StatusCode(StatusCodes.Status202Accepted, loginResponse);
     }
 
-
     // TODO Można odświeżać w front'endzie co 10 minut, zamiast robić query intercepting, rozwiązanie trochę na chama
+    [AllowAnonymous]
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshToken(RefreshTokenRequest refreshTokenRequest,
+    public async Task<IActionResult> RefreshToken(
         CancellationToken cancellationToken)
     {
-        var newAccessToken = await _authService.RefreshToken(refreshTokenRequest, cancellationToken);
-        return StatusCode(StatusCodes.Status202Accepted, newAccessToken);
+        var refreshTokenResponse = await _authService.RefreshToken(cancellationToken);
+        return StatusCode(StatusCodes.Status202Accepted, refreshTokenResponse);
     }
 
     [AllowAnonymous]

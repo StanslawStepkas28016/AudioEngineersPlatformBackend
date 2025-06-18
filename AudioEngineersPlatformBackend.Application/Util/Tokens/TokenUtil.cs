@@ -7,15 +7,7 @@ using AudioEngineersPlatformBackend.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AudioEngineersPlatformBackend.Application.Util;
-
-public class JwtSettings
-{
-    public string Secret { get; set; }
-    public string Issuer { get; set; }
-    public string Audience { get; set; }
-    public int ExpireHours { get; set; }
-}
+namespace AudioEngineersPlatformBackend.Application.Util.Tokens;
 
 public class TokenUtil : ITokenUtil
 {

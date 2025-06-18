@@ -2,12 +2,15 @@ namespace AudioEngineersPlatformBackend.Domain.Entities;
 
 public class AdvertLog
 {
+    // Properties
     public Guid IdAdvertLog { get; private set; }
     public DateTime DateCreated { get; private set; }
     public DateTime? DateModified { get; private set; }
     public DateTime? DateDeleted { get; private set; }
     public bool IsDeleted { get; private set; }
     public bool IsActive { get; private set; }
+
+    // References (Navigation Properties)
     public ICollection<Advert> Adverts { get; set; }
 
     private AdvertLog()

@@ -15,7 +15,15 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task CompleteAsync(CancellationToken cancellationToken)
     {
-        
-        await _context.SaveChangesAsync(cancellationToken);
+
+        try
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

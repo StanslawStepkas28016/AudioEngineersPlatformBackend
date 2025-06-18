@@ -12,6 +12,6 @@ public interface IAuthRepository
     Task<User> AddUser(User user, CancellationToken cancellationToken);
     Task<User?> FindUserAndUserLogByVerificationCode(string verificationCode, CancellationToken cancellationToken);
     Task<User?> FindUserAndUserLogAndRoleByEmail(string email, CancellationToken cancellationToken = default);
-    Task<User?> FindUserAndUserLogByIdUser(Guid idUser, CancellationToken cancellationToken = default);
-    Task<UserAssociatedDataDto?> GetUserAssociatedData(Guid idUser, CancellationToken cancellationToken);
+    Task<User?> FindUserAndUserLogByRefreshToken(string refreshToken, CancellationToken cancellationToken = default);
+    Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken);
 }

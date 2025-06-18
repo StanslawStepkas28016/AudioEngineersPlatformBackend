@@ -13,8 +13,7 @@ public interface IAuthService
 
     Task Logout();
 
-    Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest,
-        CancellationToken cancellationToken = default);
+    Task<RefreshTokenResponse> RefreshToken(CancellationToken cancellationToken = default);
 
     Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default);
 }
