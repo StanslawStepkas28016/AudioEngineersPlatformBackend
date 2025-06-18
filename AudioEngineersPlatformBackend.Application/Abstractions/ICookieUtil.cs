@@ -1,10 +1,12 @@
+using AudioEngineersPlatformBackend.Application.Util.Cookies;
+
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface ICookieUtil
 {
-    void WriteAsCookie(string cookieName, string token, DateTime? expirationDate);
+    Task WriteAsCookie(CookieNames cookieNames, string value, DateTime? expirationDate);
 
-    string TryGetCookie(string cookieName);
+    Task<string> GetCookie(CookieNames cookieNames);
 
-    void DeleteCookie(string cookieName);
+    Task DeleteCookie(CookieNames cookieNames);
 }

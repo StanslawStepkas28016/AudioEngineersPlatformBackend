@@ -1,29 +1,31 @@
+using AudioEngineersPlatformBackend.Application.Util.UrlGenerator;
+
 namespace API.Extensions;
 
 public static class CorsExtensions
 {
     public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(policy =>
+        services.AddCors
+        (options =>
             {
-                policy
-                    .WithOrigins(configuration.GetSection("FrontendSettingsDev:URL").Value!)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
+                options.AddDefaultPolicy
+                (policy =>
+                    {
+                        FrontendSettings frontendSettings =
+                            configuration
+                                .GetSection(nameof(FrontendSettings))
+                                .Get<FrontendSettings>()!;
 
-            /*options.Add(configuration.GetSection("FrontendSettings:PolicyName").Value!, policy =>
-            {
-                policy
-                    .WithOrigins(configuration.GetSection("FrontendSettings:URL").Value!)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });*/
-        });
+                        policy
+                            .WithOrigins(frontendSettings.Url)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    }
+                );
+            }
+        );
 
         return services;
     }

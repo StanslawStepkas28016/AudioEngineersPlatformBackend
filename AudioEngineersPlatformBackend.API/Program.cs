@@ -1,20 +1,34 @@
 using API.Extensions;
+using API.Hubs;
 using API.Middlewares.ExceptionMiddleware;
 using AudioEngineersPlatformBackend.Application;
 using AudioEngineersPlatformBackend.Infrastructure;
+using AudioEngineersPlatformBackend.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
+    // Add logging via Serilog
+    builder.Host.AddSerilogLogging();
+
     // Add Swagger fore development
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+
+    // Add localization
+    builder.Services.AddLocalizationExtension(builder.Configuration);
 
     // Add "Clean Architecture layers"
     builder.Services.AddApplicationLayer(builder.Configuration);
     builder.Services.AddInfrastructureLayer(builder.Configuration);
 
-    // Add all controllers (those which inherit from ControllerBase class)
-    builder.Services.AddControllers();
+    // Add SignalR
+    builder.Services.AddSignalR();
+
+    // Add controllers
+    builder.Services
+        .AddControllers()
+        .AddNewtonsoftJson();
 
     // Add authentication and authorization
     builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -24,22 +38,27 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddCorsPolicy(builder.Configuration);
 }
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 {
     // Use custom middlewares
     app.UseMiddleware<ExceptionMiddleware>();
 
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
     // Use swagger for development
     if (app.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        // Run migrations
+        using var scope = app.Services.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<EngineersPlatformDbContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
+    // Use redirections from HTTP to HTTPS
     app.UseHttpsRedirection();
 
-    // User routing an CORS, would need to specify the PolicyName in app.UseCors
-    // if the AddCorsPolicy did not have a default policy set 
+    // User routing an CORS 
     app.UseRouting();
     app.UseCors();
 
@@ -47,7 +66,14 @@ var app = builder.Build();
     app.UseAuthentication();
     app.UseAuthorization();
 
+    // Use request localization
+    app.UseRequestLocalization();
+
+    // Map controllers to endpoints
     app.MapControllers();
+
+    // Map the chat-hub
+    app.MapHub<ChatHub>("chat-hub");
 
     app.Run();
 }

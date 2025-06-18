@@ -1,4 +1,10 @@
-using AudioEngineersPlatformBackend.Contracts.Auth;
+using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
+using AudioEngineersPlatformBackend.Contracts.Auth.Login;
+using AudioEngineersPlatformBackend.Contracts.Auth.Register;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetPhoneNumber;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
@@ -13,8 +19,15 @@ public interface IAuthService
 
     Task Logout();
 
-    Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest,
-        CancellationToken cancellationToken = default);
+    Task RefreshToken(CancellationToken cancellationToken = default);
 
     Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default);
+
+    Task<ResetEmailResponse> ResetEmail(Guid idUser, ResetEmailRequest resetEmailRequest,
+        CancellationToken cancellationToken);
+
+    Task VerifyResetEmail(Guid resetEmailToken, CancellationToken cancellationToken);
+    Task ResetPassword(Guid idUser, ResetPasswordRequest resetPasswordRequest, CancellationToken cancellationToken);
+    Task VerifyResetPassword(Guid resetPasswordToken, CancellationToken cancellationToken);
+    Task ResetPhoneNumber(Guid idUser, ResetPhoneNumberRequest resetPhoneNumberRequest, CancellationToken cancellationToken);
 }

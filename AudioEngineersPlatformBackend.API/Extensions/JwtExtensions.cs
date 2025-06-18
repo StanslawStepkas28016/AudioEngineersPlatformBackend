@@ -1,5 +1,6 @@
 using System.Text;
-using AudioEngineersPlatformBackend.Application.Util;
+using AudioEngineersPlatformBackend.Application.Util.Cookies;
+using AudioEngineersPlatformBackend.Application.Util.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,39 +12,43 @@ public static class JwtExtensions
         IConfiguration configuration)
     {
         services
-            .AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                var jwtSettings = configuration
-                    .GetSection("JWTSettings")
-                    .Get<JwtSettings>()!;
-
-                options.TokenValidationParameters = new TokenValidationParameters
+            .AddAuthentication
+            (options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
-                };
-
-                options.Events = new JwtBearerEvents
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            )
+            .AddJwtBearer
+            (options =>
                 {
-                    OnMessageReceived = context =>
+                    JwtSettings jwtSettings = configuration
+                        .GetSection(nameof(JwtSettings))
+                        .Get<JwtSettings>()!;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        // Only pulls accessToken from the cookies if it exists
-                        context.Token ??= context.Request.Cookies["accessToken"];
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            // Only pull accessToken from the cookies if it exists
+                            context.Token ??= context.Request.Cookies[nameof(CookieNames.accessToken)];
+                            return Task.CompletedTask;
+                        }
+                    };
+                }
+            );
 
         return services;
     }
@@ -51,10 +56,16 @@ public static class JwtExtensions
     public static IServiceCollection AddRoleAuthorization(this IServiceCollection services)
     {
         services.AddAuthorizationBuilder()
-            .AddPolicy("AdministratorOnly", p =>
-                p.RequireRole("Administrator"))
-            .AddPolicy("Everyone", p =>
-                p.RequireRole("Administrator", "Client", "Audio Engineer"));
+            .AddPolicy
+            (
+                "AdministratorOnly", p =>
+                    p.RequireRole("Administrator")
+            )
+            .AddPolicy
+            (
+                "Everyone", p =>
+                    p.RequireRole("Administrator", "Client", "Audio Engineer")
+            );
 
         return services;
     }

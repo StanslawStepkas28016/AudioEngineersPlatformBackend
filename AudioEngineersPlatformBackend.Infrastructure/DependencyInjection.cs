@@ -1,10 +1,11 @@
 ﻿using Amazon;
+using Amazon.Runtime;
 using Amazon.S3;
+using Amazon.SimpleEmail;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
-using AudioEngineersPlatformBackend.Infrastructure.ExternalServices;
-using AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService;
 using AudioEngineersPlatformBackend.Infrastructure.ExternalServices.S3Service;
+using AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService;
 using AudioEngineersPlatformBackend.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,34 +20,54 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         // Add DbContexts
-        services.AddDbContext<EngineersPlatformDbContext>(options => options
-            .UseSqlServer(configuration.GetConnectionString("DevDB")));
+        services.AddDbContext<EngineersPlatformDbContext>
+        (options => options
+            .UseSqlServer(configuration.GetConnectionString("DevDB"))
+        );
 
         // Add Repositories
         services.AddScoped<IAuthRepository, AuthRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IAdvertRepository, AdvertRepository>();
+        services.AddScoped<IChatRepository, ChatRepository>();
 
-        // Add external Services
-        services.AddScoped<IEmailService, EmailService>();
-        services.Configure<MailtrapSettings>(
-            configuration.GetSection("MailtrapSettings")
-        );
-
-        services.AddScoped<IS3Service, S3Service>();
-        services.Configure<S3Settings>(
-            configuration.GetSection("S3Settings")
-        );
-
-        services.AddSingleton<IAmazonS3>(sp =>
-        {
-            var s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
-            var config = new AmazonS3Config
+        // Add AWS SES
+        services.Configure<SESSettings>(configuration.GetSection(nameof(SESSettings)));
+        services.AddScoped<ISESService, SESService>();
+        services.AddSingleton<IAmazonSimpleEmailService>
+        (sp =>
             {
-                RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
-            };
+                SESSettings sesSettings = sp.GetRequiredService<IOptions<SESSettings>>().Value;
 
-            return new AmazonS3Client(config);
-        });
+                BasicAWSCredentials credentials = new BasicAWSCredentials(sesSettings.AccessKey, sesSettings.SecretKey);
+
+                AmazonSimpleEmailServiceConfig config = new AmazonSimpleEmailServiceConfig()
+                {
+                    RegionEndpoint = RegionEndpoint.GetBySystemName(sesSettings.Region)
+                };
+
+                return new AmazonSimpleEmailServiceClient(credentials, config);
+            }
+        );
+
+        // Add AWS S3
+        services.Configure<S3Settings>(configuration.GetSection(nameof(S3Settings)));
+        services.AddScoped<IS3Service, S3Service>();
+        services.AddSingleton<IAmazonS3>
+        (sp =>
+            {
+                S3Settings s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
+
+                BasicAWSCredentials credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
+
+                AmazonS3Config config = new AmazonS3Config
+                {
+                    RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
+                };
+
+                return new AmazonS3Client(credentials, config);
+            }
+        );
 
         // Add a unit of work
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
