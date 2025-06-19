@@ -68,7 +68,7 @@ public class AdvertRepository : IAdvertRepository
         return entityEntry.Entity;
     }
 
-    public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsWithPagination(string sortOrder, int page,
+    public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsWithPagination(string? sortOrder, int page,
         int pageSize,
         CancellationToken cancellationToken)
     {
@@ -77,11 +77,13 @@ public class AdvertRepository : IAdvertRepository
             .Select(a => new AdvertOverviewDto
             {
                 IdAvert = a.IdAdvert,
+                Title = a.Title,
                 UserFirstName = a.User.FirstName,
                 UserLastName = a.User.LastName,
                 DateCreated = a.AdvertLog.DateCreated,
                 Price = a.Price,
-                CategoryName = a.AdvertCategory.CategoryName
+                CategoryName = a.AdvertCategory.CategoryName,
+                CoverImageKey = a.CoverImageKey
             })
             .AsQueryable();
 
