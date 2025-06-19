@@ -1,6 +1,6 @@
 namespace AudioEngineersPlatformBackend.Contracts.Advert;
 
-public record GetAdvertResponse(
+public record GetAdvertDetailsResponse(
     Guid IdUser,
     Guid IdAdvert,
     string Title,

@@ -82,7 +82,7 @@ public class AdvertService : IAdvertService
         );
     }
 
-    public async Task<GetAdvertResponse> GetUserAdvert(Guid idUser, CancellationToken cancellationToken)
+    public async Task<GetAdvertDetailsResponse> GetUserAdvert(Guid idUser, CancellationToken cancellationToken)
     {
         // Validate the advert ID and its existence
         if (idUser == Guid.Empty)
@@ -101,7 +101,7 @@ public class AdvertService : IAdvertService
         var preSignedUrl = await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
 
         // Map the response to GetAdvertResponse
-        return new GetAdvertResponse(
+        return new GetAdvertDetailsResponse(
             advert.IdUser,
             advert.IdAdvert,
             advert.Title!,
@@ -120,8 +120,18 @@ public class AdvertService : IAdvertService
     public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdverts(string? sortOrder, int page, int pageSize,
         CancellationToken cancellationToken)
     {
+        // Fetch paginated adverts
         var allAdvertsWithPagination =
             await _advertRepository.GetAllAdvertsWithPagination(sortOrder, page, pageSize, cancellationToken);
+
+
+        // Generate presigned URLs for cover images
+        foreach (var advert in allAdvertsWithPagination.Items)
+        {
+            advert.CoverImageUrl =
+                await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
+        }
+
         return allAdvertsWithPagination;
     }
 }
