@@ -2,6 +2,7 @@ using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
+using AudioEngineersPlatformBackend.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.Repositories;
@@ -23,13 +24,13 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(a => a.IdUser == idUser, cancellationToken);
     }
 
-    public async Task<AdvertAssociatedData?> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+    public async Task<AdvertDetailsDto?> GetAdvertAssociatedDataByIdUser(Guid idUser,
         CancellationToken cancellationToken)
     {
         return await _context
             .Adverts
-            .Where(a => a.IdAdvert == idAdvert)
-            .Select(a => new AdvertAssociatedData
+            .Where(a => a.User.IdUser == idUser)
+            .Select(a => new AdvertDetailsDto
             {
                 IdAdvert = a.IdAdvert,
                 IdUser = a.IdUser,
@@ -65,5 +66,42 @@ public class AdvertRepository : IAdvertRepository
     {
         var entityEntry = await _context.AdvertLogs.AddAsync(advertLog, cancellationToken);
         return entityEntry.Entity;
+    }
+
+    public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsWithPagination(string sortOrder, int page,
+        int pageSize,
+        CancellationToken cancellationToken)
+    {
+        var query = _context
+            .Adverts
+            .Select(a => new AdvertOverviewDto
+            {
+                IdAvert = a.IdAdvert,
+                UserFirstName = a.User.FirstName,
+                UserLastName = a.User.LastName,
+                DateCreated = a.AdvertLog.DateCreated,
+                Price = a.Price,
+                CategoryName = a.AdvertCategory.CategoryName
+            })
+            .AsQueryable();
+
+        switch (sortOrder)
+        {
+            case "date_desc":
+                query = query.OrderByDescending(a => a.DateCreated);
+                break;
+            case "price_asc":
+                query = query.OrderBy(a => a.Price);
+                break;
+            case "price_desc":
+                query = query.OrderByDescending(a => a.Price);
+                break;
+            // "date_asc" is the default case
+            default:
+                query = query.OrderBy(a => a.DateCreated);
+                break;
+        }
+
+        return await PagedListDtoExtension.ToPagedListAsync(query, page, pageSize, cancellationToken);
     }
 }
