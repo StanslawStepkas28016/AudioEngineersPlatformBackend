@@ -1,6 +1,6 @@
 namespace AudioEngineersPlatformBackend.Application.Dtos;
 
-public class AdvertAssociatedData
+public class AdvertDetailsDto
 {
     public Guid IdAdvert { get; set; }
     public Guid IdUser { get; set; }

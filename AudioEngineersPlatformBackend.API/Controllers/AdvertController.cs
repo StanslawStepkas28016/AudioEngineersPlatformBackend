@@ -26,21 +26,21 @@ public class AdvertController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet()]
-    public async Task<IActionResult> GetAdvert(Guid idAdvert, CancellationToken cancellationToken)
+    [HttpGet]
+    public async Task<IActionResult> GetUserAdvert(Guid idUser, CancellationToken cancellationToken)
     {
-        var getAdvertResponse = await _advertService.GetAdvert(idAdvert, cancellationToken);
+        var getAdvertResponse = await _advertService.GetUserAdvert(idUser, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
     }
 
     // TODO: Add with pagination and filtering
     [AllowAnonymous]
     [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAdverts(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllAdverts(string? sortOrder, int page, int pageSize,
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException("This method is not implemented yet.");
-        // var getAllAdvertsResponse = await _advertService.GetAllAdverts(cancellationToken);
-        // return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
+        var getAllAdvertsResponse = await _advertService.GetAllAdverts(sortOrder, page, pageSize, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
     }
 
     [Authorize(Roles = "Admin, Audio engineer")]
@@ -57,7 +57,5 @@ public class AdvertController : ControllerBase
         CancellationToken cancellationToken)
     {
         throw new NotImplementedException("This method is not implemented yet.");
-        // var editAdvertResponse = await _advertService.EditAdvert(idAdvert, createAdvertRequest, cancellationToken);
-        // return StatusCode(StatusCodes.Status200OK, editAdvertResponse);
     }
 }

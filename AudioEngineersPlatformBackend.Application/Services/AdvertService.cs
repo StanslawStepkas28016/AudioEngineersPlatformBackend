@@ -1,4 +1,5 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Contracts.Advert;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -81,15 +82,15 @@ public class AdvertService : IAdvertService
         );
     }
 
-    public async Task<GetAdvertResponse> GetAdvert(Guid idAdvert, CancellationToken cancellationToken)
+    public async Task<GetAdvertResponse> GetUserAdvert(Guid idUser, CancellationToken cancellationToken)
     {
         // Validate the advert ID and its existence
-        if (idAdvert == Guid.Empty)
+        if (idUser == Guid.Empty)
         {
-            throw new ArgumentException("Advert ID cannot be empty.", nameof(idAdvert));
+            throw new ArgumentException("Advert ID cannot be empty.", nameof(idUser));
         }
 
-        var advert = await _advertRepository.GetAdvertAssociatedDataByIdAdvert(idAdvert, cancellationToken);
+        var advert = await _advertRepository.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
 
         if (advert == null)
         {
@@ -114,5 +115,13 @@ public class AdvertService : IAdvertService
             advert.DateCreated,
             advert.DateModified
         );
+    }
+
+    public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdverts(string? sortOrder, int page, int pageSize,
+        CancellationToken cancellationToken)
+    {
+        var allAdvertsWithPagination =
+            await _advertRepository.GetAllAdvertsWithPagination(sortOrder, page, pageSize, cancellationToken);
+        return allAdvertsWithPagination;
     }
 }
