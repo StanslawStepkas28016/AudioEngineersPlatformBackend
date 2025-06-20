@@ -82,6 +82,7 @@ public class AuthRepository : IAuthRepository
         return await _context
             .Users
             .Include(u => u.UserLog)
+            .Include(u =>u.Role)
             .FirstOrDefaultAsync(u => u.UserLog.RefreshToken == refreshToken, cancellationToken);
     }
 

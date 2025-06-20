@@ -43,6 +43,21 @@ public class AdvertController : ControllerBase
         return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
     }
 
+    /// <summary>
+    ///     Method used for uploading mock images for testing purposes.
+    /// </summary>
+    /// <param name="coverImageFile"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpPost("mock-image-upload")]
+    public async Task<IActionResult> MockImageUpload(IFormFile coverImageFile,
+        CancellationToken cancellationToken)
+    {
+        var mockImageUploadResponse = await _advertService.MockImageUpload(coverImageFile, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, mockImageUploadResponse);
+    }
+
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpPost("delete/{idAdvert:guid}")]
     public async Task<IActionResult> DeleteAdvert(Guid idAdvert, CreateAdvertRequest createAdvertRequest,

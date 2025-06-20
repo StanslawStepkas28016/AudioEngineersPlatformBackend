@@ -56,7 +56,7 @@ public class AuthService : IAuthService
         }
 
         // Create a User, then hash its password
-        var user = new User(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email,
+        var user = User.Create(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email,
             registerRequest.PhoneNumber, registerRequest.Password, role!.IdRole, userLog.IdUserLog);
 
         user.SetHashedPassword(new PasswordHasher<User>().HashPassword(user, registerRequest.Password));
@@ -97,7 +97,7 @@ public class AuthService : IAuthService
         // If the token is expired inform about deletion of the user
         if (verificationOutcome == VerificationOutcome.VerificationCodeExpired)
         {
-            throw new Exception("Verification code expired, user deleted");
+            throw new Exception("VerificationCode expired, User deleted");
         }
 
         return new VerifyAccountResponse(user!.IdUser);

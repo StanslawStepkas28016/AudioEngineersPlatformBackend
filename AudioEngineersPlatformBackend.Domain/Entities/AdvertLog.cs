@@ -2,17 +2,68 @@ namespace AudioEngineersPlatformBackend.Domain.Entities;
 
 public class AdvertLog
 {
+    // Backing fields
+    private Guid _idAdvertLog;
+    private DateTime _dateCreated;
+    private DateTime? _dateModified;
+    private DateTime? _dateDeleted;
+    private bool _isDeleted;
+    private bool _isActive;
+    private ICollection<Advert> _adverts;
+
     // Properties
-    public Guid IdAdvertLog { get; private set; }
-    public DateTime DateCreated { get; private set; }
-    public DateTime? DateModified { get; private set; }
-    public DateTime? DateDeleted { get; private set; }
-    public bool IsDeleted { get; private set; }
-    public bool IsActive { get; private set; }
+    public Guid IdAdvertLog
+    {
+        get { return _idAdvertLog; }
+        private set
+        {
+            if (value == Guid.Empty)
+            {
+                throw new ArgumentException("IdAdvertLog cannot be empty", nameof(value));
+            }
+
+            _idAdvertLog = value;
+        }
+    }
+
+    public DateTime DateCreated
+    {
+        get { return _dateCreated; }
+        private set { _dateCreated = value; }
+    }
+
+    public DateTime? DateModified
+    {
+        get { return _dateModified; }
+        private set { _dateModified = value; }
+    }
+
+    public DateTime? DateDeleted
+    {
+        get { return _dateDeleted; }
+        private set { _dateDeleted = value; }
+    }
+
+    public bool IsDeleted
+    {
+        get { return _isDeleted; }
+        private set { _isDeleted = value; }
+    }
+
+    public bool IsActive
+    {
+        get { return _isActive; }
+        private set { _isActive = value; }
+    }
 
     // References (Navigation Properties)
-    public ICollection<Advert> Adverts { get; set; }
+    public ICollection<Advert> Adverts
+    {
+        get { return _adverts; }
+        set { _adverts = value; }
+    }
 
+    // Private constructor for EF Core
     private AdvertLog()
     {
     }

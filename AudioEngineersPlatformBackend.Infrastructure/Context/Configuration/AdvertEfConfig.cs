@@ -41,7 +41,7 @@ public class AdvertEfConfig : IEntityTypeConfiguration<Advert>
             .WithMany(a => a.Adverts)
             .HasForeignKey(a => a.IdAdvertCategory)
             .HasConstraintName("FK_Advert_AdvertCategory")
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(a => a.AdvertLog)
