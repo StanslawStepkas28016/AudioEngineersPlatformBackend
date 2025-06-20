@@ -14,4 +14,6 @@ public interface IAdvertService
 
     Task<PagedListDto<AdvertOverviewDto>> GetAllAdverts(string? sortOrder, int page, int pageSize,
         CancellationToken cancellationToken);
+
+    Task<Guid> MockImageUpload(IFormFile coverImageFile, CancellationToken cancellationToken);
 }

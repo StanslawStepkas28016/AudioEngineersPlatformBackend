@@ -10,21 +10,104 @@ public enum VerificationOutcome
 
 public class UserLog
 {
+    // Backing fields
+    private Guid _idUserLog;
+    private DateTime? _dateCreated;
+    private DateTime? _dateDeleted;
+    private bool _isDeleted;
+    private string? _verificationCode;
+    private DateTime? _verificationCodeExpiration;
+    private bool _isVerified;
+    private DateTime? _dateLastLogin;
+    private string? _refreshToken;
+    private DateTime? _refreshTokenExp;
+    private ICollection<User> _users;
+
     // Properties
-    public Guid IdUserLog { get; private set; }
-    public DateTime? DateCreated { get; private set; }
-    public DateTime? DateDeleted { get; private set; }
-    public bool IsDeleted { get; private set; }
-    public string? VerificationCode { get; private set; }
-    public DateTime? VerificationCodeExpiration { get; private set; }
-    public bool IsVerified { get; private set; }
-    public DateTime? DateLastLogin { get; private set; }
-    public string? RefreshToken { get; private set; }
-    public DateTime? RefreshTokenExp { get; private set; }
+    public Guid IdUserLog
+    {
+        get { return _idUserLog; }
+        private set
+        {
+            if (value == Guid.Empty)
+            {
+                throw new ArgumentException("IdUserLog cannot be empty", nameof(value));
+            }
+
+            _idUserLog = value;
+        }
+    }
+
+    public DateTime? DateCreated
+    {
+        get { return _dateCreated; }
+        private set
+        {
+            if (value == null)
+            {
+                throw new ArgumentException("DateCreated cannot be null", nameof(value));
+            }
+
+            _dateCreated = value;
+        }
+    }
+
+    public DateTime? DateDeleted
+    {
+        get { return _dateDeleted; }
+        private set { _dateDeleted = value; }
+    }
+
+    public bool IsDeleted
+    {
+        get { return _isDeleted; }
+        private set { _isDeleted = value; }
+    }
+
+    public string? VerificationCode
+    {
+        get { return _verificationCode; }
+        private set { _verificationCode = value; }
+    }
+
+    public DateTime? VerificationCodeExpiration
+    {
+        get { return _verificationCodeExpiration; }
+        private set { _verificationCodeExpiration = value; }
+    }
+
+    public bool IsVerified
+    {
+        get { return _isVerified; }
+        private set { _isVerified = value; }
+    }
+
+    public DateTime? DateLastLogin
+    {
+        get { return _dateLastLogin; }
+        private set { _dateLastLogin = value; }
+    }
+
+    public string? RefreshToken
+    {
+        get { return _refreshToken; }
+        private set { _refreshToken = value; }
+    }
+
+    public DateTime? RefreshTokenExp
+    {
+        get { return _refreshTokenExp; }
+        private set { _refreshTokenExp = value; }
+    }
 
     // References (Navigation Properties)
-    public ICollection<User> Users { get; private set; }
+    public ICollection<User> Users
+    {
+        get { return _users; }
+        private set { _users = value; }
+    }
 
+    // Private constructor used for EF Core
     private UserLog()
     {
     }
@@ -53,6 +136,11 @@ public class UserLog
         };
     }
 
+    /// <summary>
+    ///     Method used for verifying the user account. It is being invoked when the user
+    ///     provides the correct verification code that was sent to their email.
+    /// </summary>
+    /// <returns></returns>
     public VerificationOutcome VerifyUserAccount()
     {
         if (VerificationCodeExpiration < DateTime.UtcNow)
@@ -71,6 +159,11 @@ public class UserLog
         return VerificationOutcome.Success;
     }
 
+    /// <summary>
+    ///     Method used for checking if the user is deleted or not verified.
+    ///     As the Try... suggests this method will throw an exception based on the user status.
+    /// </summary>
+    /// <exception cref="Exception"></exception>
     public void TryCheckUserStatus()
     {
         if (IsDeleted)
@@ -86,7 +179,7 @@ public class UserLog
 
     /// <summary>
     ///     Method used for setting login associated data.
-    ///     This method should be called after successful login.
+    ///     This method should be called when the user provides correct credentials.
     /// </summary>
     /// <param name="refreshToken"></param>
     /// <param name="refreshTokenExp"></param>
@@ -106,5 +199,20 @@ public class UserLog
         RefreshToken = refreshToken;
         RefreshTokenExp = refreshTokenExp;
         DateLastLogin = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    ///     Method used for setting the IdUserLog for seeding purposes ONLY.
+    /// </summary>
+    /// <param name="idUserLog"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void SetIdUserLogForSeeding(Guid idUserLog)
+    {
+        if (idUserLog == Guid.Empty)
+        {
+            throw new ArgumentException("IdUserLog cannot be empty", nameof(idUserLog));
+        }
+
+        IdUserLog = idUserLog;
     }
 }

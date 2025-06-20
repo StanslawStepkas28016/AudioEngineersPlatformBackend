@@ -2,34 +2,87 @@ namespace AudioEngineersPlatformBackend.Domain.Entities;
 
 public class Role
 {
-    // Properties
-    public Guid IdRole { get; private set; }
-    public string RoleName { get; private set; }
-    
-    // References (Navigation Properties)
-    public ICollection<User> Users { get; private set; }
+    // Backing fields
+    private Guid _idRole;
+    private string _roleName;
+    private ICollection<User> _users;
 
     // Constants
     private const int RoleNameMinLength = 3;
 
+    // Properties
+    public Guid IdRole
+    {
+        get { return _idRole; }
+        private set
+        {
+            if (value == Guid.Empty)
+            {
+                throw new ArgumentException($"{nameof(IdRole)} cannot be empty)");
+            }
+
+            _idRole = value;
+        }
+    }
+
+    public string RoleName
+    {
+        get { return _roleName; }
+        private set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException($"{nameof(RoleName)} cannot be empty");
+            }
+
+            if (value.Length < RoleNameMinLength)
+            {
+                throw new ArgumentException(
+                    $"You must provide at least {RoleNameMinLength} characters for {nameof(RoleName)}");
+            }
+
+            _roleName = value;
+        }
+    }
+
+    // References (Navigation Properties)
+    public ICollection<User> Users
+    {
+        get { return _users; }
+        private set { _users = value; }
+    }
+
+    // Private constructor for EF Core
     private Role()
     {
     }
 
-    public Role(string roleName)
+    /// <summary>
+    ///     Factory method to create a new Role.
+    /// </summary>
+    /// <param name="roleName"></param>
+    /// <returns></returns>
+    public static Role Create(string roleName)
     {
-        if (string.IsNullOrWhiteSpace(roleName))
+        return new Role
         {
-            throw new ArgumentException("You must provide a roleName", nameof(roleName));
+            IdRole = Guid.NewGuid(),
+            RoleName = roleName,
+        };
+    }
+
+    /// <summary>
+    ///     Method used to set the IdRole for seeding purposes ONLY.
+    /// </summary>
+    /// <param name="idRole"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void SetIdRoleForSeeding(Guid idRole)
+    {
+        if (idRole == Guid.Empty)
+        {
+            throw new ArgumentException($"{nameof(idRole)} cannot be empty");
         }
 
-        if (roleName.Length < RoleNameMinLength)
-        {
-            throw new ArgumentException("You must provide at least " + RoleNameMinLength + " characters for rolename" +
-                                        nameof(roleName));
-        }
-
-        IdRole = Guid.NewGuid();
-        RoleName = roleName;
+        IdRole = idRole;
     }
 }

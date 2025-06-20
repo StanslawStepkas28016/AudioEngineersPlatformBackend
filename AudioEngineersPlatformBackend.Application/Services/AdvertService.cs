@@ -58,7 +58,7 @@ public class AdvertService : IAdvertService
         var imageKey = await _s3Service.TryUploadFileAsync(createAdvertRequest.CoverImageFile, cancellationToken);
 
         // Create a new Advert entity
-        var advert = new Advert(
+        var advert = Advert.Create(
             createAdvertRequest.Title,
             createAdvertRequest.Description,
             imageKey,
@@ -133,5 +133,11 @@ public class AdvertService : IAdvertService
         }
 
         return allAdvertsWithPagination;
+    }
+
+    public async Task<Guid> MockImageUpload(IFormFile coverImageFile, CancellationToken cancellationToken)
+    {
+        var key = await _s3Service.TryUploadFileAsync(coverImageFile, cancellationToken);
+        return key;
     }
 }
