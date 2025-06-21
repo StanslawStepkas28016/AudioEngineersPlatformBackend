@@ -43,7 +43,11 @@ public class AdvertCategory
         set { _adverts = value; }
     }
 
-    // Factory method to create a new AdvertCategory
+    /// <summary>
+    ///     Factory method to create a new AdvertCategory.
+    /// </summary>
+    /// <param name="categoryName"></param>
+    /// <returns></returns>
     public static AdvertCategory Create(string categoryName)
     {
         return new AdvertCategory
@@ -54,17 +58,18 @@ public class AdvertCategory
     }
 
     /// <summary>
-    ///     Method to set the IdAdvertCategory for seeding purposes ONLY.
+    ///     Factory method to create a new AdvertCategory with specific IdAdvertCategory.
+    ///     Used for seeding.
     /// </summary>
     /// <param name="idAdvertCategory"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetIdAdvertCategoryForSeeding(Guid idAdvertCategory)
+    /// <param name="categoryName"></param>
+    /// <returns></returns>
+    public static AdvertCategory CreateWithId(Guid idAdvertCategory, string categoryName)
     {
-        if (idAdvertCategory == Guid.Empty)
+        return new AdvertCategory
         {
-            throw new ArgumentException("IdAdvertCategory cannot be empty.", nameof(idAdvertCategory));
-        }
-
-        IdAdvertCategory = idAdvertCategory;
+            IdAdvertCategory = idAdvertCategory,
+            CategoryName = categoryName,
+        };
     }
 }

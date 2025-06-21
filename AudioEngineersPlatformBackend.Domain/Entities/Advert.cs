@@ -226,17 +226,41 @@ public class Advert
     }
 
     /// <summary>
-    ///     Method used for setting the IdAdvert for seeding purposes ONLY.
+    ///     Factory method used for creating a new Advert with a specific IdAdvert.
+    ///     Used for seeding purposes.
     /// </summary>
     /// <param name="idAdvert"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetIdAdvertForSeeding(Guid idAdvert)
+    /// <param name="title"></param>
+    /// <param name="description"></param>
+    /// <param name="coverImageKey"></param>
+    /// <param name="portfolioUrl"></param>
+    /// <param name="price"></param>
+    /// <param name="idUser"></param>
+    /// <param name="idAdvertCategory"></param>
+    /// <param name="idAdvertLog"></param>
+    /// <returns></returns>
+    public static Advert CreateWithId(
+        Guid idAdvert,
+        string title,
+        string description,
+        Guid coverImageKey,
+        string portfolioUrl,
+        double price,
+        Guid idUser,
+        Guid idAdvertCategory,
+        Guid idAdvertLog)
     {
-        if (idAdvert == Guid.Empty)
+        return new Advert
         {
-            throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
-        }
-
-        _idAdvert = idAdvert;
+            IdAdvert = idAdvert,
+            Title = title,
+            Description = description,
+            CoverImageKey = coverImageKey,
+            PortfolioUrl = portfolioUrl,
+            Price = price,
+            IdUser = idUser,
+            IdAdvertCategory = idAdvertCategory,
+            IdAdvertLog = idAdvertLog,
+        };
     }
 }

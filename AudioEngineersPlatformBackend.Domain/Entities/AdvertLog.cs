@@ -87,4 +87,23 @@ public class AdvertLog
             IsActive = true,
         };
     }
+
+    /// <summary>
+    ///     Method for creating a new AdvertLog with a provided idAdvertLog.
+    ///     Used for seeding data.
+    /// </summary>
+    /// <param name="idAdvertLog"></param>
+    /// <returns></returns>
+    public static AdvertLog CreateWithId(Guid idAdvertLog)
+    {
+        return new AdvertLog
+        {
+            IdAdvertLog = idAdvertLog,
+            DateCreated = DateTime.UtcNow,
+            DateModified = null,
+            DateDeleted = null,
+            IsDeleted = false,
+            IsActive = true,
+        };
+    }
 }
