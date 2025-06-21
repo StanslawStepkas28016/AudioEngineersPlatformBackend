@@ -140,6 +140,24 @@ public class User
     }
 
     /// <summary>
+    ///     Method used for setting the hashed password for the user, as hashing a password is not a
+    ///     domain responsibility but rather the application layer's responsibility. This method is provided
+    ///     since the Password has a private setter, and it is not possible to set it directly.
+    /// </summary>
+    /// <param name="password"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void SetHashedPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException("Password cannot be empty", nameof(password));
+        }
+
+        Password = password;
+    }
+
+
+    /// <summary>
     ///     Factory method to create a new User.
     /// </summary>
     /// <param name="firstName"></param>
@@ -167,34 +185,31 @@ public class User
     }
 
     /// <summary>
-    ///     Method used for setting the hashed password for the user, as hashing a password is not a
-    ///     domain responsibility but rather the application layer's responsibility. This method is provided
-    ///     since the Password has a private setter, and it is not possible to set it directly.
-    /// </summary>
-    /// <param name="password"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetHashedPassword(string password)
-    {
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            throw new ArgumentException("Password cannot be empty", nameof(password));
-        }
-
-        Password = password;
-    }
-
-    /// <summary>
-    ///     Method used for setting the IdUser for seeding purposes ONLY.
+    ///     Factory method to create a new User with a specific IdUser.
+    ///     Used for seeding purposes.
     /// </summary>
     /// <param name="idUser"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetIdUserForSeeding(Guid idUser)
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="email"></param>
+    /// <param name="phoneNumber"></param>
+    /// <param name="password"></param>
+    /// <param name="idRole"></param>
+    /// <param name="idUserLog"></param>
+    /// <returns></returns>
+    public static User CreateWithId(Guid idUser, string firstName, string lastName, string email, string phoneNumber,
+        string password, Guid idRole, Guid idUserLog)
     {
-        if (idUser == Guid.Empty)
+        return new User
         {
-            throw new ArgumentException("IdUser cannot be empty", nameof(idUser));
-        }
-
-        IdUser = idUser;
+            IdUser = idUser,
+            FirstName = firstName,
+            LastName = lastName,
+            Email = email,
+            PhoneNumber = phoneNumber,
+            Password = password,
+            IdRole = idRole,
+            IdUserLog = idUserLog,
+        };
     }
 }

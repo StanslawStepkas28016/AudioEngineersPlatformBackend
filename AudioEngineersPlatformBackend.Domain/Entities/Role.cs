@@ -72,17 +72,18 @@ public class Role
     }
 
     /// <summary>
-    ///     Method used to set the IdRole for seeding purposes ONLY.
+    ///     Factory method to create a new Role with a specific IdRole.
+    ///     Used for seeding.
     /// </summary>
     /// <param name="idRole"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetIdRoleForSeeding(Guid idRole)
+    /// <param name="roleName"></param>
+    /// <returns></returns>
+    public static Role CreateWithId(Guid idRole, string roleName)
     {
-        if (idRole == Guid.Empty)
+        return new Role
         {
-            throw new ArgumentException($"{nameof(idRole)} cannot be empty");
-        }
-
-        IdRole = idRole;
+            IdRole = idRole,
+            RoleName = roleName,
+        };
     }
 }

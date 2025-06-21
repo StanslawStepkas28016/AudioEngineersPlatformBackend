@@ -111,31 +111,7 @@ public class UserLog
     private UserLog()
     {
     }
-
-    /// <summary>
-    ///     Factory method for creating a new UserLog instance.
-    ///     This method initializes the UserLog with default values.
-    ///     It is there because EF.Core requires a parameterless constructor for entity classes,
-    ///     thus it is not possible to utilize a parameterless constructor for UserLog creation.
-    /// </summary>
-    /// <returns></returns>
-    public static UserLog Create()
-    {
-        return new UserLog
-        {
-            IdUserLog = Guid.NewGuid(),
-            DateCreated = DateTime.UtcNow,
-            DateDeleted = null,
-            IsDeleted = false,
-            VerificationCode = RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6"),
-            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
-            IsVerified = false,
-            DateLastLogin = null,
-            RefreshToken = null,
-            RefreshTokenExp = null,
-        };
-    }
-
+    
     /// <summary>
     ///     Method used for verifying the user account. It is being invoked when the user
     ///     provides the correct verification code that was sent to their email.
@@ -202,17 +178,49 @@ public class UserLog
     }
 
     /// <summary>
-    ///     Method used for setting the IdUserLog for seeding purposes ONLY.
+    ///     Factory method for creating a new UserLog instance.
+    ///     This method initializes the UserLog with default values.
+    ///     It is there because EF.Core requires a parameterless constructor for entity classes,
+    ///     thus it is not possible to utilize a parameterless constructor for UserLog creation.
+    /// </summary>
+    /// <returns></returns>
+    public static UserLog Create()
+    {
+        return new UserLog
+        {
+            IdUserLog = Guid.NewGuid(),
+            DateCreated = DateTime.UtcNow,
+            DateDeleted = null,
+            IsDeleted = false,
+            VerificationCode = RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6"),
+            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
+            IsVerified = false,
+            DateLastLogin = null,
+            RefreshToken = null,
+            RefreshTokenExp = null,
+        };
+    }
+
+    /// <summary>
+    ///     Factory method for creating a new UserLog with a provided idUserLog.
+    ///     Used for seeding.
     /// </summary>
     /// <param name="idUserLog"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetIdUserLogForSeeding(Guid idUserLog)
+    /// <returns></returns>
+    public static UserLog CreateWithId(Guid idUserLog)
     {
-        if (idUserLog == Guid.Empty)
+        return new UserLog
         {
-            throw new ArgumentException("IdUserLog cannot be empty", nameof(idUserLog));
-        }
-
-        IdUserLog = idUserLog;
+            IdUserLog = idUserLog,
+            DateCreated = DateTime.UtcNow,
+            DateDeleted = null,
+            IsDeleted = false,
+            VerificationCode = RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6"),
+            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
+            IsVerified = false,
+            DateLastLogin = null,
+            RefreshToken = null,
+            RefreshTokenExp = null,
+        };
     }
 }
