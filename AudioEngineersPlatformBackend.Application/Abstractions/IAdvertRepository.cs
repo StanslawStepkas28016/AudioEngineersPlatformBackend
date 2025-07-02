@@ -12,5 +12,5 @@ public interface IAdvertRepository
     Task<AdvertLog> AddAdvertLog(AdvertLog advertLog, CancellationToken cancellationToken);
 
     Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsWithPagination(string? sortOrder, int page, int pageSize,
-        CancellationToken cancellationToken);
+        string? searchTerm, CancellationToken cancellationToken);
 }

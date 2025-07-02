@@ -12,7 +12,7 @@ public interface IAdvertService
     Task<GetAdvertDetailsResponse> GetUserAdvert(Guid idUser,
         CancellationToken cancellationToken);
 
-    Task<PagedListDto<AdvertOverviewDto>> GetAllAdverts(string? sortOrder, int page, int pageSize,
+    Task<PagedListDto<AdvertOverviewDto>> GetAllAdverts(string? sortOrder, int page, int pageSize, string? searchTerm,
         CancellationToken cancellationToken);
 
     Task<Guid> MockImageUpload(IFormFile coverImageFile, CancellationToken cancellationToken);

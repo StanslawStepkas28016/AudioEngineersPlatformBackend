@@ -69,8 +69,7 @@ public class AdvertRepository : IAdvertRepository
     }
 
     public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsWithPagination(string? sortOrder, int page,
-        int pageSize,
-        CancellationToken cancellationToken)
+        int pageSize, string? searchTerm, CancellationToken cancellationToken)
     {
         var query = _context
             .Adverts
@@ -78,14 +77,21 @@ public class AdvertRepository : IAdvertRepository
             {
                 IdAvert = a.IdAdvert,
                 Title = a.Title,
+                IdUser = a.IdUser,
                 UserFirstName = a.User.FirstName,
                 UserLastName = a.User.LastName,
                 DateCreated = a.AdvertLog.DateCreated,
                 Price = a.Price,
                 CategoryName = a.AdvertCategory.CategoryName,
-                CoverImageKey = a.CoverImageKey
+                CoverImageKey = a.CoverImageKey,
+                Description = a.Description
             })
             .AsQueryable();
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            query = query.Where(a => a.Description!.Contains(searchTerm.ToLower()));
+        }
 
         switch (sortOrder)
         {
