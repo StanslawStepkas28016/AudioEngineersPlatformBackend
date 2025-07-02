@@ -4,6 +4,7 @@ public class AdvertOverviewDto
 {
     public Guid IdAvert { get; set; }
     public string? Title { get; set; }
+    public Guid IdUser { get; set; }
     public string? UserFirstName { get; set; }
     public string? UserLastName { get; set; }
     public DateTime DateCreated { get; set; }
@@ -11,4 +12,5 @@ public class AdvertOverviewDto
     public string? CategoryName { get; set; }
     public Guid CoverImageKey { get; set; }
     public string? CoverImageUrl { get; set; }
+    public string? Description { get; set; }
 }

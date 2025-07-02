@@ -118,11 +118,12 @@ public class AdvertService : IAdvertService
     }
 
     public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdverts(string? sortOrder, int page, int pageSize,
+        string? searchTerm,
         CancellationToken cancellationToken)
     {
         // Fetch paginated adverts
         var allAdvertsWithPagination =
-            await _advertRepository.GetAllAdvertsWithPagination(sortOrder, page, pageSize, cancellationToken);
+            await _advertRepository.GetAllAdvertsWithPagination(sortOrder, page, pageSize, searchTerm,cancellationToken);
 
 
         // Generate presigned URLs for cover images

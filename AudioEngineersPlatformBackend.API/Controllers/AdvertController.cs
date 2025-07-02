@@ -33,13 +33,13 @@ public class AdvertController : ControllerBase
         return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
     }
 
-    // TODO: Add with pagination and filtering
     [AllowAnonymous]
     [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAdverts(string? sortOrder, int page, int pageSize,
+    public async Task<IActionResult> GetAllAdverts(string? sortOrder, int page, int pageSize, string? searchTerm,
         CancellationToken cancellationToken)
     {
-        var getAllAdvertsResponse = await _advertService.GetAllAdverts(sortOrder, page, pageSize, cancellationToken);
+        var getAllAdvertsResponse =
+            await _advertService.GetAllAdverts(sortOrder, page, pageSize, searchTerm, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
     }
 
