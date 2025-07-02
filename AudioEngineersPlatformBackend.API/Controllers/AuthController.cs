@@ -45,7 +45,6 @@ public class AuthController : ControllerBase
         return StatusCode(StatusCodes.Status202Accepted, loginResponse);
     }
 
-    // TODO Można odświeżać w front'endzie co 10 minut, zamiast robić query intercepting, rozwiązanie trochę na chama
     [AllowAnonymous]
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken(
