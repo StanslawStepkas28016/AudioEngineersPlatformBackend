@@ -29,7 +29,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         var createAdvertResponse = await advertService.CreateAdvert(createAdvertRequest, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, createAdvertResponse);
     }
-
+    
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpPatch("{idAdvert:guid}")]
     public async Task<IActionResult> EditAdvert(Guid idAdvert, EditAdvertRequest editAdvertRequest,
@@ -40,7 +40,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     }
 
     /// <summary>
-    ///     Method for soft-deleting an advert.
+    ///     Method used for soft-deleting an advert.
     /// </summary>
     /// <param name="idAdvert"></param>
     /// <param name="cancellationToken"></param>
@@ -54,19 +54,35 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
+    /// <summary>
+    ///     Method used for fetching an advert associated with a specific idUser assigned.
+    /// </summary>
+    /// <param name="idUser"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [AllowAnonymous]
-    [HttpGet]
-    public async Task<IActionResult> GetUserAdvert(Guid idUser, CancellationToken cancellationToken)
+    [HttpGet("by-id-user/{idUser:guid}")]
+    public async Task<IActionResult> GetAdvertAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken)
     {
-        var getAdvertResponse = await advertService.GetUserAdvert(idUser, cancellationToken);
+        var getAdvertResponse = await advertService.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
     }
 
-    // TODO: Implement the method to get advert details by idAdvert.
-    // public async Task<IActionResult> GetAdvertById(Guid idAdvert, CancellationToken cancellationToken)
-    // {
-    //     throw new NotImplementedException("This method is not implemented yet.");
-    // }
+    /// <summary>
+    ///     Method used for fetching an advert associated with a specific idAdvert assigned.
+    /// </summary>
+    /// <param name="idAdvert"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpGet("by-id-advert/{idAdvert:guid}")]
+    public async Task<IActionResult> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+        CancellationToken cancellationToken)
+    {
+        var getAdvertResponse =
+            await advertService.GetAdvertAssociatedDataByIdAdvert(idAdvert, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
+    }
 
     /// <summary>
     ///     Endpoint for getting all adverts with pagination and optional search functionality.
@@ -79,11 +95,12 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <returns></returns>
     [AllowAnonymous]
     [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAdverts(string? sortOrder, int page, int pageSize, string? searchTerm,
+    public async Task<IActionResult> GetAllAdvertsSummaries(string? sortOrder, int page, int pageSize,
+        string? searchTerm,
         CancellationToken cancellationToken)
     {
         var getAllAdvertsResponse =
-            await advertService.GetAllAdverts(sortOrder, page, pageSize, searchTerm, cancellationToken);
+            await advertService.GetAllAdvertsSummaries(sortOrder, page, pageSize, searchTerm, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
     }
 

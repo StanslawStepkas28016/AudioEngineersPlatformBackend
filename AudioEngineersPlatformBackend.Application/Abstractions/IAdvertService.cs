@@ -17,10 +17,13 @@ public interface IAdvertService
 
     Task DeleteAdvert(Guid idAdvert, CancellationToken cancellationToken);
 
-    Task<GetAdvertDetailsResponse> GetUserAdvert(Guid idUser,
+    Task<GetAdvertDetailsResponse> GetAdvertAssociatedDataByIdUser(Guid idUser,
         CancellationToken cancellationToken);
 
-    Task<PagedListDto<AdvertOverviewDto>> GetAllAdverts(string? sortOrder, int page, int pageSize, string? searchTerm,
+    Task<GetAdvertDetailsResponse> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+        CancellationToken cancellationToken);
+    
+    Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsSummaries(string? sortOrder, int page, int pageSize, string? searchTerm,
         CancellationToken cancellationToken);
 
     Task<Guid> MockImageUpload(IFormFile coverImageFile, CancellationToken cancellationToken);

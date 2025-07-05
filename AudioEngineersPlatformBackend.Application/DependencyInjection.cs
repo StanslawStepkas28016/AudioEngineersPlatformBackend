@@ -28,6 +28,9 @@ public static class DependencyInjection
         );
         services.AddScoped<ITokenUtil, TokenUtil>();
 
+        // Add services for current user
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
         return services;
     }
 }

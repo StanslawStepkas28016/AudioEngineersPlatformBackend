@@ -200,9 +200,16 @@ public class AuthService : IAuthService
 
     public async Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default)
     {
+        // Validate the idUser
+        if (idUser == Guid.Empty)
+        {
+            throw new ArgumentException("Provided idUser is empty");
+        }
+
         var userAssociatedData = await _authRepository.GetUserAssociatedDataByIdUser(idUser, cancellationToken);
 
-        // This should never happen, but just in case
+        // This should never happen, since the idUser is being pulled from the JWT token that resides
+        // in an attached cookie, but just in case
         if (userAssociatedData == null)
         {
             throw new ArgumentException("User does not exist", nameof(idUser));

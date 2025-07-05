@@ -25,12 +25,11 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<AdvertLog?> GetAdvertLogByIdAdvert(Guid idAdvert, CancellationToken cancellationToken)
+    public async Task<Advert?> GetAdvertAndAdvertLogByIdAdvert(Guid idAdvert, CancellationToken cancellationToken)
     {
         return await _context
             .Adverts
-            .Where(a => a.IdAdvert == idAdvert)
-            .Select(a => a.AdvertLog)
+            .Include(a => a.AdvertLog)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -48,6 +47,30 @@ public class AdvertRepository : IAdvertRepository
         return await _context
             .Adverts
             .Where(a => a.User.IdUser == idUser)
+            .Select(a => new AdvertDetailsDto
+            {
+                IdAdvert = a.IdAdvert,
+                IdUser = a.IdUser,
+                UserFirstName = a.User.FirstName,
+                UserLastName = a.User.LastName,
+                Title = a.Title,
+                Description = a.Description,
+                Price = a.Price,
+                CategoryName = a.AdvertCategory.CategoryName,
+                CoverImageKey = a.CoverImageKey,
+                PortfolioUrl = a.PortfolioUrl,
+                DateCreated = a.AdvertLog.DateCreated,
+                DateModified = a.AdvertLog.DateModified
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<AdvertDetailsDto?> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .Adverts
+            .Where(a => a.IdAdvert == idAdvert)
             .Select(a => new AdvertDetailsDto
             {
                 IdAdvert = a.IdAdvert,
@@ -86,7 +109,7 @@ public class AdvertRepository : IAdvertRepository
         return entityEntry.Entity;
     }
 
-    public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsWithPagination(string? sortOrder, int page,
+    public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsSummariesWithPagination(string? sortOrder, int page,
         int pageSize, string? searchTerm, CancellationToken cancellationToken)
     {
         var query = _context
