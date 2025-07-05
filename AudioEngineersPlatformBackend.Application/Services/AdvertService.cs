@@ -1,6 +1,9 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Contracts.Advert;
+using AudioEngineersPlatformBackend.Contracts.Advert.Create;
+using AudioEngineersPlatformBackend.Contracts.Advert.Edit;
+using AudioEngineersPlatformBackend.Contracts.Advert.Get;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
@@ -82,6 +85,45 @@ public class AdvertService : IAdvertService
         );
     }
 
+    public async Task EditAdvert(Guid idAdvert, EditAdvertRequest editAdvertRequest,
+        CancellationToken cancellationToken)
+    {
+        if (idAdvert == Guid.Empty)
+        {
+            throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
+        }
+
+        var advertByIdAdvert = await _advertRepository.GetAdvertByIdAdvert(idAdvert, cancellationToken);
+
+        if (advertByIdAdvert == null)
+        {
+            throw new Exception("Advert not found.");
+        }
+
+        advertByIdAdvert.PartialUpdate(
+            editAdvertRequest.Title,
+            editAdvertRequest.Description,
+            editAdvertRequest.PortfolioUrl,
+            editAdvertRequest.Price
+        );
+        
+        // await _unitOfWork.CompleteAsync(cancellationToken);
+    }
+
+    public async Task DeleteAdvert(Guid idAdvert, CancellationToken cancellationToken)
+    {
+        var advertLogByIdAdvert = await _advertRepository.GetAdvertLogByIdAdvert(idAdvert, cancellationToken);
+
+        if (advertLogByIdAdvert == null)
+        {
+            throw new Exception("Advert with the provided idAdvert was not found.");
+        }
+
+        advertLogByIdAdvert.MarkAsDeleted();
+
+        await _unitOfWork.CompleteAsync(cancellationToken);
+    }
+
     public async Task<GetAdvertDetailsResponse> GetUserAdvert(Guid idUser, CancellationToken cancellationToken)
     {
         // Validate the advert ID and its existence
@@ -123,7 +165,8 @@ public class AdvertService : IAdvertService
     {
         // Fetch paginated adverts
         var allAdvertsWithPagination =
-            await _advertRepository.GetAllAdvertsWithPagination(sortOrder, page, pageSize, searchTerm,cancellationToken);
+            await _advertRepository.GetAllAdvertsWithPagination(sortOrder, page, pageSize, searchTerm,
+                cancellationToken);
 
 
         // Generate presigned URLs for cover images

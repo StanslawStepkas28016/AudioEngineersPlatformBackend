@@ -20,6 +20,7 @@ public class AuthRepository : IAuthRepository
     {
         return await _context
             .Users
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
@@ -27,12 +28,16 @@ public class AuthRepository : IAuthRepository
     {
         return await _context
             .Users
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
     }
 
     public async Task<Role?> FindRoleByName(string roleName, CancellationToken cancellationToken)
     {
-        return await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == roleName,
+        return await _context
+            .Roles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.RoleName == roleName,
             cancellationToken);
     }
 
@@ -82,11 +87,12 @@ public class AuthRepository : IAuthRepository
         return await _context
             .Users
             .Include(u => u.UserLog)
-            .Include(u =>u.Role)
+            .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.UserLog.RefreshToken == refreshToken, cancellationToken);
     }
 
-    public async Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken)
+    public async Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUser(Guid idUser,
+        CancellationToken cancellationToken)
     {
         return await _context
             .Users

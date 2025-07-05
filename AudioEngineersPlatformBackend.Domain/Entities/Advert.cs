@@ -123,7 +123,7 @@ public class Advert
         }
     }
 
-    // References (Foreign Keys)
+    // References 
     public Guid IdUser
     {
         get { return _idUser; }
@@ -183,6 +183,8 @@ public class Advert
         get { return _advertLog; }
         private set { _advertLog = value; }
     }
+
+    public ICollection<Review> Reviews { get; set; }
 
     // Private constructor used for EF Core
     private Advert()
@@ -262,5 +264,32 @@ public class Advert
             IdAdvertCategory = idAdvertCategory,
             IdAdvertLog = idAdvertLog,
         };
+    }
+
+    public void PartialUpdate(
+        string? title,
+        string? description,
+        string? portfolioUrl,
+        double? price)
+    {
+        if (title != null)
+        {
+            Title = title;
+        }
+
+        if (description != null)
+        {
+            Description = description;
+        }
+
+        if (portfolioUrl != null)
+        {
+            PortfolioUrl = portfolioUrl;
+        }
+
+        if (price.HasValue)
+        {
+            Price = price.Value;
+        }
     }
 }

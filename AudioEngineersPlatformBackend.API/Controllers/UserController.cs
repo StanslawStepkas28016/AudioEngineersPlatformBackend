@@ -6,13 +6,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/user")]
-public class UserController : ControllerBase
+public class UserController(IUserService userService) : ControllerBase
 {
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
+    private readonly IUserService _userService = userService;
 }

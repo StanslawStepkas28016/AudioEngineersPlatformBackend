@@ -56,7 +56,7 @@ public class AdvertLog
         private set { _isActive = value; }
     }
 
-    // References (Navigation Properties)
+    // References
     public ICollection<Advert> Adverts
     {
         get { return _adverts; }
@@ -105,5 +105,24 @@ public class AdvertLog
             IsDeleted = false,
             IsActive = true,
         };
+    }
+
+    public void MarkAsDeleted()
+    {
+        if (IsDeleted || !IsActive || DateDeleted.HasValue)
+        {
+            throw new ArgumentException("Advert is already deleted.");
+        }
+
+        IsDeleted = true;
+        DateDeleted = DateTime.UtcNow;
+        IsActive = false;
+    }
+
+    public void UndoMarkAsDeleted()
+    {
+        IsDeleted = false;
+        DateDeleted = null;
+        IsActive = true;
     }
 }

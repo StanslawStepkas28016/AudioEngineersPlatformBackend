@@ -10,21 +10,14 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController : ControllerBase
+public class AuthController(IAuthService authService) : ControllerBase
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(IAuthService authService)
-    {
-        _authService = authService;
-    }
-
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest,
         CancellationToken cancellationToken)
     {
-        var registerResponse = await _authService.Register(registerRequest, cancellationToken);
+        var registerResponse = await authService.Register(registerRequest, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, registerResponse);
     }
 
@@ -33,7 +26,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> VerifyAccount([FromBody] VerifyAccountRequest verifyAccountRequest,
         CancellationToken cancellationToken)
     {
-        var verifyAccountResponse = await _authService.VerifyAccount(verifyAccountRequest, cancellationToken);
+        var verifyAccountResponse = await authService.VerifyAccount(verifyAccountRequest, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, verifyAccountResponse);
     }
 
@@ -41,7 +34,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
     {
-        var loginResponse = await _authService.Login(loginRequest, cancellationToken);
+        var loginResponse = await authService.Login(loginRequest, cancellationToken);
         return StatusCode(StatusCodes.Status202Accepted, loginResponse);
     }
 
@@ -50,7 +43,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> RefreshToken(
         CancellationToken cancellationToken)
     {
-        var refreshTokenResponse = await _authService.RefreshToken(cancellationToken);
+        var refreshTokenResponse = await authService.RefreshToken(cancellationToken);
         return StatusCode(StatusCodes.Status202Accepted, refreshTokenResponse);
     }
 
@@ -58,7 +51,7 @@ public class AuthController : ControllerBase
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
-        await _authService.Logout();
+        await authService.Logout();
         return StatusCode(StatusCodes.Status200OK);
     }
 
@@ -70,11 +63,12 @@ public class AuthController : ControllerBase
         var idUser = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         // Call the service to check get the user associated data
-        var checkAuthResponse = await _authService.CheckAuth(idUser, cancellationToken);
+        var checkAuthResponse = await authService.CheckAuth(idUser, cancellationToken);
 
         return StatusCode(StatusCodes.Status200OK, checkAuthResponse);
     }
 
+    // TODO: Implement the method to change a password by sending an e-mail with instructions.
     [AllowAnonymous]
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword()

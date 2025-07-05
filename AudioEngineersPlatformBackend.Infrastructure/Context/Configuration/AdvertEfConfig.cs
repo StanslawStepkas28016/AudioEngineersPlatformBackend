@@ -57,7 +57,6 @@ public class AdvertEfConfig : IEntityTypeConfiguration<Advert>
             .HasConstraintName("FK_Advert_User")
             .OnDelete(DeleteBehavior.Restrict);
 
-
         builder
             .ToTable("Advert");
     }

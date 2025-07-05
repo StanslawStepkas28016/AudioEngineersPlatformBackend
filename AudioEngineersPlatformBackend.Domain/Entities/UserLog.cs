@@ -100,7 +100,7 @@ public class UserLog
         private set { _refreshTokenExp = value; }
     }
 
-    // References (Navigation Properties)
+    // References
     public ICollection<User> Users
     {
         get { return _users; }

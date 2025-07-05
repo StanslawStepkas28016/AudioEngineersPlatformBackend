@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace AudioEngineersPlatformBackend.Contracts.Advert;
+namespace AudioEngineersPlatformBackend.Contracts.Advert.Create;
 
 public record CreateAdvertRequest(
     Guid IdUser,

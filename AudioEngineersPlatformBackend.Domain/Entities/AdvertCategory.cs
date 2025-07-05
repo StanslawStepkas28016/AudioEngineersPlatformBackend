@@ -36,7 +36,7 @@ public class AdvertCategory
         }
     }
 
-    // References (Navigation Properties)
+    // References
     public ICollection<Advert> Adverts
     {
         get { return _adverts; }
