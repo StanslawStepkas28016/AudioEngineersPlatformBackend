@@ -21,7 +21,25 @@ public class AdvertRepository : IAdvertRepository
     {
         return await _context
             .Adverts
-            .FirstOrDefaultAsync(a => a.IdUser == idUser, cancellationToken);
+            .Where(a => a.IdUser == idUser)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<AdvertLog?> GetAdvertLogByIdAdvert(Guid idAdvert, CancellationToken cancellationToken)
+    {
+        return await _context
+            .Adverts
+            .Where(a => a.IdAdvert == idAdvert)
+            .Select(a => a.AdvertLog)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<Advert?> GetAdvertByIdAdvert(Guid idAdvert, CancellationToken cancellationToken)
+    {
+        return await _context
+            .Adverts
+            .Where(a => a.IdAdvert == idAdvert)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<AdvertDetailsDto?> GetAdvertAssociatedDataByIdUser(Guid idUser,

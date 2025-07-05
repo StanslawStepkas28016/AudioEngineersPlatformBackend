@@ -15,7 +15,6 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task CompleteAsync(CancellationToken cancellationToken)
     {
-
         try
         {
             await _context.SaveChangesAsync(cancellationToken);

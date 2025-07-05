@@ -45,7 +45,7 @@ public class Role
         }
     }
 
-    // References (Navigation Properties)
+    // References
     public ICollection<User> Users
     {
         get { return _users; }

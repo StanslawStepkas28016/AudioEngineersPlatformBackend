@@ -102,7 +102,7 @@ public class User
         }
     }
 
-    // References (Foreign Keys)
+    // References
     public Guid IdRole
     {
         get { return _idRole; }
@@ -127,7 +127,6 @@ public class User
         private set { _userLog = value; }
     }
 
-    // References (Navigation Properties)
     public ICollection<Advert> Adverts
     {
         get { return _adverts; }

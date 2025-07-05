@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddInfrastructureLayer(builder.Configuration);
 
     // Add all controllers (those which inherit from ControllerBase class)
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddNewtonsoftJson();
 
     // Add authentication and authorization
     builder.Services.AddJwtAuthentication(builder.Configuration);
