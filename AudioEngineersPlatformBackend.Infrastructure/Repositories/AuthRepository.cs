@@ -4,6 +4,7 @@ using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.Repositories;
 
@@ -43,7 +44,7 @@ public class AuthRepository : IAuthRepository
 
     public async Task<UserLog> AddUserLog(UserLog userLog, CancellationToken cancellationToken)
     {
-        var res = await _context
+        EntityEntry<UserLog> res = await _context
             .UserLogs
             .AddAsync(userLog, cancellationToken);
 
@@ -53,7 +54,7 @@ public class AuthRepository : IAuthRepository
 
     public async Task<User> AddUser(User user, CancellationToken cancellationToken)
     {
-        var res = await _context
+        EntityEntry<User> res = await _context
             .Users
             .AddAsync(user, cancellationToken);
 

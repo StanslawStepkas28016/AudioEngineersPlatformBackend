@@ -1,8 +1,12 @@
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Application.Util.Cookies;
-using AudioEngineersPlatformBackend.Contracts.Auth;
+using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
+using AudioEngineersPlatformBackend.Contracts.Auth.Login;
+using AudioEngineersPlatformBackend.Contracts.Auth.Register;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
@@ -45,10 +49,10 @@ public class AuthService : IAuthService
         }
 
         // Create a UserLog
-        var userLog = UserLog.Create();
+        UserLog userLog = UserLog.Create();
 
         // Check database invariants - find a specified role by its name
-        var role = await _authRepository.FindRoleByName(registerRequest.RoleName, cancellationToken);
+        Role? role = await _authRepository.FindRoleByName(registerRequest.RoleName, cancellationToken);
 
         if (role == null)
         {
@@ -56,7 +60,7 @@ public class AuthService : IAuthService
         }
 
         // Create a User, then hash its password
-        var user = User.Create(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email,
+        User user = User.Create(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email,
             registerRequest.PhoneNumber, registerRequest.Password, role!.IdRole, userLog.IdUserLog);
 
         user.SetHashedPassword(new PasswordHasher<User>().HashPassword(user, registerRequest.Password));
@@ -78,7 +82,7 @@ public class AuthService : IAuthService
         CancellationToken cancellationToken = default)
     {
         // Check database invariants - find if user with given id exits, find if verification code is valid
-        var user = await _authRepository.FindUserAndUserLogByVerificationCode(
+        User? user = await _authRepository.FindUserAndUserLogByVerificationCode(
             new VerificationCodeVo(verifyAccountRequest.VerificationCode).GetValidVerificationCode(),
             cancellationToken);
 
@@ -89,7 +93,7 @@ public class AuthService : IAuthService
         }
 
         // Business logic - verify users account
-        var verificationOutcome = user.UserLog.VerifyUserAccount();
+        VerificationOutcome verificationOutcome = user.UserLog.VerifyUserAccount();
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -106,7 +110,7 @@ public class AuthService : IAuthService
     public async Task<LoginResponse> Login(LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
         // Check database invariants - find if user exists
-        var user = await _authRepository.FindUserAndUserLogAndRoleByEmail(
+        User? user = await _authRepository.FindUserAndUserLogAndRoleByEmail(
             new EmailVo(loginRequest.Email).GetValidEmail(),
             cancellationToken);
 
@@ -122,7 +126,7 @@ public class AuthService : IAuthService
         user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
 
         // Verify hashed password
-        var passwordVerificationResult =
+        PasswordVerificationResult passwordVerificationResult =
             new PasswordHasher<User>().VerifyHashedPassword(user, user.Password, loginRequest.Password);
 
         if (passwordVerificationResult != PasswordVerificationResult.Success)
@@ -131,7 +135,7 @@ public class AuthService : IAuthService
         }
 
         // Create the Access Token
-        var jwtAccessToken = _tokenUtil.CreateJwtAccessToken(user);
+        JwtSecurityToken jwtAccessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write both tokens as cookies
         _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
@@ -160,13 +164,13 @@ public class AuthService : IAuthService
         return Task.CompletedTask;
     }
 
-    public async Task<RefreshTokenResponse> RefreshToken(CancellationToken cancellationToken = default)
+    public async Task RefreshToken(CancellationToken cancellationToken = default)
     {
         // Get the token from the cookie, method will throw an exception if the cookie is not present
-        var refreshToken = _cookieUtil.TryGetCookie(CookieName.refreshToken);
+        string refreshToken = _cookieUtil.TryGetCookie(CookieName.refreshToken);
 
         // Find a user by the refresh token
-        var user = await _authRepository.FindUserAndUserLogByRefreshToken(refreshToken, cancellationToken);
+        User? user = await _authRepository.FindUserAndUserLogByRefreshToken(refreshToken, cancellationToken);
 
         if (user == null)
         {
@@ -184,7 +188,7 @@ public class AuthService : IAuthService
         user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
 
         // Generate a new access token
-        var accessToken = _tokenUtil.CreateJwtAccessToken(user);
+        JwtSecurityToken accessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write new access token and refresh token as cookies
         _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
@@ -193,9 +197,6 @@ public class AuthService : IAuthService
 
         // Persist the changes in the database
         await _unitOfWork.CompleteAsync(cancellationToken);
-
-        // Send the access token in the normal response
-        return new RefreshTokenResponse(user.IdUser);
     }
 
     public async Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default)
@@ -206,7 +207,7 @@ public class AuthService : IAuthService
             throw new ArgumentException("Provided idUser is empty");
         }
 
-        var userAssociatedData = await _authRepository.GetUserAssociatedDataByIdUser(idUser, cancellationToken);
+        UserAssociatedDataDto? userAssociatedData = await _authRepository.GetUserAssociatedDataByIdUser(idUser, cancellationToken);
 
         // This should never happen, since the idUser is being pulled from the JWT token that resides
         // in an attached cookie, but just in case

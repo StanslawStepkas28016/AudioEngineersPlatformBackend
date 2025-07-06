@@ -1,4 +1,4 @@
-namespace AudioEngineersPlatformBackend.Contracts.Auth;
+namespace AudioEngineersPlatformBackend.Contracts.Auth.Register;
 
 public record RegisterResponse(
     Guid IdUser,

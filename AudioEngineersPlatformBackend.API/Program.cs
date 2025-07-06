@@ -3,7 +3,7 @@ using API.Middlewares.ExceptionMiddleware;
 using AudioEngineersPlatformBackend.Application;
 using AudioEngineersPlatformBackend.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
     // Add Swagger fore development
     builder.Services.AddEndpointsApiExplorer();
@@ -24,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddCorsPolicy(builder.Configuration);
 }
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 {
     // Use custom middlewares
     app.UseMiddleware<ExceptionMiddleware>();

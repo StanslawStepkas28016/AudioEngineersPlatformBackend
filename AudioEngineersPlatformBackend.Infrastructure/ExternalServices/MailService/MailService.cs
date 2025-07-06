@@ -22,23 +22,23 @@ public class MailService : IEmailService
 
     public async Task TrySendVerificationEmailAsync(string toEmail, string firstName, string? verificationCode)
     {
-        await using var stream = Assembly
-                                     .GetExecutingAssembly()
-                                     .GetManifestResourceStream(
-                                         "AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService.Templates.VerificationEmail.html"
-                                     )
-                                 ?? throw new InvalidOperationException("Could not find embedded resource.");
+        await using Stream stream = Assembly
+                                        .GetExecutingAssembly()
+                                        .GetManifestResourceStream(
+                                            "AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService.Templates.VerificationEmail.html"
+                                        )
+                                    ?? throw new InvalidOperationException("Could not find embedded resource.");
 
-        using var reader = new StreamReader(stream);
-        var template = await reader.ReadToEndAsync();
+        using StreamReader reader = new StreamReader(stream);
+        string template = await reader.ReadToEndAsync();
 
-        var modifiedTemplate = template
+        string modifiedTemplate = template
             .Replace("{firstName}", firstName)
             .Replace("{verificationCode}", verificationCode);
 
         // var textBody = $"Hello {userName}, your verification code is {verificationCode}";
 
-        var request = new RestRequest(
+        RestRequest request = new RestRequest(
             resource: "",
             method: Method.Post
         );
@@ -54,7 +54,7 @@ public class MailService : IEmailService
             category = "Account Verification"
         });
 
-        var response = await _client.ExecuteAsync(request);
+        RestResponse response = await _client.ExecuteAsync(request);
 
         if (!response.IsSuccessful)
         {

@@ -19,7 +19,7 @@ public class CookieUtil : ICookieUtil
             throw new ArgumentNullException(nameof(expirationDate), "Expiration date cannot be null.");
         }
 
-        var options = new CookieOptions
+        CookieOptions options = new CookieOptions
         {
             HttpOnly = true,
             Secure = false, // true for HTTPS
@@ -32,7 +32,7 @@ public class CookieUtil : ICookieUtil
 
     public string TryGetCookie(CookieName cookieName)
     {
-        var cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieName.ToString()];
+        string? cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieName.ToString()];
 
         if (string.IsNullOrWhiteSpace(cookieValue))
         {

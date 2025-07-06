@@ -30,11 +30,11 @@ public class EngineersPlatformDbContext : DbContext
         if (Database.ProviderName == "Microsoft.EntityFrameworkCore.SqlServer")
         {
             // Seed Role Entity
-            var adminRole = Role.CreateWithId(Guid.Parse("D92D29B8-F462-46DF-8EFB-DE6B9AA5109A"), "Administrator");
+            Role adminRole = Role.CreateWithId(Guid.Parse("D92D29B8-F462-46DF-8EFB-DE6B9AA5109A"), "Administrator");
 
-            var clientRole = Role.CreateWithId(Guid.Parse("004865E2-177F-4C54-BB4C-69799F0BF315"), "Client");
+            Role clientRole = Role.CreateWithId(Guid.Parse("004865E2-177F-4C54-BB4C-69799F0BF315"), "Client");
 
-            var audioEngineerRole =
+            Role audioEngineerRole =
                 Role.CreateWithId(Guid.Parse("522C6700-165E-4189-B234-9FB533266E07"), "Audio engineer");
 
             modelBuilder.Entity<Role>().HasData(
@@ -42,91 +42,91 @@ public class EngineersPlatformDbContext : DbContext
             );
 
             // Seed UserLog with User Entities (mock users)
-            var passwordHasher = new PasswordHasher<User>();
+            PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
 
-            var ul1 = UserLog.CreateWithId(Guid.Parse("5CB8EFAA-2432-46D1-9984-B41A40BAB7B3"));
+            UserLog ul1 = UserLog.CreateWithId(Guid.Parse("5CB8EFAA-2432-46D1-9984-B41A40BAB7B3"));
             ul1.VerifyUserAccount();
-            var u1 = User.CreateWithId(Guid.Parse("AEBC2724-0EDF-4691-99E9-65CBD3AAB3BF"),
+            User u1 = User.CreateWithId(Guid.Parse("AEBC2724-0EDF-4691-99E9-65CBD3AAB3BF"),
                 "Dominik", "Kowalski", "dominik.kow@gmail.com", "+48123456789", "test",
                 adminRole.IdRole,
                 ul1.IdUserLog);
             u1.SetHashedPassword(passwordHasher.HashPassword(u1, u1.Password));
 
-            var ul2 = UserLog.CreateWithId(Guid.Parse("2F765163-6728-48BC-9767-66687EFDF86E"));
+            UserLog ul2 = UserLog.CreateWithId(Guid.Parse("2F765163-6728-48BC-9767-66687EFDF86E"));
             ul2.VerifyUserAccount();
-            var u2 = User.CreateWithId(Guid.Parse("5BFC9C8D-4789-4065-99D9-81EC5B58C0F5"), "Jan", "Nowak",
+            User u2 = User.CreateWithId(Guid.Parse("5BFC9C8D-4789-4065-99D9-81EC5B58C0F5"), "Jan", "Nowak",
                 "jan.nowak@gmail.com", "+48696432123", "test", clientRole.IdRole,
                 ul2.IdUserLog);
             u2.SetHashedPassword(passwordHasher.HashPassword(u2, u2.Password));
 
-            var ul3 = UserLog.CreateWithId(Guid.Parse("8312D4FD-FE6D-4001-A037-CDE12000161D"));
+            UserLog ul3 = UserLog.CreateWithId(Guid.Parse("8312D4FD-FE6D-4001-A037-CDE12000161D"));
             ul3.VerifyUserAccount();
-            var u3 = User.CreateWithId(Guid.Parse("828DAA53-9A49-40AD-97B3-31B0349BC08D"), "Anna", "Kowalska",
+            User u3 = User.CreateWithId(Guid.Parse("828DAA53-9A49-40AD-97B3-31B0349BC08D"), "Anna", "Kowalska",
                 "anna.kow@gmail.com", "+48543123123", "test",
                 audioEngineerRole.IdRole, ul3.IdUserLog);
             u3.SetHashedPassword(passwordHasher.HashPassword(u3, u3.Password));
 
-            var ul4 = UserLog.CreateWithId(Guid.Parse("E7653083-1497-4AA0-A56B-DEC32A61D71F"));
+            UserLog ul4 = UserLog.CreateWithId(Guid.Parse("E7653083-1497-4AA0-A56B-DEC32A61D71F"));
             ul4.VerifyUserAccount();
-            var u4 = User.CreateWithId(Guid.Parse("2254933A-66AC-4AB8-A923-25D508D8B5C0"), "Piotr", "Nowak",
+            User u4 = User.CreateWithId(Guid.Parse("2254933A-66AC-4AB8-A923-25D508D8B5C0"), "Piotr", "Nowak",
                 "piotr.nowak@example.com", "+48111222333", "test",
                 audioEngineerRole.IdRole, ul4.IdUserLog);
             u4.SetHashedPassword(passwordHasher.HashPassword(u4, u4.Password));
 
-            var ul5 = UserLog.CreateWithId(Guid.Parse("9AE2C2F3-4AB1-4512-9832-7649D5FF61D8"));
+            UserLog ul5 = UserLog.CreateWithId(Guid.Parse("9AE2C2F3-4AB1-4512-9832-7649D5FF61D8"));
             ul5.VerifyUserAccount();
-            var u5 = User.CreateWithId(Guid.Parse("731C7617-9342-415D-8E06-F77EC2D56786"), "Ewa", "Maj",
+            User u5 = User.CreateWithId(Guid.Parse("731C7617-9342-415D-8E06-F77EC2D56786"), "Ewa", "Maj",
                 "ewa.maj@example.com", "+48111333444", "test", audioEngineerRole.IdRole,
                 ul5.IdUserLog);
             u5.SetHashedPassword(passwordHasher.HashPassword(u5, u5.Password));
 
-            var ul6 = UserLog.CreateWithId(Guid.Parse("5091BF83-DF7D-4A54-A35B-31B44D1A1643"));
+            UserLog ul6 = UserLog.CreateWithId(Guid.Parse("5091BF83-DF7D-4A54-A35B-31B44D1A1643"));
             ul6.VerifyUserAccount();
-            var u6 = User.CreateWithId(Guid.Parse("29D1D9BD-87D9-4125-99A5-0F15C9DF3A30"), "Tomasz", "Zieliński",
+            User u6 = User.CreateWithId(Guid.Parse("29D1D9BD-87D9-4125-99A5-0F15C9DF3A30"), "Tomasz", "Zieliński",
                 "tomasz.zielinski@example.com", "+48111444555", "test",
                 audioEngineerRole.IdRole, ul6.IdUserLog);
             u6.SetHashedPassword(passwordHasher.HashPassword(u6, u6.Password));
 
-            var ul7 = UserLog.CreateWithId(Guid.Parse("DF0A8813-0938-42A6-AC84-26298701F456"));
+            UserLog ul7 = UserLog.CreateWithId(Guid.Parse("DF0A8813-0938-42A6-AC84-26298701F456"));
             ul7.VerifyUserAccount();
-            var u7 = User.CreateWithId(Guid.Parse("3FB9E066-38B7-42AE-900C-D7AB5AE280F0"), "Michał", "Wójcik",
+            User u7 = User.CreateWithId(Guid.Parse("3FB9E066-38B7-42AE-900C-D7AB5AE280F0"), "Michał", "Wójcik",
                 "michal.wojcik@example.com", "+48111555666", "test",
                 audioEngineerRole.IdRole, ul7.IdUserLog);
             u7.SetHashedPassword(passwordHasher.HashPassword(u7, u7.Password));
 
-            var ul8 = UserLog.CreateWithId(Guid.Parse("2A019DC8-FE9F-4A63-B692-49E03F889F7F"));
+            UserLog ul8 = UserLog.CreateWithId(Guid.Parse("2A019DC8-FE9F-4A63-B692-49E03F889F7F"));
             ul8.VerifyUserAccount();
-            var u8 = User.CreateWithId(Guid.Parse("AC89F1A4-6988-4211-8136-FBF9B45E4CF2"), "Katarzyna", "Wiśniewska",
+            User u8 = User.CreateWithId(Guid.Parse("AC89F1A4-6988-4211-8136-FBF9B45E4CF2"), "Katarzyna", "Wiśniewska",
                 "katarzyna.wisniewska@example.com", "+48111666777",
                 "test",
                 audioEngineerRole.IdRole, ul8.IdUserLog);
             u8.SetHashedPassword(passwordHasher.HashPassword(u8, u8.Password));
 
-            var ul9 = UserLog.CreateWithId(Guid.Parse("C91C99CA-FFFD-42A5-9E6E-FA67D3C0F762"));
+            UserLog ul9 = UserLog.CreateWithId(Guid.Parse("C91C99CA-FFFD-42A5-9E6E-FA67D3C0F762"));
             ul9.VerifyUserAccount();
-            var u9 = User.CreateWithId(Guid.Parse("07434FD4-3450-4A01-A8C4-C371ED011E48"), "Krzysztof", "Lewandowski",
+            User u9 = User.CreateWithId(Guid.Parse("07434FD4-3450-4A01-A8C4-C371ED011E48"), "Krzysztof", "Lewandowski",
                 "krzysztof.lewandowski@example.com", "+48111777888",
                 "test",
                 audioEngineerRole.IdRole, ul9.IdUserLog);
             u9.SetHashedPassword(passwordHasher.HashPassword(u9, u9.Password));
 
-            var ul10 = UserLog.CreateWithId(Guid.Parse("8DB9E713-D6F0-4F34-B348-C7DA0C1A51D6"));
+            UserLog ul10 = UserLog.CreateWithId(Guid.Parse("8DB9E713-D6F0-4F34-B348-C7DA0C1A51D6"));
             ul10.VerifyUserAccount();
-            var u10 = User.CreateWithId(Guid.Parse("E07BC534-3324-4AF4-8D97-FAEE7242E896"), "Agnieszka", "Wróbel",
+            User u10 = User.CreateWithId(Guid.Parse("E07BC534-3324-4AF4-8D97-FAEE7242E896"), "Agnieszka", "Wróbel",
                 "agnieszka.wrobel@example.com", "+48111888999", "test",
                 audioEngineerRole.IdRole, ul10.IdUserLog);
             u10.SetHashedPassword(passwordHasher.HashPassword(u10, u10.Password));
 
-            var ul11 = UserLog.CreateWithId(Guid.Parse("32AFFE63-9BB3-4C86-BBF8-6D5E37C7FB3F"));
+            UserLog ul11 = UserLog.CreateWithId(Guid.Parse("32AFFE63-9BB3-4C86-BBF8-6D5E37C7FB3F"));
             ul11.VerifyUserAccount();
-            var u11 = User.CreateWithId(Guid.Parse("1D31A511-8D38-4223-96A0-F2B15CC90794"), "Paweł", "Kamiński",
+            User u11 = User.CreateWithId(Guid.Parse("1D31A511-8D38-4223-96A0-F2B15CC90794"), "Paweł", "Kamiński",
                 "pawel.kaminski@example.com", "+48111999000", "test",
                 audioEngineerRole.IdRole, ul11.IdUserLog);
             u11.SetHashedPassword(passwordHasher.HashPassword(u11, u11.Password));
 
-            var ul12 = UserLog.CreateWithId(Guid.Parse("CD9E4F1F-8EDD-4488-B0DA-256521A720E8"));
+            UserLog ul12 = UserLog.CreateWithId(Guid.Parse("CD9E4F1F-8EDD-4488-B0DA-256521A720E8"));
             ul11.VerifyUserAccount();
-            var u12 = User.CreateWithId(Guid.Parse("655887CB-B3CD-40DA-B2BB-48B5E84239F9"), "Marcin", "Radwański",
+            User u12 = User.CreateWithId(Guid.Parse("655887CB-B3CD-40DA-B2BB-48B5E84239F9"), "Marcin", "Radwański",
                 "mar.radw@example.com", "+48431234765", "test",
                 adminRole.IdRole, ul12.IdUserLog);
             u11.SetHashedPassword(passwordHasher.HashPassword(u12, u12.Password));
@@ -142,11 +142,11 @@ public class EngineersPlatformDbContext : DbContext
             );
 
             // Seed AdvertCategory Entity
-            var mixingCategory =
+            AdvertCategory mixingCategory =
                 AdvertCategory.CreateWithId(Guid.Parse("E6DDD487-8B56-4C8F-B289-2F04BABBABDA"), "Mixing");
-            var masteringCategory =
+            AdvertCategory masteringCategory =
                 AdvertCategory.CreateWithId(Guid.Parse("80C20081-C580-4AAF-A346-2587CCFDEBF5"), "Mastering");
-            var productionCategory =
+            AdvertCategory productionCategory =
                 AdvertCategory.CreateWithId(Guid.Parse("B8785564-E008-4889-B633-7F5D3558EB92"), "Production");
 
             modelBuilder.Entity<AdvertCategory>().HasData(
@@ -154,8 +154,8 @@ public class EngineersPlatformDbContext : DbContext
             );
 
             // Seed the AdvertLog and Advert Entities
-            var al1 = AdvertLog.CreateWithId(Guid.Parse("1B84601E-E225-4E9D-93D2-911FB0A1569E"));
-            var a1 = Advert.CreateWithId(
+            AdvertLog al1 = AdvertLog.CreateWithId(Guid.Parse("1B84601E-E225-4E9D-93D2-911FB0A1569E"));
+            Advert a1 = Advert.CreateWithId(
                 Guid.Parse("31BA89AA-F10F-40E7-B4B0-7375DA567997"),
                 "I will mix your song professionally!",
                 "With over 10 years of hands-on experience in music mixing, I meticulously balance every element of your track—from drums and bass to vocals and effects—to ensure a polished, radio-ready sound. " +
@@ -169,8 +169,8 @@ public class EngineersPlatformDbContext : DbContext
                 al1.IdAdvertLog
             );
 
-            var al2 = AdvertLog.CreateWithId(Guid.Parse("A9E9762A-2A67-46F3-B371-50405A100D58"));
-            var a2 = Advert.CreateWithId(
+            AdvertLog al2 = AdvertLog.CreateWithId(Guid.Parse("A9E9762A-2A67-46F3-B371-50405A100D58"));
+            Advert a2 = Advert.CreateWithId(
                 Guid.Parse("AFF251D8-9E58-4F5C-BA43-4C6597FC8A08"),
                 "Professional mixing services by Piotr",
                 "Piotr brings 5+ years of mixing expertise in genres ranging from indie rock to electronic dance. He begins each project by analyzing your reference tracks and customizing EQ, compression, and spatial effects to enhance clarity and impact. " +
@@ -184,8 +184,8 @@ public class EngineersPlatformDbContext : DbContext
                 al2.IdAdvertLog
             );
 
-            var al3 = AdvertLog.CreateWithId(Guid.Parse("B3D2DCE1-A858-4312-937D-C56A6E0178CF"));
-            var a3 = Advert.CreateWithId(
+            AdvertLog al3 = AdvertLog.CreateWithId(Guid.Parse("B3D2DCE1-A858-4312-937D-C56A6E0178CF"));
+            Advert a3 = Advert.CreateWithId(
                 Guid.Parse("7BFD7CFA-5FDE-42E2-AC56-9EE1040B708F"),
                 "Mastering expertise by Ewa",
                 "Ewa specializes in mastering both digital and analog formats, delivering loudness-optimized masters without sacrificing dynamic range. She uses high-resolution metering and custom multiband compression to sculpt frequencies, tame harshness, and add that final sheen. " +
@@ -199,8 +199,8 @@ public class EngineersPlatformDbContext : DbContext
                 al3.IdAdvertLog
             );
 
-            var al4 = AdvertLog.CreateWithId(Guid.Parse("EFE85186-52C9-4C46-B585-D4B47523DB47"));
-            var a4 = Advert.CreateWithId(
+            AdvertLog al4 = AdvertLog.CreateWithId(Guid.Parse("EFE85186-52C9-4C46-B585-D4B47523DB47"));
+            Advert a4 = Advert.CreateWithId(
                 Guid.Parse("8370E2EB-2EA0-4C4E-99E5-B9E719427F03"),
                 "Full production package from Tomasz",
                 "Tomasz offers end-to-end music production: from songwriting support and beat programming to arrangement and mix-ready stems. He crafts custom drum patterns, bass lines, and melodic hooks tailored to your style. " +
@@ -214,8 +214,8 @@ public class EngineersPlatformDbContext : DbContext
                 al4.IdAdvertLog
             );
 
-            var al5 = AdvertLog.CreateWithId(Guid.Parse("24BA6029-F88C-4B12-9A63-BF00C2D9F3E4"));
-            var a5 = Advert.CreateWithId(
+            AdvertLog al5 = AdvertLog.CreateWithId(Guid.Parse("24BA6029-F88C-4B12-9A63-BF00C2D9F3E4"));
+            Advert a5 = Advert.CreateWithId(
                 Guid.Parse("8CB96D43-A8A9-4010-8613-F721ECEDB8B3"),
                 "Advanced mixing workflows by Michał",
                 "Michał combines both in-the-box precision and analog warmth to achieve a balanced, lively mix. He employs gain-riding automation, mid/side processing, and parallel compression to bring out the emotion in your performance. " +
@@ -229,8 +229,8 @@ public class EngineersPlatformDbContext : DbContext
                 al5.IdAdvertLog
             );
 
-            var al6 = AdvertLog.CreateWithId(Guid.Parse("FE0D1832-793E-4CF8-983A-BBE09D7E0FA2"));
-            var a6 = Advert.CreateWithId(
+            AdvertLog al6 = AdvertLog.CreateWithId(Guid.Parse("FE0D1832-793E-4CF8-983A-BBE09D7E0FA2"));
+            Advert a6 = Advert.CreateWithId(
                 Guid.Parse("18809BE2-B063-4ADA-A7A4-81F9FA107322"),
                 "Mastering for vinyl & streaming—Katarzyna",
                 "Katarzyna offers specialized mastering for both vinyl pressings and digital platforms. She carefully sequences tracks, applies EQ to prevent low-end overmodulation, and optimizes side-chain compression for needle-friendly dynamics. " +
@@ -244,8 +244,8 @@ public class EngineersPlatformDbContext : DbContext
                 al6.IdAdvertLog
             );
 
-            var al7 = AdvertLog.CreateWithId(Guid.Parse((ReadOnlySpan<char>)"993648CA-9D51-419A-85E8-046E8FC3162B"));
-            var a7 = Advert.CreateWithId(
+            AdvertLog al7 = AdvertLog.CreateWithId(Guid.Parse((ReadOnlySpan<char>)"993648CA-9D51-419A-85E8-046E8FC3162B"));
+            Advert a7 = Advert.CreateWithId(
                 Guid.Parse("72AC8A29-19E2-4B7B-B810-418D638B5356"),
                 "Beat production & stems by Krzysztof",
                 "Krzysztof specializes in crafting genre-blending beats—from trap and lo-fi to funk and soul. Each beat comes with full MIDI programming, drum samples, and multitrack stems so you can rearrange or remix at will. " +
@@ -259,8 +259,8 @@ public class EngineersPlatformDbContext : DbContext
                 al7.IdAdvertLog
             );
 
-            var al8 = AdvertLog.CreateWithId(Guid.Parse("C8AB7E20-E7DD-4616-8862-D15DAD3C986A"));
-            var a8 = Advert.CreateWithId(
+            AdvertLog al8 = AdvertLog.CreateWithId(Guid.Parse("C8AB7E20-E7DD-4616-8862-D15DAD3C986A"));
+            Advert a8 = Advert.CreateWithId(
                 Guid.Parse("33545021-1FFB-4F46-9DF8-6242B8F0786F"),
                 "Mix engineering—Agnieszka’s precision approach",
                 "Agnieszka takes a surgical approach to mixing: corrective EQ, transparent compression, and creative spatial effects that serve your song. She communicates clearly, providing time-stamped revision notes and A/B comparisons. " +
@@ -274,8 +274,8 @@ public class EngineersPlatformDbContext : DbContext
                 al8.IdAdvertLog
             );
 
-            var al9 = AdvertLog.CreateWithId(Guid.Parse("70820368-D390-4C01-AF1F-9E7B8E8413D2"));
-            var a9 = Advert.CreateWithId(
+            AdvertLog al9 = AdvertLog.CreateWithId(Guid.Parse("70820368-D390-4C01-AF1F-9E7B8E8413D2"));
+            Advert a9 = Advert.CreateWithId(
                 Guid.Parse("A79C87D0-276B-48BD-B23C-9AF67AFD4C41"),
                 "Mastering & delivery by Paweł",
                 "Paweł provides a full delivery package: mastered WAV, high-quality MP3, and separated stems for remixers or video post-production. He focuses on dynamic control, spectral balance, and proper headroom for broadcast. " +

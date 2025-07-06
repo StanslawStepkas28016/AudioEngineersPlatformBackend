@@ -19,7 +19,7 @@ public static class JwtExtensions
             })
             .AddJwtBearer(options =>
             {
-                var jwtSettings = configuration
+                JwtSettings jwtSettings = configuration
                     .GetSection("JWTSettings")
                     .Get<JwtSettings>()!;
 

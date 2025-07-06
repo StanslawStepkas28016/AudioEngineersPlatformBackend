@@ -1,4 +1,8 @@
 using AudioEngineersPlatformBackend.Contracts.Auth;
+using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
+using AudioEngineersPlatformBackend.Contracts.Auth.Login;
+using AudioEngineersPlatformBackend.Contracts.Auth.Register;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
@@ -13,7 +17,7 @@ public interface IAuthService
 
     Task Logout();
 
-    Task<RefreshTokenResponse> RefreshToken(CancellationToken cancellationToken = default);
+    Task RefreshToken(CancellationToken cancellationToken = default);
 
     Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default);
 }

@@ -41,11 +41,11 @@ public static class DependencyInjection
 
         services.AddSingleton<IAmazonS3>(sp =>
         {
-            var s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
+            S3Settings s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
 
-            var credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
+            BasicAWSCredentials credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
 
-            var config = new AmazonS3Config
+            AmazonS3Config config = new AmazonS3Config
             {
                 RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
             };
