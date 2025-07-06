@@ -8,7 +8,7 @@ public class PhoneNumberVo
 
     public PhoneNumberVo(string phoneNumber)
     {
-        var phoneNumberUtil = PhoneNumberUtil.GetInstance();
+        PhoneNumberUtil? phoneNumberUtil = PhoneNumberUtil.GetInstance();
         try
         {
             phoneNumberUtil.Parse(phoneNumber, null);

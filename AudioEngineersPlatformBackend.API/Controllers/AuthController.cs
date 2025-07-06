@@ -1,10 +1,13 @@
 using System.Security.Claims;
 using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Contracts.Auth;
+using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
+using AudioEngineersPlatformBackend.Contracts.Auth.Login;
+using AudioEngineersPlatformBackend.Contracts.Auth.Register;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using LoginRequest = AudioEngineersPlatformBackend.Contracts.Auth.LoginRequest;
-using RegisterRequest = AudioEngineersPlatformBackend.Contracts.Auth.RegisterRequest;
+using LoginRequest = AudioEngineersPlatformBackend.Contracts.Auth.Login.LoginRequest;
+using RegisterRequest = AudioEngineersPlatformBackend.Contracts.Auth.Register.RegisterRequest;
 
 namespace API.Controllers;
 
@@ -17,7 +20,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest,
         CancellationToken cancellationToken)
     {
-        var registerResponse = await authService.Register(registerRequest, cancellationToken);
+        RegisterResponse registerResponse = await authService.Register(registerRequest, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, registerResponse);
     }
 
@@ -26,7 +29,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     public async Task<IActionResult> VerifyAccount([FromBody] VerifyAccountRequest verifyAccountRequest,
         CancellationToken cancellationToken)
     {
-        var verifyAccountResponse = await authService.VerifyAccount(verifyAccountRequest, cancellationToken);
+        VerifyAccountResponse verifyAccountResponse = await authService.VerifyAccount(verifyAccountRequest, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, verifyAccountResponse);
     }
 
@@ -34,7 +37,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
     {
-        var loginResponse = await authService.Login(loginRequest, cancellationToken);
+        LoginResponse loginResponse = await authService.Login(loginRequest, cancellationToken);
         return StatusCode(StatusCodes.Status202Accepted, loginResponse);
     }
 
@@ -43,8 +46,8 @@ public class AuthController(IAuthService authService) : ControllerBase
     public async Task<IActionResult> RefreshToken(
         CancellationToken cancellationToken)
     {
-        var refreshTokenResponse = await authService.RefreshToken(cancellationToken);
-        return StatusCode(StatusCodes.Status202Accepted, refreshTokenResponse);
+        await authService.RefreshToken(cancellationToken);
+        return StatusCode(StatusCodes.Status202Accepted);
     }
 
     [AllowAnonymous]
@@ -60,10 +63,10 @@ public class AuthController(IAuthService authService) : ControllerBase
     public async Task<IActionResult> CheckAuth(CancellationToken cancellationToken)
     {
         // Get the user ID from the JWT token obtained from the Authorization header (previously obtained from cookies) 
-        var idUser = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid idUser = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         // Call the service to check get the user associated data
-        var checkAuthResponse = await authService.CheckAuth(idUser, cancellationToken);
+        CheckAuthResponse checkAuthResponse = await authService.CheckAuth(idUser, cancellationToken);
 
         return StatusCode(StatusCodes.Status200OK, checkAuthResponse);
     }

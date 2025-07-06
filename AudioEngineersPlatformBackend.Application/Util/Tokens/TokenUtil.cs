@@ -20,17 +20,17 @@ public class TokenUtil : ITokenUtil
 
     public JwtSecurityToken CreateJwtAccessToken(User user)
     {
-        var claims = new[]
+        Claim[] claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.IdUser.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(ClaimTypes.Role, user.Role.RoleName),
         };
 
-        var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
-        var credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
+        SymmetricSecurityKey secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
+        SigningCredentials credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(
+        JwtSecurityToken token = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
@@ -43,8 +43,8 @@ public class TokenUtil : ITokenUtil
 
     public string CreateNonJwtRefreshToken()
     {
-        var randomNumber = new byte[32];
-        using var generator = RandomNumberGenerator.Create();
+        byte[] randomNumber = new byte[32];
+        using RandomNumberGenerator generator = RandomNumberGenerator.Create();
         generator.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
     }

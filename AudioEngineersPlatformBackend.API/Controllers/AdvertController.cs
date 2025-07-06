@@ -1,8 +1,10 @@
 using System.Security.Claims;
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Contracts.Advert;
-using AudioEngineersPlatformBackend.Contracts.Advert.Create;
-using AudioEngineersPlatformBackend.Contracts.Advert.Edit;
+using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
+using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
+using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using Azure;
 using Microsoft.AspNetCore.Authorization;
@@ -26,16 +28,17 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     public async Task<IActionResult> CreateAdvert([FromForm] CreateAdvertRequest createAdvertRequest,
         CancellationToken cancellationToken)
     {
-        var createAdvertResponse = await advertService.CreateAdvert(createAdvertRequest, cancellationToken);
+        CreateAdvertResponse createAdvertResponse =
+            await advertService.CreateAdvert(createAdvertRequest, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, createAdvertResponse);
     }
 
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpPatch("{idAdvert:guid}")]
-    public async Task<IActionResult> EditAdvert(Guid idAdvert, EditAdvertRequest editAdvertRequest,
+    public async Task<IActionResult> ChangeAdvertData(Guid idAdvert, ChangeAdvertDataRequest changeAdvertDataRequest,
         CancellationToken cancellationToken)
     {
-        await advertService.EditAdvert(idAdvert, editAdvertRequest, cancellationToken);
+        await advertService.ChangeAdvertData(idAdvert, changeAdvertDataRequest, cancellationToken);
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
@@ -64,7 +67,8 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     [HttpGet("by-id-user/{idUser:guid}")]
     public async Task<IActionResult> GetAdvertAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken)
     {
-        var getAdvertResponse = await advertService.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
+        GetAdvertDetailsResponse getAdvertResponse =
+            await advertService.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
     }
 
@@ -79,7 +83,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     public async Task<IActionResult> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
         CancellationToken cancellationToken)
     {
-        var getAdvertResponse =
+        GetAdvertDetailsResponse getAdvertResponse =
             await advertService.GetAdvertAssociatedDataByIdAdvert(idAdvert, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, getAdvertResponse);
     }
@@ -99,7 +103,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         string? searchTerm,
         CancellationToken cancellationToken)
     {
-        var getAllAdvertsResponse =
+        PagedListDto<AdvertOverviewDto> getAllAdvertsResponse =
             await advertService.GetAllAdvertsSummaries(sortOrder, page, pageSize, searchTerm, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, getAllAdvertsResponse);
     }
@@ -115,7 +119,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     public async Task<IActionResult> MockImageUpload(IFormFile coverImageFile,
         CancellationToken cancellationToken)
     {
-        var mockImageUploadResponse = await advertService.MockImageUpload(coverImageFile, cancellationToken);
+        Guid mockImageUploadResponse = await advertService.MockImageUpload(coverImageFile, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, mockImageUploadResponse);
     }
 }

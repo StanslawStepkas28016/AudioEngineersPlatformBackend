@@ -26,11 +26,11 @@ public class S3Service : IS3Service
             throw new ArgumentException("File is empty");
         }
 
-        await using var stream = file.OpenReadStream();
+        await using Stream? stream = file.OpenReadStream();
 
-        var key = Guid.NewGuid();
+        Guid key = Guid.NewGuid();
 
-        var request = new PutObjectRequest
+        PutObjectRequest request = new PutObjectRequest
         {
             BucketName = _settings.BucketName,
             Key = $"images/{key}",
@@ -56,7 +56,7 @@ public class S3Service : IS3Service
             throw new ArgumentException("Key is empty");
         }
 
-        var request = new GetPreSignedUrlRequest
+        GetPreSignedUrlRequest request = new GetPreSignedUrlRequest
         {
             BucketName = _settings.BucketName,
             Key = $"images/{key}",
@@ -65,7 +65,7 @@ public class S3Service : IS3Service
         };
 
         // This can throw an exception if the URL generation fails
-        var presignedUrl = await _s3Client.GetPreSignedURLAsync(request);
+        string? presignedUrl = await _s3Client.GetPreSignedURLAsync(request);
 
         return presignedUrl;
     }

@@ -1,4 +1,4 @@
-namespace AudioEngineersPlatformBackend.Contracts.Advert.Create;
+namespace AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
 
 public record CreateAdvertResponse(
     Guid IdAdvert,

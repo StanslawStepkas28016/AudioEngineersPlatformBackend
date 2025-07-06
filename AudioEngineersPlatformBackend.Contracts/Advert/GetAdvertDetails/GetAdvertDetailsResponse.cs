@@ -1,4 +1,4 @@
-namespace AudioEngineersPlatformBackend.Contracts.Advert.Get;
+namespace AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
 
 public record GetAdvertDetailsResponse(
     Guid IdUser,

@@ -1,9 +1,9 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Contracts.Advert;
-using AudioEngineersPlatformBackend.Contracts.Advert.Create;
-using AudioEngineersPlatformBackend.Contracts.Advert.Edit;
-using AudioEngineersPlatformBackend.Contracts.Advert.Get;
+using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
+using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
+using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
@@ -35,7 +35,7 @@ public class AdvertService : IAdvertService
         }
 
         // Check if there is already an advert posted by the user
-        var advertByIdUser = await _advertRepository.GetAdvertByIdUser(createAdvertRequest.IdUser, cancellationToken);
+        Advert? advertByIdUser = await _advertRepository.GetAdvertByIdUser(createAdvertRequest.IdUser, cancellationToken);
 
         if (advertByIdUser != null)
         {
@@ -49,7 +49,7 @@ public class AdvertService : IAdvertService
                 nameof(createAdvertRequest.CategoryName));
         }
 
-        var advertCategory = await _advertRepository
+        AdvertCategory? advertCategory = await _advertRepository
             .GetAdvertCategoryByCategoryName(createAdvertRequest.CategoryName, cancellationToken);
 
         if (advertCategory == null)
@@ -58,13 +58,13 @@ public class AdvertService : IAdvertService
         }
 
         // Create a new AdvertLog entity
-        var advertLog = AdvertLog.Create();
+        AdvertLog advertLog = AdvertLog.Create();
 
         // Upload the cover image file to S3 and get the key
-        var imageKey = await _s3Service.TryUploadFileAsync(createAdvertRequest.CoverImageFile, cancellationToken);
+        Guid imageKey = await _s3Service.TryUploadFileAsync(createAdvertRequest.CoverImageFile, cancellationToken);
 
         // Create a new Advert entity
-        var advert = Advert.Create(
+        Advert advert = Advert.Create(
             createAdvertRequest.Title,
             createAdvertRequest.Description,
             imageKey,
@@ -77,7 +77,7 @@ public class AdvertService : IAdvertService
 
         // Add AdvertLog and Advert to the repository
         await _advertRepository.AddAdvertLog(advertLog, cancellationToken);
-        var addedAdvert = await _advertRepository.AddAdvert(advert, cancellationToken);
+        Advert addedAdvert = await _advertRepository.AddAdvert(advert, cancellationToken);
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -89,7 +89,7 @@ public class AdvertService : IAdvertService
         );
     }
 
-    public async Task EditAdvert(Guid idAdvert, EditAdvertRequest editAdvertRequest,
+    public async Task ChangeAdvertData(Guid idAdvert, ChangeAdvertDataRequest changeAdvertDataRequest,
         CancellationToken cancellationToken)
     {
         // Validate the idAdvert
@@ -99,7 +99,7 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the advert exists
-        var advertByIdAdvert = await _advertRepository.GetAdvertByIdAdvert(idAdvert, cancellationToken);
+        Advert? advertByIdAdvert = await _advertRepository.GetAdvertByIdAdvert(idAdvert, cancellationToken);
 
         if (advertByIdAdvert == null)
         {
@@ -114,10 +114,10 @@ public class AdvertService : IAdvertService
 
         // Perform the update
         advertByIdAdvert.PartialUpdate(
-            editAdvertRequest.Title,
-            editAdvertRequest.Description,
-            editAdvertRequest.PortfolioUrl,
-            editAdvertRequest.Price
+            changeAdvertDataRequest.Title,
+            changeAdvertDataRequest.Description,
+            changeAdvertDataRequest.PortfolioUrl,
+            changeAdvertDataRequest.Price
         );
 
         // Save the changes
@@ -133,7 +133,7 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the advert exists
-        var advertAndAdvertLog = await _advertRepository.GetAdvertAndAdvertLogByIdAdvert(idAdvert, cancellationToken);
+        Advert? advertAndAdvertLog = await _advertRepository.GetAdvertAndAdvertLogByIdAdvert(idAdvert, cancellationToken);
 
         if (advertAndAdvertLog == null)
         {
@@ -162,7 +162,7 @@ public class AdvertService : IAdvertService
             throw new ArgumentException("IdUser cannot be empty.", nameof(idUser));
         }
 
-        var advert = await _advertRepository.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
+        AdvertDetailsDto? advert = await _advertRepository.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
 
         if (advert == null)
         {
@@ -170,7 +170,7 @@ public class AdvertService : IAdvertService
         }
 
         // Generate a presigned URL for the cover image
-        var preSignedUrl = await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
+        string preSignedUrl = await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
 
         // Map the response to GetAdvertResponse
         return new GetAdvertDetailsResponse(
@@ -198,7 +198,7 @@ public class AdvertService : IAdvertService
             throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
         }
 
-        var advert = await _advertRepository.GetAdvertAssociatedDataByIdUser(idAdvert, cancellationToken);
+        AdvertDetailsDto? advert = await _advertRepository.GetAdvertAssociatedDataByIdUser(idAdvert, cancellationToken);
 
         if (advert == null)
         {
@@ -206,7 +206,7 @@ public class AdvertService : IAdvertService
         }
 
         // Generate a presigned URL for the cover image
-        var preSignedUrl = await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
+        string preSignedUrl = await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
 
         // Map the response to GetAdvertResponse
         return new GetAdvertDetailsResponse(
@@ -232,13 +232,13 @@ public class AdvertService : IAdvertService
         CancellationToken cancellationToken)
     {
         // Fetch paginated adverts
-        var allAdvertsWithPagination =
+        PagedListDto<AdvertOverviewDto> allAdvertsWithPagination =
             await _advertRepository.GetAllAdvertsSummariesWithPagination(sortOrder, page, pageSize, searchTerm,
                 cancellationToken);
 
 
         // Generate presigned URLs for cover images
-        foreach (var advert in allAdvertsWithPagination.Items)
+        foreach (AdvertOverviewDto advert in allAdvertsWithPagination.Items)
         {
             advert.CoverImageUrl =
                 await _s3Service.TryGetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
@@ -249,7 +249,7 @@ public class AdvertService : IAdvertService
 
     public async Task<Guid> MockImageUpload(IFormFile coverImageFile, CancellationToken cancellationToken)
     {
-        var key = await _s3Service.TryUploadFileAsync(coverImageFile, cancellationToken);
+        Guid key = await _s3Service.TryUploadFileAsync(coverImageFile, cancellationToken);
         return key;
     }
 }

@@ -1,8 +1,8 @@
 using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Contracts.Advert;
-using AudioEngineersPlatformBackend.Contracts.Advert.Create;
-using AudioEngineersPlatformBackend.Contracts.Advert.Edit;
-using AudioEngineersPlatformBackend.Contracts.Advert.Get;
+using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
+using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
+using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
 using Microsoft.AspNetCore.Http;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
@@ -12,7 +12,7 @@ public interface IAdvertService
     Task<CreateAdvertResponse> CreateAdvert(CreateAdvertRequest createAdvertRequest,
         CancellationToken cancellationToken);
 
-    Task EditAdvert(Guid idAdvert, EditAdvertRequest editAdvertRequest,
+    Task ChangeAdvertData(Guid idAdvert, ChangeAdvertDataRequest changeAdvertDataRequest,
         CancellationToken cancellationToken);
 
     Task DeleteAdvert(Guid idAdvert, CancellationToken cancellationToken);
