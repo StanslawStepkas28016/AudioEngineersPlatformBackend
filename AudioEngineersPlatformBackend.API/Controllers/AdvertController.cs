@@ -29,7 +29,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         var createAdvertResponse = await advertService.CreateAdvert(createAdvertRequest, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, createAdvertResponse);
     }
-    
+
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpPatch("{idAdvert:guid}")]
     public async Task<IActionResult> EditAdvert(Guid idAdvert, EditAdvertRequest editAdvertRequest,
@@ -61,7 +61,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [AllowAnonymous]
-    [HttpGet("by-id-user")]
+    [HttpGet("by-id-user/{idUser:guid}")]
     public async Task<IActionResult> GetAdvertAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken)
     {
         var getAdvertResponse = await advertService.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
@@ -75,7 +75,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [AllowAnonymous]
-    [HttpGet("by-id-advert/{idAdvert:guid}")]
+    [HttpGet("{idAdvert:guid}")]
     public async Task<IActionResult> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
         CancellationToken cancellationToken)
     {
