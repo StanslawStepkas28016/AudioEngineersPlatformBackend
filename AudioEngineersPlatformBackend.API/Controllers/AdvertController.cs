@@ -61,7 +61,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [AllowAnonymous]
-    [HttpGet("by-id-user/{idUser:guid}")]
+    [HttpGet("by-id-user")]
     public async Task<IActionResult> GetAdvertAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken)
     {
         var getAdvertResponse = await advertService.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);

@@ -106,8 +106,8 @@ public class AdvertService : IAdvertService
             throw new Exception("Advert not found.");
         }
 
-        // Check if the user is trying to edit their own advert or if they are an administrator
-        if (advertByIdAdvert.IdUser != _currentUserService.IdUser && !_currentUserService.IsAdministrator)
+        // Check if the user is authorized to edit the advert (either the owner or an administrator)
+        if (advertByIdAdvert.IdUser != _currentUserService.IdUser || !_currentUserService.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified advert does not belong to you.");
         }
@@ -140,8 +140,8 @@ public class AdvertService : IAdvertService
             throw new Exception("Advert with the provided idAdvert was not found.");
         }
 
-        // Check if the user is trying to delete their own advert or if they are an administrator
-        if (advertAndAdvertLog.IdUser != _currentUserService.IdUser && !_currentUserService.IsAdministrator)
+        // Check if the user is authorized to delete the advert (either the owner or an administrator)
+        if (advertAndAdvertLog.IdUser != _currentUserService.IdUser || !_currentUserService.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified advert does not belong to you.");
         }
