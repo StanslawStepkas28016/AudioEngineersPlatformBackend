@@ -16,6 +16,7 @@ public class User
     private Guid _idUserLog;
     private UserLog _userLog;
     private ICollection<Advert> _adverts;
+    private ICollection<Review> _reviews;
 
     // Properties
     public Guid IdUser
@@ -131,6 +132,12 @@ public class User
     {
         get { return _adverts; }
         private set { _adverts = value; }
+    }
+
+    public ICollection<Review> Reviews
+    {
+        get { return _reviews; }
+        private set { _reviews = value; }
     }
 
     // Private constructor used for EF Core

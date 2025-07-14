@@ -18,36 +18,39 @@ public class AdvertRepository : IAdvertRepository
     }
 
 
-    public async Task<Advert?> GetAdvertByIdUser(Guid idUser, CancellationToken cancellationToken)
+    public async Task<Advert?> GetActiveAndNonDeletedAdvertByIdUser(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Adverts
-            .Where(a => a.IdUser == idUser)
+            .Where(a => a.IdUser == idUser && !a.AdvertLog.IsDeleted && a.AdvertLog.IsActive)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Advert?> GetAdvertAndAdvertLogByIdAdvert(Guid idAdvert, CancellationToken cancellationToken)
-    {
-        return await _context
-            .Adverts
-            .Include(a => a.AdvertLog)
-            .FirstOrDefaultAsync(cancellationToken);
-    }
-
-    public async Task<Advert?> GetAdvertByIdAdvert(Guid idAdvert, CancellationToken cancellationToken)
-    {
-        return await _context
-            .Adverts
-            .Where(a => a.IdAdvert == idAdvert)
-            .FirstOrDefaultAsync(cancellationToken);
-    }
-
-    public async Task<AdvertDetailsDto?> GetAdvertAssociatedDataByIdUser(Guid idUser,
+    public async Task<Advert?> GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvert(Guid idAdvert,
         CancellationToken cancellationToken)
     {
         return await _context
             .Adverts
-            .Where(a => a.User.IdUser == idUser)
+            .Include(a => a.AdvertLog)
+            .Where(a => a.IdAdvert == idAdvert && !a.AdvertLog.IsDeleted && a.AdvertLog.IsActive)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<Advert?> GetActiveAndNonDeletedAdvertByIdAdvert(Guid idAdvert,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .Adverts
+            .Where(a => a.IdAdvert == idAdvert && !a.AdvertLog.IsDeleted && a.AdvertLog.IsActive)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdUser(Guid idUser,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .Adverts
+            .Where(a => a.User.IdUser == idUser && !a.AdvertLog.IsDeleted && a.AdvertLog.IsActive)
             .Select(a => new AdvertDetailsDto
             {
                 IdAdvert = a.IdAdvert,
@@ -66,12 +69,12 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<AdvertDetailsDto?> GetAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+    public async Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvert(Guid idAdvert,
         CancellationToken cancellationToken)
     {
         return await _context
             .Adverts
-            .Where(a => a.IdAdvert == idAdvert)
+            .Where(a => a.IdAdvert == idAdvert && !a.AdvertLog.IsDeleted && a.AdvertLog.IsActive)
             .Select(a => new AdvertDetailsDto
             {
                 IdAdvert = a.IdAdvert,
@@ -98,26 +101,26 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(ac => ac.CategoryName == categoryName, cancellationToken);
     }
 
-    public async Task<Advert> AddAdvert(Advert advert, CancellationToken cancellationToken)
+    public async Task AddAdvert(Advert advert, CancellationToken cancellationToken)
     {
-        EntityEntry<Advert> entityEntry = await _context.Adverts.AddAsync(advert, cancellationToken);
-        return entityEntry.Entity;
+        await _context.Adverts.AddAsync(advert, cancellationToken);
     }
 
-    public async Task<AdvertLog> AddAdvertLog(AdvertLog advertLog, CancellationToken cancellationToken)
+    public async Task AddAdvertLog(AdvertLog advertLog, CancellationToken cancellationToken)
     {
-        EntityEntry<AdvertLog> entityEntry = await _context.AdvertLogs.AddAsync(advertLog, cancellationToken);
-        return entityEntry.Entity;
+        await _context.AdvertLogs.AddAsync(advertLog, cancellationToken);
     }
 
-    public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsSummariesWithPagination(string? sortOrder, int page,
+    public async Task<PagedListDto<AdvertOverviewDto>> GetAllActiveAndNonDeletedAdvertsSummariesWithPagination(
+        string? sortOrder, int page,
         int pageSize, string? searchTerm, CancellationToken cancellationToken)
     {
-        IQueryable<AdvertOverviewDto> query = _context
+        IQueryable<AdvertOverviewDto> queryable = _context
             .Adverts
+            .Where(a => !a.AdvertLog.IsDeleted && a.AdvertLog.IsActive)
             .Select(a => new AdvertOverviewDto
             {
-                IdAvert = a.IdAdvert,
+                IdAdvert = a.IdAdvert,
                 Title = a.Title,
                 IdUser = a.IdUser,
                 UserFirstName = a.User.FirstName,
@@ -132,26 +135,68 @@ public class AdvertRepository : IAdvertRepository
 
         if (!string.IsNullOrEmpty(searchTerm))
         {
-            query = query.Where(a => a.Description!.Contains(searchTerm.ToLower()));
+            queryable = queryable.Where(a => a.Description!.Contains(searchTerm.ToLower()));
         }
 
         switch (sortOrder)
         {
             case "date_desc":
-                query = query.OrderByDescending(a => a.DateCreated);
+                queryable = queryable.OrderByDescending(a => a.DateCreated);
                 break;
             case "price_asc":
-                query = query.OrderBy(a => a.Price);
+                queryable = queryable.OrderBy(a => a.Price);
                 break;
             case "price_desc":
-                query = query.OrderByDescending(a => a.Price);
+                queryable = queryable.OrderByDescending(a => a.Price);
                 break;
             // "date_asc" is the default case
             default:
-                query = query.OrderBy(a => a.DateCreated);
+                queryable = queryable.OrderBy(a => a.DateCreated);
                 break;
         }
 
-        return await PagedListDtoExtension.ToPagedListAsync(query, page, pageSize, cancellationToken);
+        return await PagedListDtoExtension.ToPagedListAsync(queryable, page, pageSize, cancellationToken);
+    }
+
+    public async Task<Guid?> GetActiveAndNonDeletedIdAdvertByIdUser(Guid idUser, CancellationToken cancellationToken)
+    {
+        return await _context
+            .Adverts
+            .Where(a => a.IdUser == idUser && !a.AdvertLog.IsDeleted && a.AdvertLog.IsActive)
+            .Select(a => a.IdAdvert)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<Guid> FindReviewForAdvertByIdUserAndIdAdvert(Guid idAdvert, Guid idUser,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .Reviews
+            .Where(a => a.IdAdvert == idAdvert && a.IdUser == idUser)
+            .Select(a => a.IdAdvert)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task AddReviewLog(ReviewLog reviewLog, CancellationToken cancellationToken)
+    {
+        await _context.ReviewLogs.AddAsync(reviewLog, cancellationToken);
+    }
+
+    public async Task AddReview(Review review, CancellationToken cancellationToken)
+    {
+        await _context.Reviews.AddAsync(review, cancellationToken);
+    }
+
+    public async Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
+        CancellationToken cancellationToken)
+    {
+        var queryable = _context
+            .Reviews
+            .Select(r =>
+                new ReviewDto(r.IdReview, r.User.FirstName, r.User.LastName, r.Content, r.SatisfactionLevel,
+                    r.ReviewLog.DateCreated))
+            .AsQueryable();
+
+        return await PagedListDtoExtension.ToPagedListAsync(queryable, page, pageSize, cancellationToken);
     }
 }

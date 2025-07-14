@@ -4,7 +4,7 @@ public class ReviewLog
 {
     // Backing fields
     private Guid _idReviewLog;
-    private DateTime _createdAt;
+    private DateTime _dateCreated;
     private DateTime? _dateDeleted;
     private bool _isDeleted;
     private ICollection<Review> _reviews;
@@ -24,10 +24,10 @@ public class ReviewLog
         }
     }
 
-    public DateTime CreatedAt
+    public DateTime DateCreated
     {
-        get { return _createdAt; }
-        private set { _createdAt = value; }
+        get { return _dateCreated; }
+        private set { _dateCreated = value; }
     }
 
     public DateTime? DateDeleted
@@ -53,12 +53,12 @@ public class ReviewLog
     ///     Factory method used to create a new ReviewLog instance.
     /// </summary>
     /// <returns></returns>
-    public ReviewLog Create()
+    public static ReviewLog Create()
     {
         return new ReviewLog
         {
             _idReviewLog = Guid.NewGuid(),
-            _createdAt = DateTime.UtcNow,
+            _dateCreated = DateTime.UtcNow,
             _dateDeleted = null,
             _isDeleted = false,
         };
@@ -69,12 +69,12 @@ public class ReviewLog
     /// </summary>
     /// <param name="idReviewLog"></param>
     /// <returns></returns>
-    public ReviewLog CreateWithId(Guid idReviewLog)
+    public static ReviewLog CreateWithId(Guid idReviewLog)
     {
         return new ReviewLog
         {
             _idReviewLog = idReviewLog,
-            _createdAt = DateTime.UtcNow,
+            _dateCreated = DateTime.UtcNow,
             _dateDeleted = null,
             _isDeleted = false,
         };

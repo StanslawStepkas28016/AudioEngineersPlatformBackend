@@ -17,6 +17,8 @@ public class EngineersPlatformDbContext : DbContext
     public virtual DbSet<Advert> Adverts { get; set; }
     public virtual DbSet<AdvertCategory> AdvertCategories { get; set; }
     public virtual DbSet<AdvertLog> AdvertLogs { get; set; }
+    public virtual DbSet<Review> Reviews { get; set; }
+    public virtual DbSet<ReviewLog> ReviewLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -131,14 +133,26 @@ public class EngineersPlatformDbContext : DbContext
                 adminRole.IdRole, ul12.IdUserLog);
             u11.SetHashedPassword(passwordHasher.HashPassword(u12, u12.Password));
 
+            UserLog ul13 = UserLog.CreateWithId(Guid.Parse("B0F3E786-F68B-46FE-8B18-F4A6E1150804"));
+            ul13.VerifyUserAccount();
+            User u13 = User.CreateWithId(Guid.Parse("FDF7BDA4-F40F-484F-BC40-ADBF8AA98985"), "Marian", "Niewiadomski",
+                "marian@gmail.pl", "+48654123432", "test", clientRole.IdRole, ul13.IdUserLog);
+            u13.SetHashedPassword(passwordHasher.HashPassword(u13, u13.Password));
+
+            UserLog ul14 = UserLog.CreateWithId(Guid.Parse("DBF24F67-7457-47C3-A2AF-A117D8E90B00"));
+            ul14.VerifyUserAccount();
+            User u14 = User.CreateWithId(Guid.Parse("156765B0-84A0-4389-AF75-78F2F36DEA04"), "Maria", "Dąbrowska",
+                "dab@gmail.pl", "+48231443225", "test", clientRole.IdRole, ul14.IdUserLog);
+            u14.SetHashedPassword(passwordHasher.HashPassword(u14, u14.Password));
+
             modelBuilder.Entity<UserLog>().HasData(
                 ul1, ul2, ul3,
-                ul4, ul5, ul6, ul7, ul8, ul9, ul10, ul11, ul12
+                ul4, ul5, ul6, ul7, ul8, ul9, ul10, ul11, ul12, ul13, ul14
             );
 
             modelBuilder.Entity<User>().HasData(
                 u1, u2, u3,
-                u4, u5, u6, u7, u8, u9, u10, u11, u12
+                u4, u5, u6, u7, u8, u9, u10, u11, u12, u13, u14
             );
 
             // Seed AdvertCategory Entity
@@ -207,7 +221,7 @@ public class EngineersPlatformDbContext : DbContext
                 "Using both software synths and hardware outboard gear, he delivers a modern, dynamic sound that stands out in today’s crowded market. Each package includes at least three revision rounds, MIDI files for your own tweaks, and guidance on vocals and performance recording. " +
                 "Ideal for solo artists, bands, and labels seeking a cohesive sonic identity.",
                 Guid.Parse("cedfe8a0-0a9f-4c4a-a50f-76f9fcac396f"),
-                "https://open.spotify.com/playlist/37i9dQZF1DX6T5dcEQpr4L?si=7890abcdef12",
+                "https://open.spotify.com/playlist/4nZo2X8iHrwhYBYdKvysgI",
                 800.00,
                 u6.IdUser,
                 productionCategory.IdAdvertCategory,
@@ -222,7 +236,7 @@ public class EngineersPlatformDbContext : DbContext
                 "With fluency across Pro Tools, Logic Pro, and Ableton Live, he adapts to your session templates and plugin suites seamlessly. You’ll receive detailed session notes, dry/wet stems, and high-resolution WAV master ready for distribution. " +
                 "Whether it’s a cinematic score or an underground hip-hop track, Michał’s mixes translate beautifully across car stereos, club systems, and earbuds.",
                 Guid.Parse("0c318716-7c49-4735-9ce2-9eb499377e8a"),
-                "https://open.spotify.com/playlist/37i9dQZF1DX4FpIdNJcXqW?si=3456abcd7890",
+                "https://open.spotify.com/playlist/3eoncc59w7c8t1PnKtSOh6",
                 450.00,
                 u7.IdUser,
                 mixingCategory.IdAdvertCategory,
@@ -244,7 +258,8 @@ public class EngineersPlatformDbContext : DbContext
                 al6.IdAdvertLog
             );
 
-            AdvertLog al7 = AdvertLog.CreateWithId(Guid.Parse((ReadOnlySpan<char>)"993648CA-9D51-419A-85E8-046E8FC3162B"));
+            AdvertLog al7 =
+                AdvertLog.CreateWithId(Guid.Parse((ReadOnlySpan<char>)"993648CA-9D51-419A-85E8-046E8FC3162B"));
             Advert a7 = Advert.CreateWithId(
                 Guid.Parse("72AC8A29-19E2-4B7B-B810-418D638B5356"),
                 "Beat production & stems by Krzysztof",
@@ -252,7 +267,7 @@ public class EngineersPlatformDbContext : DbContext
                 "He also offers vocal comping and editing as an add-on, ensuring your performance sits perfectly in the groove. Expect high-quality WAVs, labeled session files, and a quick turnaround. " +
                 "Perfect for rappers, singers, and producers looking for fresh, customizable sound beds.",
                 Guid.Parse("ef11919d-3e86-4c08-a594-03800f613fd8"),
-                "https://open.spotify.com/playlist/37i9dQZF1DX6K6802AIa8E?si=ef1234567890",
+                "https://open.spotify.com/playlist/2UZk7JjJnbTut1w8fqs3JL",
                 900.00,
                 u9.IdUser,
                 productionCategory.IdAdvertCategory,
@@ -296,6 +311,8 @@ public class EngineersPlatformDbContext : DbContext
             modelBuilder.Entity<Advert>().HasData(
                 a1, a2, a3, a4, a5, a6, a7, a8, a9
             );
+
+            // TODO: Reviews seeding
         }
     }
 }

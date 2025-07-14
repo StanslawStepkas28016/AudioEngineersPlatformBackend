@@ -1,6 +1,6 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
-using AudioEngineersPlatformBackend.Contracts.Advert;
+using AudioEngineersPlatformBackend.Contracts.Advert.AddReview;
 using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
 using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
 using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
@@ -12,17 +12,19 @@ namespace AudioEngineersPlatformBackend.Application.Services;
 public class AdvertService : IAdvertService
 {
     private readonly IAdvertRepository _advertRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IS3Service _s3Service;
     private readonly ICurrentUserService _currentUserService;
 
     public AdvertService(IAdvertRepository advertRepository, IUnitOfWork unitOfWork, IS3Service s3Service,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService, IUserRepository userRepository)
     {
         _advertRepository = advertRepository;
         _unitOfWork = unitOfWork;
         _s3Service = s3Service;
         _currentUserService = currentUserService;
+        _userRepository = userRepository;
     }
 
     public async Task<CreateAdvertResponse> CreateAdvert(CreateAdvertRequest createAdvertRequest,
@@ -34,8 +36,17 @@ public class AdvertService : IAdvertService
             throw new ArgumentException("User ID cannot be empty.");
         }
 
+        // Check if the user exists
+        var findUserByIdUser = await _userRepository.FindUserByIdUser(createAdvertRequest.IdUser, cancellationToken);
+
+        if (findUserByIdUser == Guid.Empty)
+        {
+            throw new ArgumentException("IdUser cannot be empty.", nameof(createAdvertRequest.IdUser));
+        }
+
         // Check if there is already an advert posted by the user
-        Advert? advertByIdUser = await _advertRepository.GetAdvertByIdUser(createAdvertRequest.IdUser, cancellationToken);
+        Advert? advertByIdUser =
+            await _advertRepository.GetActiveAndNonDeletedAdvertByIdUser(createAdvertRequest.IdUser, cancellationToken);
 
         if (advertByIdUser != null)
         {
@@ -77,15 +88,15 @@ public class AdvertService : IAdvertService
 
         // Add AdvertLog and Advert to the repository
         await _advertRepository.AddAdvertLog(advertLog, cancellationToken);
-        Advert addedAdvert = await _advertRepository.AddAdvert(advert, cancellationToken);
+        await _advertRepository.AddAdvert(advert, cancellationToken);
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
 
         // Map the response
         return new CreateAdvertResponse(
-            addedAdvert.IdAdvert,
-            addedAdvert.IdUser
+            advert.IdAdvert,
+            advert.IdUser
         );
     }
 
@@ -99,7 +110,8 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the advert exists
-        Advert? advertByIdAdvert = await _advertRepository.GetAdvertByIdAdvert(idAdvert, cancellationToken);
+        Advert? advertByIdAdvert =
+            await _advertRepository.GetActiveAndNonDeletedAdvertByIdAdvert(idAdvert, cancellationToken);
 
         if (advertByIdAdvert == null)
         {
@@ -107,7 +119,7 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the user is authorized to edit the advert (either the owner or an administrator)
-        if (advertByIdAdvert.IdUser != _currentUserService.IdUser || !_currentUserService.IsAdministrator)
+        if (advertByIdAdvert.IdUser != _currentUserService.IdUser && !_currentUserService.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified advert does not belong to you.");
         }
@@ -124,7 +136,7 @@ public class AdvertService : IAdvertService
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
 
-    public async Task DeleteAdvert(Guid idAdvert, CancellationToken cancellationToken)
+    public async Task SoftDeleteAdvert(Guid idAdvert, CancellationToken cancellationToken)
     {
         // Validate the idAdvert
         if (idAdvert == Guid.Empty)
@@ -133,7 +145,8 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the advert exists
-        Advert? advertAndAdvertLog = await _advertRepository.GetAdvertAndAdvertLogByIdAdvert(idAdvert, cancellationToken);
+        Advert? advertAndAdvertLog =
+            await _advertRepository.GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvert(idAdvert, cancellationToken);
 
         if (advertAndAdvertLog == null)
         {
@@ -141,7 +154,7 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the user is authorized to delete the advert (either the owner or an administrator)
-        if (advertAndAdvertLog.IdUser != _currentUserService.IdUser || !_currentUserService.IsAdministrator)
+        if (advertAndAdvertLog.IdUser != _currentUserService.IdUser && !_currentUserService.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified advert does not belong to you.");
         }
@@ -149,8 +162,27 @@ public class AdvertService : IAdvertService
         // Mark the advert as deleted
         advertAndAdvertLog.AdvertLog.MarkAsDeleted();
 
+
         // Save the changes
         await _unitOfWork.CompleteAsync(cancellationToken);
+    }
+
+    public async Task<Guid> GetAdvertIdAdvertByIdUser(Guid idUser, CancellationToken cancellationToken)
+    {
+        if (idUser == Guid.Empty)
+        {
+            throw new ArgumentException("IdUser cannot be empty.", nameof(idUser));
+        }
+
+        Guid? idAdvertBasedOnIdUser =
+            await _advertRepository.GetActiveAndNonDeletedIdAdvertByIdUser(idUser, cancellationToken);
+
+        if (idAdvertBasedOnIdUser == null)
+        {
+            throw new Exception("Advert not found.");
+        }
+
+        return idAdvertBasedOnIdUser.Value;
     }
 
     public async Task<GetAdvertDetailsResponse> GetAdvertAssociatedDataByIdUser(Guid idUser,
@@ -162,7 +194,8 @@ public class AdvertService : IAdvertService
             throw new ArgumentException("IdUser cannot be empty.", nameof(idUser));
         }
 
-        AdvertDetailsDto? advert = await _advertRepository.GetAdvertAssociatedDataByIdUser(idUser, cancellationToken);
+        AdvertDetailsDto? advert =
+            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdUser(idUser, cancellationToken);
 
         if (advert == null)
         {
@@ -198,7 +231,8 @@ public class AdvertService : IAdvertService
             throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
         }
 
-        AdvertDetailsDto? advert = await _advertRepository.GetAdvertAssociatedDataByIdUser(idAdvert, cancellationToken);
+        AdvertDetailsDto? advert =
+            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvert(idAdvert, cancellationToken);
 
         if (advert == null)
         {
@@ -233,7 +267,8 @@ public class AdvertService : IAdvertService
     {
         // Fetch paginated adverts
         PagedListDto<AdvertOverviewDto> allAdvertsWithPagination =
-            await _advertRepository.GetAllAdvertsSummariesWithPagination(sortOrder, page, pageSize, searchTerm,
+            await _advertRepository.GetAllActiveAndNonDeletedAdvertsSummariesWithPagination(sortOrder, page, pageSize,
+                searchTerm,
                 cancellationToken);
 
 
@@ -251,5 +286,53 @@ public class AdvertService : IAdvertService
     {
         Guid key = await _s3Service.TryUploadFileAsync(coverImageFile, cancellationToken);
         return key;
+    }
+
+    public async Task<Guid> AddReview(AddReviewRequest addReviewRequest,
+        CancellationToken cancellationToken)
+    {
+        // Check if the user has already posted a review under the requested advert
+        var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvert(
+            addReviewRequest.IdAdvert,
+            _currentUserService.IdUser,
+            cancellationToken
+        );
+
+        if (findReviewForAdvertByIdUserAndIdAdvert != Guid.Empty)
+        {
+            throw new Exception("You have already posted a review under this advert.");
+        }
+
+        // Create a ReviewLog
+        ReviewLog reviewLog = ReviewLog.Create();
+
+        // Create a Review
+        Review review = Review.Create(addReviewRequest.IdAdvert,
+            reviewLog.IdReviewLog,
+            _currentUserService.IdUser,
+            addReviewRequest.Content,
+            addReviewRequest.SatisfactionLevel
+        );
+
+        // Persist the data
+        await _advertRepository.AddReviewLog(reviewLog, cancellationToken);
+        await _advertRepository.AddReview(review, cancellationToken);
+        await _unitOfWork.CompleteAsync(cancellationToken);
+
+        return review.IdReview;
+    }
+
+    public async Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
+        CancellationToken cancellationToken)
+    {
+        if (idAdvert == Guid.Empty)
+        {
+            throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
+        }
+
+        PagedListDto<ReviewDto> reviewsForAdvertPaginated =
+            await _advertRepository.GetReviewsForAdvertPaginated(idAdvert, page, pageSize, cancellationToken);
+
+        return reviewsForAdvertPaginated;
     }
 }

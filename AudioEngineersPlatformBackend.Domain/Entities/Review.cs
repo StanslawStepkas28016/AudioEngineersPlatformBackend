@@ -5,22 +5,24 @@ public class Review
     // Backing fields
     private Guid _idReview;
     private string _content = string.Empty;
-    private short _satisfactionLevel;
+    private byte _satisfactionLevel;
     private Guid _idAdvert;
     private Guid _idReviewLog;
     private Advert? _advert;
     private ReviewLog? _reviewLog;
+    private Guid _idUser;
+    private User _user;
 
     // Constants
-    private const short MinSatisfactionLevel = 1;
-    private const short MaxSatisfactionLevel = 5;
+    private const byte MinSatisfactionLevel = 1;
+    private const byte MaxSatisfactionLevel = 5;
     private const int MinContentLength = 35;
     private const int MaxContentLength = 1500;
 
     // Properties
     public Guid IdReview
     {
-        get => _idReview;
+        get { return _idReview; }
         private set
         {
             if (value == Guid.Empty)
@@ -34,7 +36,7 @@ public class Review
 
     public string Content
     {
-        get => _content;
+        get { return _content; }
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -53,12 +55,12 @@ public class Review
         }
     }
 
-    public short SatisfactionLevel
+    public byte SatisfactionLevel
     {
-        get => _satisfactionLevel;
+        get { return _satisfactionLevel; }
         private set
         {
-            if (_satisfactionLevel < MinSatisfactionLevel || _satisfactionLevel > MaxSatisfactionLevel)
+            if (value < MinSatisfactionLevel || value > MaxSatisfactionLevel)
             {
                 throw new ArgumentException(
                     $"SatisfactionLevel must be between {MinSatisfactionLevel} and {MaxSatisfactionLevel}.",
@@ -72,7 +74,7 @@ public class Review
     // References 
     public Guid IdAdvert
     {
-        get => _idAdvert;
+        get { return _idAdvert; }
         private set
         {
             if (value == Guid.Empty)
@@ -86,13 +88,13 @@ public class Review
 
     public Advert Advert
     {
-        get => _advert;
-        private set => _advert = value;
+        get { return _advert; }
+        private set { _advert = value; }
     }
 
     public Guid IdReviewLog
     {
-        get => _idReviewLog;
+        get { return _idReviewLog; }
         set
         {
             if (value == Guid.Empty)
@@ -106,8 +108,28 @@ public class Review
 
     public ReviewLog ReviewLog
     {
-        get => _reviewLog;
-        private set => _reviewLog = value;
+        get { return _reviewLog; }
+        private set { _reviewLog = value; }
+    }
+
+    public Guid IdUser
+    {
+        get { return _idUser; }
+        private set
+        {
+            if (value == Guid.Empty)
+            {
+                throw new ArgumentException("IdUser cannot be empty", nameof(value));
+            }
+
+            _idUser = value;
+        }
+    }
+
+    public User User
+    {
+        get { return _user; }
+        set { _user = value; }
     }
 
     // Private constructor for EF Core
@@ -119,19 +141,21 @@ public class Review
     ///     Factory method used to create a new Review instance.
     /// </summary>
     /// <param name="idAdvert"></param>
+    /// <param name="idReviewLog"></param>
+    /// <param name="idUser"></param>
     /// <param name="content"></param>
     /// <param name="satisfactionLevel"></param>
-    /// <param name="idReviewLog"></param>
     /// <returns></returns>
-    public Review CreateReview(Guid idAdvert, string content, short satisfactionLevel, Guid idReviewLog)
+    public static Review Create(Guid idAdvert, Guid idReviewLog, Guid idUser, string content, byte satisfactionLevel)
     {
         return new Review
         {
             IdReview = Guid.NewGuid(),
             IdAdvert = idAdvert,
+            IdReviewLog = idReviewLog,
+            IdUser = idUser,
             Content = content,
-            SatisfactionLevel = satisfactionLevel,
-            IdReviewLog = idReviewLog
+            SatisfactionLevel = satisfactionLevel
         };
     }
 
@@ -140,19 +164,23 @@ public class Review
     /// </summary>
     /// <param name="idReview"></param>
     /// <param name="idAdvert"></param>
+    /// <param name="idReviewLog"></param>
+    /// <param name="idUser"></param>
     /// <param name="content"></param>
     /// <param name="satisfactionLevel"></param>
-    /// <param name="idReviewLog"></param>
     /// <returns></returns>
-    public Review CreateReviewWithId(Guid idReview, Guid idAdvert, string content, short satisfactionLevel, Guid idReviewLog)
+    /// 
+    public static Review CreateWithId(Guid idReview, Guid idAdvert, Guid idReviewLog, Guid idUser, string content,
+        byte satisfactionLevel)
     {
         return new Review
         {
             IdReview = idReview,
             IdAdvert = idAdvert,
+            IdReviewLog = idReviewLog,
+            IdUser = idUser,
             Content = content,
-            SatisfactionLevel = satisfactionLevel,
-            IdReviewLog = idReviewLog
+            SatisfactionLevel = satisfactionLevel
         };
     }
 }

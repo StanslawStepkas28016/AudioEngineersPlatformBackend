@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace AudioEngineersPlatformBackend.Infrastructure.Context.Configuration;
 
 public class UserEfConfig : IEntityTypeConfiguration<User>
-{
+{ 
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder
@@ -49,7 +49,7 @@ public class UserEfConfig : IEntityTypeConfiguration<User>
             .HasForeignKey(u => u.IdUserLog)
             .HasConstraintName("FK_User_UserLog")
             .OnDelete(DeleteBehavior.Restrict);
-
+        
         builder
             .HasIndex(u => u.IdUser)
             .HasDatabaseName("IX_User_ForCheckAuth")

@@ -2,7 +2,7 @@ namespace AudioEngineersPlatformBackend.Application.Dtos;
 
 public class AdvertOverviewDto
 {
-    public Guid IdAvert { get; set; }
+    public Guid IdAdvert { get; set; }
     public string? Title { get; set; }
     public Guid IdUser { get; set; }
     public string? UserFirstName { get; set; }

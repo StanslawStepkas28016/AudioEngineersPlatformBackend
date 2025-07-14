@@ -22,7 +22,6 @@ public static class DependencyInjection
         // Add settings for JWT
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<ICookieUtil, CookieUtil>();
-
         services.Configure<JwtSettings>(
             configuration.GetSection("JWTSettings")
         );

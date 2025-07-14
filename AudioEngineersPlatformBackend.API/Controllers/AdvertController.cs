@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Contracts.Advert;
+using AudioEngineersPlatformBackend.Contracts.Advert.AddReview;
 using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
 using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
 using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
@@ -35,7 +36,8 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
 
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpPatch("{idAdvert:guid}")]
-    public async Task<IActionResult> ChangeAdvertData(Guid idAdvert, ChangeAdvertDataRequest changeAdvertDataRequest,
+    public async Task<IActionResult> ChangeAdvertData(Guid idAdvert,
+        [FromBody] ChangeAdvertDataRequest changeAdvertDataRequest,
         CancellationToken cancellationToken)
     {
         await advertService.ChangeAdvertData(idAdvert, changeAdvertDataRequest, cancellationToken);
@@ -50,11 +52,19 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <returns></returns>
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpDelete("{idAdvert:guid}")]
-    public async Task<IActionResult> DeleteAdvert(Guid idAdvert,
+    public async Task<IActionResult> SoftDeleteAdvert(Guid idAdvert,
         CancellationToken cancellationToken)
     {
-        await advertService.DeleteAdvert(idAdvert, cancellationToken);
+        await advertService.SoftDeleteAdvert(idAdvert, cancellationToken);
         return StatusCode(StatusCodes.Status204NoContent);
+    }
+
+    [Authorize(Roles = "Admin, Audio engineer")]
+    [HttpGet("{idUser:guid}/id-advert")]
+    public async Task<IActionResult> GetAdvertIdByUserId(Guid idUser, CancellationToken cancellationToken)
+    {
+        Guid? advertIdAdvertByIdUser = await advertService.GetAdvertIdAdvertByIdUser(idUser, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, advertIdAdvertByIdUser);
     }
 
     /// <summary>
@@ -121,5 +131,22 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     {
         Guid mockImageUploadResponse = await advertService.MockImageUpload(coverImageFile, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, mockImageUploadResponse);
+    }
+
+    [Authorize(Roles = "Admin, Client")]
+    [HttpPost("review")]
+    public async Task<IActionResult> AddReview(AddReviewRequest addReviewRequest, CancellationToken cancellationToken)
+    {
+        Guid addReview = await advertService.AddReview(addReviewRequest, cancellationToken);
+        return StatusCode(StatusCodes.Status201Created, addReview);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("reviews")]
+    public async Task<IActionResult> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
+        CancellationToken cancellationToken)
+    {
+        PagedListDto<ReviewDto> reviewsForAdvertPaginated = await advertService.GetReviewsForAdvertPaginated(idAdvert, page, pageSize, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, reviewsForAdvertPaginated);
     }
 }

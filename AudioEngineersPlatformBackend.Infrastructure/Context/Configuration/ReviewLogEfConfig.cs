@@ -17,7 +17,7 @@ public class ReviewLogEfConfig : IEntityTypeConfiguration<ReviewLog>
             .IsRequired();
 
         builder
-            .Property(rl => rl.CreatedAt)
+            .Property(rl => rl.DateCreated)
             .IsRequired();
 
         builder

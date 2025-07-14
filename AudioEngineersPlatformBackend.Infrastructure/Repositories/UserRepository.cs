@@ -13,4 +13,13 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
+
+    public async Task<Guid> FindUserByIdUser(Guid idUser, CancellationToken cancellationToken)
+    {
+        return await _context
+            .Users
+            .Where(u => u.IdUser == idUser)
+            .Select(u => u.IdUser)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }
