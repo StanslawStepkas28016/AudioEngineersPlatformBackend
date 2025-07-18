@@ -131,7 +131,7 @@ public class AuthService : IAuthService
 
         if (passwordVerificationResult != PasswordVerificationResult.Success)
         {
-            throw new ArgumentException("Invalid password");
+            throw new ArgumentException("Invalid email or password"); //
         }
 
         // Create the Access Token

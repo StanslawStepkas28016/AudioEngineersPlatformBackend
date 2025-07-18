@@ -292,16 +292,16 @@ public class AdvertService : IAdvertService
         CancellationToken cancellationToken)
     {
         // Check if the user has already posted a review under the requested advert
-        var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvert(
-            addReviewRequest.IdAdvert,
-            _currentUserService.IdUser,
-            cancellationToken
-        );
-
-        if (findReviewForAdvertByIdUserAndIdAdvert != Guid.Empty)
-        {
-            throw new Exception("You have already posted a review under this advert.");
-        }
+        // var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvert(
+        //     addReviewRequest.IdAdvert,
+        //     _currentUserService.IdUser,
+        //     cancellationToken
+        // );
+        //
+        // if (findReviewForAdvertByIdUserAndIdAdvert != Guid.Empty)
+        // {
+        //     throw new Exception("You have already posted a review under this advert.");
+        // }
 
         // Create a ReviewLog
         ReviewLog reviewLog = ReviewLog.Create();

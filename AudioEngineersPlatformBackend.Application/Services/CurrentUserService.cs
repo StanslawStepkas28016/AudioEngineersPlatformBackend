@@ -33,7 +33,8 @@ public sealed class CurrentUserService : ICurrentUserService
         if (_idUser == Guid.Empty)
         {
             throw new Exception(
-                $"You are trying to access the {nameof(CurrentUserService)} while not being authenticated!");
+                $"You are trying to access the {nameof(CurrentUserService)} while not being authenticated!"
+            );
         }
     }
 

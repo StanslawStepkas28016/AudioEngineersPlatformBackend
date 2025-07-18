@@ -192,6 +192,7 @@ public class AdvertRepository : IAdvertRepository
     {
         var queryable = _context
             .Reviews
+            .Where(r => r.IdAdvert == idAdvert)
             .Select(r =>
                 new ReviewDto(r.IdReview, r.User.FirstName, r.User.LastName, r.Content, r.SatisfactionLevel,
                     r.ReviewLog.DateCreated))
