@@ -14,7 +14,7 @@ public class AdvertLog
     // Properties
     public Guid IdAdvertLog
     {
-        get { return _idAdvertLog; }
+        get => _idAdvertLog;
         private set
         {
             if (value == Guid.Empty)
@@ -28,39 +28,39 @@ public class AdvertLog
 
     public DateTime DateCreated
     {
-        get { return _dateCreated; }
-        private set { _dateCreated = value; }
+        get => _dateCreated;
+        private set => _dateCreated = value;
     }
 
     public DateTime? DateModified
     {
-        get { return _dateModified; }
-        private set { _dateModified = value; }
+        get => _dateModified;
+        private set => _dateModified = value;
     }
 
     public DateTime? DateDeleted
     {
-        get { return _dateDeleted; }
-        private set { _dateDeleted = value; }
+        get => _dateDeleted;
+        private set => _dateDeleted = value;
     }
 
     public bool IsDeleted
     {
-        get { return _isDeleted; }
-        private set { _isDeleted = value; }
+        get => _isDeleted;
+        private set => _isDeleted = value;
     }
 
     public bool IsActive
     {
-        get { return _isActive; }
-        private set { _isActive = value; }
+        get => _isActive;
+        private set => _isActive = value;
     }
 
     // References
     public ICollection<Advert> Adverts
     {
-        get { return _adverts; }
-        set { _adverts = value; }
+        get => _adverts;
+        set => _adverts = value;
     }
 
     // Private constructor for EF Core

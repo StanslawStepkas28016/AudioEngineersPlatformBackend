@@ -13,7 +13,7 @@ public class Role
     // Properties
     public Guid IdRole
     {
-        get { return _idRole; }
+        get => _idRole;
         private set
         {
             if (value == Guid.Empty)
@@ -27,7 +27,7 @@ public class Role
 
     public string RoleName
     {
-        get { return _roleName; }
+        get => _roleName;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -48,8 +48,8 @@ public class Role
     // References
     public ICollection<User> Users
     {
-        get { return _users; }
-        private set { _users = value; }
+        get => _users;
+        private set => _users = value;
     }
 
     // Private constructor for EF Core

@@ -17,11 +17,12 @@ public class User
     private UserLog _userLog;
     private ICollection<Advert> _adverts;
     private ICollection<Review> _reviews;
+    private ICollection<SocialMediaLink> _socialMediaLinks;
 
     // Properties
     public Guid IdUser
     {
-        get { return _idUser; }
+        get => _idUser;
         private set
         {
             if (value == Guid.Empty)
@@ -35,7 +36,7 @@ public class User
 
     public string FirstName
     {
-        get { return _firstName; }
+        get => _firstName;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -49,7 +50,7 @@ public class User
 
     public string LastName
     {
-        get { return _lastName; }
+        get => _lastName;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -63,7 +64,7 @@ public class User
 
     public string Email
     {
-        get { return _email; }
+        get => _email;
         private set
         {
             if (string.IsNullOrWhiteSpace(value) || new EmailVo(value).GetValidEmail() != value)
@@ -77,7 +78,7 @@ public class User
 
     public string PhoneNumber
     {
-        get { return _phoneNumber; }
+        get => _phoneNumber;
         private set
         {
             if (new PhoneNumberVo(value).GetValidPhoneNumber() != value)
@@ -91,7 +92,7 @@ public class User
 
     public string Password
     {
-        get { return _password; }
+        get => _password;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -106,38 +107,44 @@ public class User
     // References
     public Guid IdRole
     {
-        get { return _idRole; }
-        private set { _idRole = value; }
+        get => _idRole;
+        private set => _idRole = value;
     }
 
     public virtual Role Role
     {
-        get { return _role; }
-        private set { _role = value; }
+        get => _role;
+        private set => _role = value;
     }
 
     public Guid IdUserLog
     {
-        get { return _idUserLog; }
-        private set { _idUserLog = value; }
+        get => _idUserLog;
+        private set => _idUserLog = value;
     }
 
     public virtual UserLog UserLog
     {
-        get { return _userLog; }
-        private set { _userLog = value; }
+        get => _userLog;
+        private set => _userLog = value;
     }
 
     public ICollection<Advert> Adverts
     {
-        get { return _adverts; }
-        private set { _adverts = value; }
+        get => _adverts;
+        private set => _adverts = value;
     }
 
     public ICollection<Review> Reviews
     {
-        get { return _reviews; }
-        private set { _reviews = value; }
+        get => _reviews;
+        private set => _reviews = value;
+    }
+
+    public ICollection<SocialMediaLink> SocialMediaLinks
+    {
+        get => _socialMediaLinks;
+        private set => _socialMediaLinks = value;
     }
 
     // Private constructor used for EF Core

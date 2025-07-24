@@ -22,7 +22,7 @@ public class Review
     // Properties
     public Guid IdReview
     {
-        get { return _idReview; }
+        get => _idReview;
         private set
         {
             if (value == Guid.Empty)
@@ -36,7 +36,7 @@ public class Review
 
     public string Content
     {
-        get { return _content; }
+        get => _content;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -57,7 +57,7 @@ public class Review
 
     public byte SatisfactionLevel
     {
-        get { return _satisfactionLevel; }
+        get => _satisfactionLevel;
         private set
         {
             if (value < MinSatisfactionLevel || value > MaxSatisfactionLevel)
@@ -74,7 +74,7 @@ public class Review
     // References 
     public Guid IdAdvert
     {
-        get { return _idAdvert; }
+        get => _idAdvert;
         private set
         {
             if (value == Guid.Empty)
@@ -88,13 +88,13 @@ public class Review
 
     public Advert Advert
     {
-        get { return _advert; }
-        private set { _advert = value; }
+        get => _advert;
+        private set => _advert = value;
     }
 
     public Guid IdReviewLog
     {
-        get { return _idReviewLog; }
+        get => _idReviewLog;
         set
         {
             if (value == Guid.Empty)
@@ -108,13 +108,13 @@ public class Review
 
     public ReviewLog ReviewLog
     {
-        get { return _reviewLog; }
-        private set { _reviewLog = value; }
+        get => _reviewLog;
+        private set => _reviewLog = value;
     }
 
     public Guid IdUser
     {
-        get { return _idUser; }
+        get => _idUser;
         private set
         {
             if (value == Guid.Empty)
@@ -128,8 +128,8 @@ public class Review
 
     public User User
     {
-        get { return _user; }
-        set { _user = value; }
+        get => _user;
+        set => _user = value;
     }
 
     // Private constructor for EF Core

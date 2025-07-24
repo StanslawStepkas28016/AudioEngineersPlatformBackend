@@ -10,7 +10,7 @@ public class AdvertCategory
     // Properties
     public Guid IdAdvertCategory
     {
-        get { return _idAdvertCategory; }
+        get => _idAdvertCategory;
         private set
         {
             if (value == Guid.Empty)
@@ -24,7 +24,7 @@ public class AdvertCategory
 
     public string CategoryName
     {
-        get { return _categoryName; }
+        get => _categoryName;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -39,8 +39,8 @@ public class AdvertCategory
     // References
     public ICollection<Advert> Adverts
     {
-        get { return _adverts; }
-        set { _adverts = value; }
+        get => _adverts;
+        set => _adverts = value;
     }
 
     /// <summary>

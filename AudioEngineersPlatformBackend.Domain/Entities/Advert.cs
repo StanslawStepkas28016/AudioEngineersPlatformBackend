@@ -24,7 +24,7 @@ public class Advert
     // Properties
     public Guid IdAdvert
     {
-        get { return _idAdvert; }
+        get => _idAdvert;
         private set
         {
             if (value == Guid.Empty)
@@ -38,7 +38,7 @@ public class Advert
 
     public string Title
     {
-        get { return _title; }
+        get => _title;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -58,7 +58,7 @@ public class Advert
 
     public string Description
     {
-        get { return _description; }
+        get => _description;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -78,7 +78,7 @@ public class Advert
 
     public Guid CoverImageKey
     {
-        get { return _coverImageKey; }
+        get => _coverImageKey;
         private set
         {
             if (value == Guid.Empty)
@@ -92,7 +92,7 @@ public class Advert
 
     public string PortfolioUrl
     {
-        get { return _portfolioUrl; }
+        get => _portfolioUrl;
         private set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -106,7 +106,7 @@ public class Advert
 
     public double Price
     {
-        get { return _price; }
+        get => _price;
         private set
         {
             if (value < 0)
@@ -126,7 +126,7 @@ public class Advert
     // References 
     public Guid IdUser
     {
-        get { return _idUser; }
+        get => _idUser;
         private set
         {
             if (value == Guid.Empty)
@@ -140,13 +140,13 @@ public class Advert
 
     public User User
     {
-        get { return _user; }
-        private set { _user = value; }
+        get => _user;
+        private set => _user = value;
     }
 
     public Guid IdAdvertCategory
     {
-        get { return _idAdvertCategory; }
+        get => _idAdvertCategory;
         private set
         {
             if (value == Guid.Empty)
@@ -160,13 +160,13 @@ public class Advert
 
     public AdvertCategory AdvertCategory
     {
-        get { return _advertCategory; }
-        private set { _advertCategory = value; }
+        get => _advertCategory;
+        private set => _advertCategory = value;
     }
 
     public Guid IdAdvertLog
     {
-        get { return _idAdvertLog; }
+        get => _idAdvertLog;
         private set
         {
             if (value == Guid.Empty)
@@ -180,8 +180,8 @@ public class Advert
 
     public AdvertLog AdvertLog
     {
-        get { return _advertLog; }
-        private set { _advertLog = value; }
+        get => _advertLog;
+        private set => _advertLog = value;
     }
 
     public ICollection<Review> Reviews { get; set; }

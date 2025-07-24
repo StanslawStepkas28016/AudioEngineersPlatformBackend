@@ -8,5 +8,4 @@ dotnet ef database update InitialCreate \
   
 // PUT is used to update an existing resource or create a new resource if it does not exist
 // also it is worth mentioning that everything in the body of the request is going to replace the existing resource.
-
 // PATCH is used to apply partial modifications to a resource.

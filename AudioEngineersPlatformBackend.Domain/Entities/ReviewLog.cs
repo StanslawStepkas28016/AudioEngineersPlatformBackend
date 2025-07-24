@@ -12,7 +12,7 @@ public class ReviewLog
     // Properties
     public Guid IdReviewLog
     {
-        get { return _idReviewLog; }
+        get => _idReviewLog;
         private set
         {
             if (value == Guid.Empty)
@@ -26,27 +26,27 @@ public class ReviewLog
 
     public DateTime DateCreated
     {
-        get { return _dateCreated; }
-        private set { _dateCreated = value; }
+        get => _dateCreated;
+        private set => _dateCreated = value;
     }
 
     public DateTime? DateDeleted
     {
-        get { return _dateDeleted; }
-        private set { _dateDeleted = value; }
+        get => _dateDeleted;
+        private set => _dateDeleted = value;
     }
 
     public bool IsDeleted
     {
-        get { return _isDeleted; }
-        private set { _isDeleted = value; }
+        get => _isDeleted;
+        private set => _isDeleted = value;
     }
 
     // References
     public ICollection<Review> Reviews
     {
-        get { return _reviews; }
-        private set { _reviews = value; }
+        get => _reviews;
+        private set => _reviews = value;
     }
 
     /// <summary>

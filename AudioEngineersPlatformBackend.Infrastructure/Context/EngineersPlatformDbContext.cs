@@ -14,6 +14,8 @@ public class EngineersPlatformDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<UserLog> UserLogs { get; set; }
+    public virtual DbSet<SocialMediaLink> SocialMediaLinks { get; set; }
+    public virtual DbSet<SocialMediaName> SocialMediaNames { get; set; }
     public virtual DbSet<Advert> Adverts { get; set; }
     public virtual DbSet<AdvertCategory> AdvertCategories { get; set; }
     public virtual DbSet<AdvertLog> AdvertLogs { get; set; }
@@ -26,9 +28,7 @@ public class EngineersPlatformDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EngineersPlatformDbContext).Assembly);
 
-        /*
-         * Data seeding for the database.
-         */
+        // Data seeding for the database
         if (Database.ProviderName == "Microsoft.EntityFrameworkCore.SqlServer")
         {
             // Seed Role Entity
@@ -312,7 +312,136 @@ public class EngineersPlatformDbContext : DbContext
                 a1, a2, a3, a4, a5, a6, a7, a8, a9
             );
 
-            // TODO: Reviews seeding
+            // Seed ReviewLog Entity
+            ReviewLog rl1 = ReviewLog.CreateWithId(
+                Guid.Parse("D9DE48FD-0ABC-4B52-8371-F9F6959FDC46")
+            );
+
+            ReviewLog rl2 = ReviewLog.CreateWithId(
+                Guid.Parse("1F642C35-DBFB-4062-AE75-7CF0E3F27F6F")
+            );
+
+            ReviewLog rl3 = ReviewLog.CreateWithId(
+                Guid.Parse("9473BB77-CFF3-42D7-BD0E-2807AA2FEF52")
+            );
+
+            ReviewLog rl4 = ReviewLog.CreateWithId(
+                Guid.Parse("0D38BC51-218B-4E12-8E39-6BEF8654419B")
+            );
+
+            ReviewLog rl5 = ReviewLog.CreateWithId(
+                Guid.Parse("39CC7997-692F-40F4-A3EC-68B00940F6A6")
+            );
+
+            ReviewLog rl6 = ReviewLog.CreateWithId(
+                Guid.Parse("60BB7AC9-88DE-4BD4-933B-CE3E71D9CB45")
+            );
+
+            ReviewLog rl7 = ReviewLog.CreateWithId(
+                Guid.Parse("3461A295-B612-4526-AAF1-205EA3A6BEFF")
+            );
+
+            // Seed Review Entity
+            Review r1 = Review.CreateWithId(
+                Guid.Parse("DBE3112C-8914-44B1-8011-D58CB2BA4270"),
+                a1.IdAdvert,
+                rl1.IdReviewLog,
+                u2.IdUser,
+                "I feel like the engineer could not really achieve what I have wanted, however I think they were really patient and creative ;)",
+                3
+            );
+
+            Review r2 = Review.CreateWithId(
+                Guid.Parse("F88CB211-6464-4B28-AA48-75F257624D86"),
+                a1.IdAdvert,
+                rl2.IdReviewLog,
+                u13.IdUser,
+                "Excellent mixes, I have never worked with such a talented engineer in my life. I will recommend working with him all the way!",
+                5
+            );
+
+            Review r3 = Review.CreateWithId(
+                Guid.Parse("649406C7-A59A-4102-B7CB-C39D16BC7117"),
+                a2.IdAdvert,
+                rl3.IdReviewLog,
+                u14.IdUser,
+                "They way I was treated was great. I will most definitely visit this engineer in the studio again!",
+                5
+            );
+
+            Review r4 = Review.CreateWithId(
+                Guid.Parse("FBD98612-7CCD-4B83-AFAA-7084E758E746"),
+                a2.IdAdvert,
+                rl4.IdReviewLog,
+                u12.IdUser,
+                "Poor judgement, does not understand the music I like and hates on doing some additional revisions of a master, I can't recommend this person...",
+                1
+            );
+
+            Review r5 = Review.CreateWithId(
+                Guid.Parse("2D7FE610-9FB0-4A8E-923C-2F7A8AFE2A78"),
+                a3.IdAdvert,
+                rl5.IdReviewLog,
+                u13.IdUser,
+                "I feel like this person knows their craft and is capable of delivering a good mix. I can most definitely recommend working with them :)",
+                4
+            );
+
+            Review r6 = Review.CreateWithId(
+                Guid.Parse("5F3BCC4B-D484-44CC-BAA2-339373B7D0F0"),
+                a4.IdAdvert,
+                rl6.IdReviewLog,
+                u2.IdUser,
+                "Great production skills, I am very happy with the final result!",
+                5
+            );
+
+            Review r7 = Review.CreateWithId(
+                Guid.Parse("A1B2C3D4-E5F6-7A8B-9C0D-E1F2A3B4C5D6"),
+                a1.IdAdvert,
+                rl7.IdReviewLog,
+                u14.IdUser,
+                "The mix was good, but I expected more attention to detail. Overall, a decent experience.",
+                3
+            );
+
+            modelBuilder.Entity<Review>().HasData(
+                r1, r2, r3, r4, r5, r6, r7
+            );
+
+            // Seed SocialMediaName Entity
+            SocialMediaName smn1 = SocialMediaName.CreateWithId(
+                Guid.Parse("02C8722F-DCCC-4060-BEC3-C95815C67703"),
+                "Instagram"
+            );
+
+            SocialMediaName smn2 = SocialMediaName.CreateWithId(
+                Guid.Parse("371DBD6D-76EB-4266-AAA3-2B431C5CBAFE"),
+                "Facebook"
+            );
+
+            SocialMediaName smn3 = SocialMediaName.CreateWithId(
+                Guid.Parse("4639C978-26FC-4027-B036-3FC5C0D1D221"),
+                "Linkedin"
+            );
+
+            modelBuilder.Entity<SocialMediaName>().HasData(
+                smn1, smn2, smn3
+            );
+
+            // Seed SocialMediaLink Entity
+            SocialMediaLink sml1 = SocialMediaLink.CreateWithId(Guid.Parse("8C0D3528-E2CB-430A-BFD4-8E0623C714CF"),
+                u3.IdUser, "https://www.instagram.com/prod.mustang/", smn1.IdSocialMediaName);
+
+            SocialMediaLink sml2 = SocialMediaLink.CreateWithId(Guid.Parse("7667E3A7-E8F9-4049-AF10-A0A405DACF40"),
+                u3.IdUser, "https://www.facebook.com/prod.mustangg/", smn2.IdSocialMediaName);
+
+            SocialMediaLink sml3 = SocialMediaLink.CreateWithId(Guid.Parse("B5B570DD-43C8-471E-976B-91A0D50DE9F5"),
+                u3.IdUser, "https://www.linkedin.com/in/stanisław-stepka/", smn3.IdSocialMediaName);
+
+            modelBuilder.Entity<SocialMediaLink>().HasData(
+                sml1, sml2, sml3
+            );
         }
     }
 }

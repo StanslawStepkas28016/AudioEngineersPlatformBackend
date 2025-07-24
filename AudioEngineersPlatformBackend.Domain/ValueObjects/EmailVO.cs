@@ -4,31 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class EmailVo
+public readonly struct EmailVo
 {
-    private readonly string _address;
-
-    public EmailVo(string address)
-    {
-        if (string.IsNullOrWhiteSpace(address))
-        {
-            throw new ArgumentException("Provided address cannot be null or empty", nameof(address));
-        }
-
-        if (!IsValidEmail(address))
-        {
-            throw new ArgumentException("Provided address is not valid, needs to follow name@domain.com",
-                nameof(address));
-        }
-
-        _address = address;
-    }
-
-
-    public string GetValidEmail()
-    {
-        return _address;
-    }
+    private readonly string? _address;
 
     private bool IsValidEmail(string email)
     {
@@ -72,5 +50,35 @@ public class EmailVo
         {
             return false;
         }
+    }
+
+    private string Address
+    {
+        get { return _address; }
+        init
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Provided address cannot be null or empty", nameof(value));
+            }
+
+            if (!IsValidEmail(value))
+            {
+                throw new ArgumentException("Provided address is not valid, needs to follow name@domain.com",
+                    nameof(value));
+            }
+
+            _address = value;
+        }
+    }
+
+    public EmailVo(string address)
+    {
+        Address = address;
+    }
+
+    public string GetValidEmail()
+    {
+        return _address;
     }
 }

@@ -31,7 +31,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations\" />
+      <Compile Remove="Migrations\20250723200916_AddReviewLogAndReviewAndAddSocialMediaLinkAndSocialMediaName.Designer.cs" />
+      <Compile Remove="Migrations\20250723234039_Initial.Designer.cs" />
+      <Compile Remove="Migrations\20250724002307_Initial.Designer.cs" />
     </ItemGroup>
 
 </Project>

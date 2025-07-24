@@ -26,7 +26,7 @@ public class UserLog
     // Properties
     public Guid IdUserLog
     {
-        get { return _idUserLog; }
+        get => _idUserLog;
         private set
         {
             if (value == Guid.Empty)
@@ -40,7 +40,7 @@ public class UserLog
 
     public DateTime? DateCreated
     {
-        get { return _dateCreated; }
+        get => _dateCreated;
         private set
         {
             if (value == null)
@@ -54,57 +54,57 @@ public class UserLog
 
     public DateTime? DateDeleted
     {
-        get { return _dateDeleted; }
-        private set { _dateDeleted = value; }
+        get => _dateDeleted;
+        private set => _dateDeleted = value;
     }
 
     public bool IsDeleted
     {
-        get { return _isDeleted; }
-        private set { _isDeleted = value; }
+        get => _isDeleted;
+        private set => _isDeleted = value;
     }
 
     public string? VerificationCode
     {
-        get { return _verificationCode; }
-        private set { _verificationCode = value; }
+        get => _verificationCode;
+        private set => _verificationCode = value;
     }
 
     public DateTime? VerificationCodeExpiration
     {
-        get { return _verificationCodeExpiration; }
-        private set { _verificationCodeExpiration = value; }
+        get => _verificationCodeExpiration;
+        private set => _verificationCodeExpiration = value;
     }
 
     public bool IsVerified
     {
-        get { return _isVerified; }
-        private set { _isVerified = value; }
+        get => _isVerified;
+        private set => _isVerified = value;
     }
 
     public DateTime? DateLastLogin
     {
-        get { return _dateLastLogin; }
-        private set { _dateLastLogin = value; }
+        get => _dateLastLogin;
+        private set => _dateLastLogin = value;
     }
 
     public string? RefreshToken
     {
-        get { return _refreshToken; }
-        private set { _refreshToken = value; }
+        get => _refreshToken;
+        private set => _refreshToken = value;
     }
 
     public DateTime? RefreshTokenExp
     {
-        get { return _refreshTokenExp; }
-        private set { _refreshTokenExp = value; }
+        get => _refreshTokenExp;
+        private set => _refreshTokenExp = value;
     }
 
     // References
     public ICollection<User> Users
     {
-        get { return _users; }
-        private set { _users = value; }
+        get => _users;
+        private set => _users = value;
     }
 
     // Private constructor used for EF Core

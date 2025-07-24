@@ -1,17 +1,26 @@
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class GeneralIdVo
+public readonly struct GeneralIdVo
 {
     private readonly Guid _id;
 
+    public Guid Id
+    {
+        get { return _id; }
+        init
+        {
+            if (value == Guid.Empty)
+            {
+                throw new ArgumentException("Provided Id cannot be empty", nameof(value));
+            }
+
+            _id = value;
+        }
+    }
+
     public GeneralIdVo(Guid id)
     {
-        if (id == Guid.Empty)
-        {
-            throw new ArgumentException("Provided Id cannot be empty", nameof(id));
-        }
-
-        _id = id;
+        Id = id;
     }
 
     public Guid GetValidId()

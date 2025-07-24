@@ -1,21 +1,30 @@
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class VerificationCodeVo
+public readonly struct VerificationCodeVo
 {
-    private string VerificationCode { get; set; }
+    private readonly string? _verificationCode;
+
+    private string VerificationCode
+    {
+        get { return _verificationCode; }
+        init
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Verification code cannot be null", nameof(value));
+            }
+
+            if (value.Length != 6)
+            {
+                throw new ArgumentException("Verification code must be 6 characters long", nameof(value));
+            }
+
+            _verificationCode = value;
+        }
+    }
 
     public VerificationCodeVo(string verificationCode)
     {
-        if (string.IsNullOrWhiteSpace(verificationCode))
-        {
-            throw new ArgumentException("Verification code cannot be null", nameof(verificationCode));
-        }
-
-        if (verificationCode.Length != 6)
-        {
-            throw new ArgumentException("Verification code must be 6 characters long", nameof(verificationCode));
-        }
-
         VerificationCode = verificationCode;
     }
 
