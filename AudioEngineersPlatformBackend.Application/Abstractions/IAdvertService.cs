@@ -35,6 +35,6 @@ public interface IAdvertService
     Task<Guid> AddReview(AddReviewRequest addReviewRequest,
         CancellationToken cancellationToken);
 
-    /*Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
-        CancellationToken cancellationToken);*/
+    Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
+        CancellationToken cancellationToken);
 }

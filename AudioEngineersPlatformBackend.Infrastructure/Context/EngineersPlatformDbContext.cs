@@ -341,10 +341,15 @@ public class EngineersPlatformDbContext : DbContext
                 Guid.Parse("3461A295-B612-4526-AAF1-205EA3A6BEFF")
             );
 
+            modelBuilder.Entity<ReviewLog>().HasData(
+                rl1, rl2, rl3, rl4, rl5, rl6, rl7
+            );
+
+
             // Seed Review Entity
             Review r1 = Review.CreateWithId(
                 Guid.Parse("DBE3112C-8914-44B1-8011-D58CB2BA4270"),
-                a1.IdAdvert,
+                a7.IdAdvert,
                 rl1.IdReviewLog,
                 u2.IdUser,
                 "I feel like the engineer could not really achieve what I have wanted, however I think they were really patient and creative ;)",
@@ -353,7 +358,7 @@ public class EngineersPlatformDbContext : DbContext
 
             Review r2 = Review.CreateWithId(
                 Guid.Parse("F88CB211-6464-4B28-AA48-75F257624D86"),
-                a1.IdAdvert,
+                a7.IdAdvert,
                 rl2.IdReviewLog,
                 u13.IdUser,
                 "Excellent mixes, I have never worked with such a talented engineer in my life. I will recommend working with him all the way!",

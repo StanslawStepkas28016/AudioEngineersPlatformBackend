@@ -34,6 +34,12 @@
       <Compile Remove="Migrations\20250723200916_AddReviewLogAndReviewAndAddSocialMediaLinkAndSocialMediaName.Designer.cs" />
       <Compile Remove="Migrations\20250723234039_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724002307_Initial.Designer.cs" />
+      <Compile Remove="Migrations\20250724091428_Initial.Designer.cs" />
+      <Compile Remove="Migrations\20250724091428_Initial.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>

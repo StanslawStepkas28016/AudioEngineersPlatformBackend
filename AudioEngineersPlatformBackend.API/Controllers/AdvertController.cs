@@ -146,8 +146,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     public async Task<IActionResult> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
         CancellationToken cancellationToken)
     {
-        /*PagedListDto<ReviewDto> reviewsForAdvertPaginated = await advertService.GetReviewsForAdvertPaginated(idAdvert, page, pageSize, cancellationToken);
-        return StatusCode(StatusCodes.Status200OK, reviewsForAdvertPaginated);*/
-        return Ok();
+        PagedListDto<ReviewDto> reviewsForAdvertPaginated = await advertService.GetReviewsForAdvertPaginated(idAdvert, page, pageSize, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, reviewsForAdvertPaginated);
     }
 }

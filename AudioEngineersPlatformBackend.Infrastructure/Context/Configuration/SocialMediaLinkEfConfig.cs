@@ -10,7 +10,7 @@ public class SocialMediaLinkEfConfig : IEntityTypeConfiguration<SocialMediaLink>
     {
         builder
             .HasKey(sml => sml.IdSocialMediaLink)
-            .HasName("SocialMediaLink");
+            .HasName("PK_SocialMediaLink");
 
         builder
             .Property(sml => sml.IdSocialMediaLink)
