@@ -1,15 +1,10 @@
-using System.Security.Claims;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
-using AudioEngineersPlatformBackend.Contracts.Advert;
 using AudioEngineersPlatformBackend.Contracts.Advert.AddReview;
 using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
 using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
 using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
-using AudioEngineersPlatformBackend.Domain.Entities;
-using Azure;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
