@@ -21,15 +21,15 @@ public class SocialMediaLinkEfConfig : IEntityTypeConfiguration<SocialMediaLink>
             .IsRequired();
 
         builder
-            .HasOne(sml => sml.User)
-            .WithMany(u => u.SocialMediaLinks)
-            .HasForeignKey(sml => sml.IdUser)
-            .HasConstraintName("FK_SocialMediaLink_User")
+            .HasOne(sml => sml.Advert)
+            .WithMany(sml => sml.SocialMediaLinks)
+            .HasForeignKey(sml => sml.IdAdvert)
+            .HasConstraintName("FK_SocialMediaLink_Advert")
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(sml => sml.SocialMediaName)
-            .WithMany(smn => smn.SocialMediaLinks)
+            .WithMany(sml => sml.SocialMediaLinks)
             .HasForeignKey(sml => sml.IdSocialMediaName)
             .HasConstraintName("FK_SocialMediaLink_SocialMediaName")
             .OnDelete(DeleteBehavior.Restrict);

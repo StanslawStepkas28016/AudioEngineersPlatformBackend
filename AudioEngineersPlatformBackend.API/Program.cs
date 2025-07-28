@@ -2,7 +2,7 @@ using API.Extensions;
 using API.Middlewares.ExceptionMiddleware;
 using AudioEngineersPlatformBackend.Application;
 using AudioEngineersPlatformBackend.Infrastructure;
-
+//
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
     // Add Swagger fore development

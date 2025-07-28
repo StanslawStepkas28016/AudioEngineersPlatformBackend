@@ -436,14 +436,14 @@ public class EngineersPlatformDbContext : DbContext
 
             // Seed SocialMediaLink Entity
             SocialMediaLink sml1 = SocialMediaLink.CreateWithId(Guid.Parse("8C0D3528-E2CB-430A-BFD4-8E0623C714CF"),
-                u3.IdUser, "https://www.instagram.com/prod.mustang/", smn1.IdSocialMediaName);
-
+                a7.IdAdvert, "https://www.instagram.com/prod.mustang/", smn1.IdSocialMediaName);
+            
             SocialMediaLink sml2 = SocialMediaLink.CreateWithId(Guid.Parse("7667E3A7-E8F9-4049-AF10-A0A405DACF40"),
-                u3.IdUser, "https://www.facebook.com/prod.mustangg/", smn2.IdSocialMediaName);
-
+                a7.IdAdvert, "https://www.facebook.com/prod.mustangg/", smn2.IdSocialMediaName);
+            
             SocialMediaLink sml3 = SocialMediaLink.CreateWithId(Guid.Parse("B5B570DD-43C8-471E-976B-91A0D50DE9F5"),
-                u3.IdUser, "https://www.linkedin.com/in/stanisław-stepka/", smn3.IdSocialMediaName);
-
+                a7.IdAdvert, "https://www.linkedin.com/in/stanisław-stepka/", smn3.IdSocialMediaName);
+            
             modelBuilder.Entity<SocialMediaLink>().HasData(
                 sml1, sml2, sml3
             );

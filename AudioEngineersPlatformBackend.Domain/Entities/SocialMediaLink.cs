@@ -5,8 +5,8 @@ public class SocialMediaLink
     // Backing fields
     private Guid _idSocialMediaLink;
     private string _url;
-    private Guid _idUser;
-    private User _user;
+    private Guid _idAdvert;
+    private Advert _advert;
     private Guid _idSocialMediaName;
     private SocialMediaName _socialMediaName;
 
@@ -63,16 +63,16 @@ public class SocialMediaLink
     }
 
     // References
-    public Guid IdUser
+    public Guid IdAdvert
     {
-        get => _idUser;
-        private set => _idUser = value;
+        get => _idAdvert;
+        private set => _idAdvert = value;
     }
 
-    public User User
+    public Advert Advert
     {
-        get => _user;
-        private set => _user = value;
+        get => _advert;
+        private set => _advert = value;
     }
 
     public Guid IdSocialMediaName
@@ -100,23 +100,23 @@ public class SocialMediaLink
     {
     }
 
-    public static SocialMediaLink Create(Guid idUser, string? url, Guid idSocialMediaName)
+    public static SocialMediaLink Create(Guid idAdvert, string? url, Guid idSocialMediaName)
     {
         return new SocialMediaLink
         {
             IdSocialMediaLink = Guid.NewGuid(),
-            IdUser = idUser,
+            IdAdvert = idAdvert,
             Url = url,
             IdSocialMediaName = idSocialMediaName
         };
     }
 
-    public static SocialMediaLink CreateWithId(Guid idSocialMediaLink, Guid idUser, string? url, Guid idSocialMediaName)
+    public static SocialMediaLink CreateWithId(Guid idSocialMediaLink, Guid idAdvert, string? url, Guid idSocialMediaName)
     {
         return new SocialMediaLink
         {
             IdSocialMediaLink = idSocialMediaLink,
-            IdUser = idUser,
+            IdAdvert = idAdvert,
             Url = url,
             IdSocialMediaName = idSocialMediaName
         };

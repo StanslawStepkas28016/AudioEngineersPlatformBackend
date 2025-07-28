@@ -17,7 +17,6 @@ public class User
     private UserLog _userLog;
     private ICollection<Advert> _adverts;
     private ICollection<Review> _reviews;
-    private ICollection<SocialMediaLink> _socialMediaLinks;
 
     // Properties
     public Guid IdUser
@@ -139,12 +138,6 @@ public class User
     {
         get => _reviews;
         private set => _reviews = value;
-    }
-
-    public ICollection<SocialMediaLink> SocialMediaLinks
-    {
-        get => _socialMediaLinks;
-        private set => _socialMediaLinks = value;
     }
 
     // Private constructor used for EF Core

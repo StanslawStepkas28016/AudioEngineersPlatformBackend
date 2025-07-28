@@ -185,6 +185,7 @@ public class Advert
     }
 
     public ICollection<Review> Reviews { get; set; }
+    public ICollection<SocialMediaLink> SocialMediaLinks { get; set; }
 
     // Private constructor used for EF Core
     private Advert()

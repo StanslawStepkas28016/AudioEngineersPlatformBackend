@@ -38,21 +38,21 @@ public class AdvertEfConfig : IEntityTypeConfiguration<Advert>
 
         builder
             .HasOne(a => a.AdvertCategory)
-            .WithMany(ac => ac.Adverts)
+            .WithMany(a => a.Adverts)
             .HasForeignKey(a => a.IdAdvertCategory)
             .HasConstraintName("FK_Advert_AdvertCategory")
             .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(a => a.AdvertLog)
-            .WithMany(al => al.Adverts)
+            .WithMany(a => a.Adverts)
             .HasForeignKey(a => a.IdAdvertLog)
             .HasConstraintName("FK_Advert_AdvertLog")
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(a => a.User)
-            .WithMany(u => u.Adverts)
+            .WithMany(a => a.Adverts)
             .HasForeignKey(a => a.IdUser)
             .HasConstraintName("FK_Advert_User")
             .OnDelete(DeleteBehavior.Restrict);
