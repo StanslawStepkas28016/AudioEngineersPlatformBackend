@@ -5,14 +5,14 @@ using RestSharp;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService;
 
-public class MailService : IEmailService
+public class EmailService : IEmailService
 {
     private readonly RestClient _client;
     private readonly string _apiToken;
     private readonly string _fromEmail;
     private readonly string _fromName;
 
-    public MailService(IOptions<MailtrapSettings> configuration)
+    public EmailService(IOptions<MailtrapSettings> configuration)
     {
         _client = new RestClient(configuration.Value.RestClientUrl);
         _apiToken = configuration.Value.ApiToken;
