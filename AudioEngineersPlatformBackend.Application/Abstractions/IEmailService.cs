@@ -2,5 +2,5 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface IEmailService
 {
-    Task TrySendVerificationEmailAsync(string toEmail, string firstName, string? verificationCode);
+    Task TrySendRegisterVerificationEmailAsync(string toEmail, string firstName, string? verificationCode);
 }
