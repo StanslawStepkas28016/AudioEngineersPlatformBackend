@@ -37,9 +37,9 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the user exists
-        var findUserByIdUser = await _userRepository.FindUserByIdUser(createAdvertRequest.IdUser, cancellationToken);
+        var findUserByIdUser = await _userRepository.DoesUserExistByIdUser(createAdvertRequest.IdUser, cancellationToken);
 
-        if (findUserByIdUser == Guid.Empty)
+        if (!findUserByIdUser)
         {
             throw new ArgumentException("IdUser cannot be empty.", nameof(createAdvertRequest.IdUser));
         }
@@ -257,8 +257,6 @@ public class AdvertService : IAdvertService
             advert.DateCreated,
             advert.DateModified
         );
-
-        throw new NotImplementedException();
     }
 
     public async Task<PagedListDto<AdvertOverviewDto>> GetAllAdvertsSummaries(string? sortOrder, int page, int pageSize,
