@@ -225,4 +225,27 @@ public class User
             IdUserLog = idUserLog,
         };
     }
+
+    public void TryChangeUserEmail(string newEmail)
+    {
+        // Check if the emails differ 
+        if (Email == newEmail)
+        {
+            throw new ArgumentException("New email can't be the same as previous!");
+        }
+
+
+        Email = newEmail;
+    }
+
+    public void TryChangePhoneNumber(string newValidPhoneNumber)
+    {
+        // Check if the numbers differ
+        if (newValidPhoneNumber == PhoneNumber)
+        {
+            throw new ArgumentException("Phone number must differ from the old one!");
+        }
+
+        PhoneNumber = newValidPhoneNumber;
+    }
 }

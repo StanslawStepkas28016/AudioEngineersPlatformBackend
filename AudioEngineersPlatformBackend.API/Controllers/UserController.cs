@@ -1,6 +1,6 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Contracts.User;
-using AudioEngineersPlatformBackend.Contracts.User.ChangeUserProfileData;
+using AudioEngineersPlatformBackend.Contracts.User.ChangeData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,23 +10,15 @@ namespace API.Controllers;
 [Route("api/user")]
 public class UserController(IUserService userService) : ControllerBase
 {
-    private readonly IUserService _userService = userService;
-
-    [Authorize("Admin, Client, Audio engineer")]
-    [HttpGet("{idUser:guid}")]
-    public async Task<IActionResult> GetUserProfileData(Guid idUser, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    [Authorize("Admin, Client, Audio engineer")]
-    [HttpPatch("{idUser:guid}/change-profile")]
-    public async Task<IActionResult> ChangeUserProfileData(
+    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [HttpPatch("{idUser:guid}/change-data")]
+    public async Task<IActionResult> ChangeData(
         Guid idUser,
-        [FromForm] ChangeUserProfileDataRequest changeUserProfileDataRequest,
+        [FromBody] ChangeDataRequest changeDataRequest,
         CancellationToken cancellationToken
     )
     {
-        throw new NotImplementedException();
+        Guid result = await userService.ChangeData(idUser, changeDataRequest, cancellationToken);
+        return StatusCode(StatusCodes.Status202Accepted, result);
     }
 }

@@ -111,7 +111,7 @@ public class UserLog
     private UserLog()
     {
     }
-    
+
     /// <summary>
     ///     Method used for verifying the user account. It is being invoked when the user
     ///     provides the correct verification code that was sent to their email.
@@ -178,6 +178,27 @@ public class UserLog
     }
 
     /// <summary>
+    ///     Method used for generating a 6 digit verification code.
+    ///     This code does not need to be unique for now, as it is going to be
+    ///     deleted soon after its issuing time - 24 hours for now.
+    ///     This method will probably have to be refactored if the app grows
+    /// </summary>
+    /// <returns></returns>
+    private static string GenerateVerificationCode()
+    {
+        return RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6");
+    }
+
+    /// <summary>
+    ///     Method used for generating and setting a new verification code.
+    ///     It is primarily used when a user wants to change their email address.
+    /// </summary>
+    public void GenerateAndSetNewVerificationCode()
+    {
+        VerificationCode = GenerateVerificationCode();
+    }
+
+    /// <summary>
     ///     Factory method for creating a new UserLog instance.
     ///     This method initializes the UserLog with default values.
     ///     It is there because EF.Core requires a parameterless constructor for entity classes,
@@ -192,7 +213,7 @@ public class UserLog
             DateCreated = DateTime.UtcNow,
             DateDeleted = null,
             IsDeleted = false,
-            VerificationCode = RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6"),
+            VerificationCode = GenerateVerificationCode(),
             VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
             IsVerified = false,
             DateLastLogin = null,
@@ -215,7 +236,7 @@ public class UserLog
             DateCreated = DateTime.UtcNow,
             DateDeleted = null,
             IsDeleted = false,
-            VerificationCode = RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6"),
+            VerificationCode = GenerateVerificationCode(),
             VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
             IsVerified = false,
             DateLastLogin = null,

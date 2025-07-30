@@ -29,7 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IAdvertRepository, AdvertRepository>();
 
         // Add external Services
-        services.AddScoped<IEmailService, MailService>();
+        services.AddScoped<IEmailService, EmailService>();
         services.Configure<MailtrapSettings>(
             configuration.GetSection("MailtrapSettings")
         );
