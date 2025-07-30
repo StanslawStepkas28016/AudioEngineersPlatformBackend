@@ -1,3 +1,0 @@
-namespace AudioEngineersPlatformBackend.Contracts.User.ChangeUserProfileData;
-
-public record ChangeUserProfileDataRequest();
