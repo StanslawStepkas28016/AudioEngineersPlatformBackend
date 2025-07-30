@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService.Templates {
+namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService {
     using System;
     
     
@@ -28,8 +28,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailServ
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService.Template" +
-                            "s.EmailMessages", typeof(EmailMessages).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService.EmailMessages", typeof(EmailMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

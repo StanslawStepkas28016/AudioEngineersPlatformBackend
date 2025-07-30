@@ -3,7 +3,6 @@ using System.Reflection;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Infrastructure.ExternalServices.MailService.Templates;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
