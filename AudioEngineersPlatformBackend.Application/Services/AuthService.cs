@@ -70,7 +70,7 @@ public class AuthService : IAuthService
         await _authRepository.AddUser(user, cancellationToken);
 
         // Send a verification email
-        await _emailService.TrySendVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
+        await _emailService.TrySendRegisterVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
