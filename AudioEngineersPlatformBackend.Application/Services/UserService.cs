@@ -10,15 +10,15 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IEmailService _emailService;
+    private readonly ISESService _sesService;
 
     public UserService(IUserRepository userRepository, ICurrentUserService currentUserService, IUnitOfWork unitOfWork,
-        IEmailService emailService)
+        ISESService sesService)
     {
         _userRepository = userRepository;
         _currentUserService = currentUserService;
         _unitOfWork = unitOfWork;
-        _emailService = emailService;
+        _sesService = sesService;
     }
 
     public async Task<Guid> ChangeData(Guid idUser, ChangeDataRequest changeDataRequest,
@@ -84,5 +84,10 @@ public class UserService : IUserService
         await _unitOfWork.CompleteAsync(cancellationToken);
 
         return idUser;
+    }
+
+    public async Task Test()
+    {
+        await _sesService.TrySendRegisterVerificationEmailAsync("s28016@pjwstk.edu.pl", "Stanisław", "123123");
     }
 }

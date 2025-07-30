@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="AWSSDK.S3" Version="4.0.1.6" />
+        <PackageReference Include="AWSSDK.SimpleEmail" Version="4.0.0.15" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
             <PrivateAssets>all</PrivateAssets>
@@ -27,19 +28,35 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="ExternalServices\MailService\Templates\VerificationEmail.html" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="Migrations\20250723200916_AddReviewLogAndReviewAndAddSocialMediaLinkAndSocialMediaName.Designer.cs" />
       <Compile Remove="Migrations\20250723234039_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724002307_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724091428_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724091428_Initial.cs" />
+      <Compile Update="ExternalServices\MailService\Templates\EmailMessages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EmailMessages.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="ExternalServices\SESService\Templates\en-US\VerificationEmail.html" />
+      <EmbeddedResource Include="ExternalServices\SESService\Templates\pl-PL\VerificationEmail.html" />
+      <EmbeddedResource Update="ExternalServices\SESService\Templates\EmailMessages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>EmailMessages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Localization.Abstractions">
+        <HintPath>..\..\..\..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\8.0.11\Microsoft.Extensions.Localization.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

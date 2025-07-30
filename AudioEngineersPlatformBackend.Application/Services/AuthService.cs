@@ -15,16 +15,16 @@ namespace AudioEngineersPlatformBackend.Application.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IEmailService _emailService;
+    private readonly ISESService _sesService;
     private readonly IAuthRepository _authRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITokenUtil _tokenUtil;
     private readonly ICookieUtil _cookieUtil;
 
-    public AuthService(IEmailService emailService, IAuthRepository authRepository,
+    public AuthService(ISESService sesService, IAuthRepository authRepository,
         IUnitOfWork unitOfWork, ITokenUtil tokenUtil, ICookieUtil cookieUtil)
     {
-        _emailService = emailService;
+        _sesService = sesService;
         _authRepository = authRepository;
         _unitOfWork = unitOfWork;
         _tokenUtil = tokenUtil;
@@ -70,7 +70,7 @@ public class AuthService : IAuthService
         await _authRepository.AddUser(user, cancellationToken);
 
         // Send a verification email
-        await _emailService.TrySendRegisterVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
+        await _sesService.TrySendRegisterVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);

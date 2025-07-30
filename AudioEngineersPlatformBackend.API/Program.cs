@@ -9,6 +9,9 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
+    // Add localization
+    builder.Services.AddLocalizationExtension(builder.Configuration);
+
     // Add "Clean Architecture layers"
     builder.Services.AddApplicationLayer(builder.Configuration);
     builder.Services.AddInfrastructureLayer(builder.Configuration);
@@ -46,7 +49,10 @@ WebApplication app = builder.Build();
     // Use authentication and authorization
     app.UseAuthentication();
     app.UseAuthorization();
-
+    
+    // Use request localization
+    app.UseRequestLocalization();
+    
     app.MapControllers();
 
     app.Run();

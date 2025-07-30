@@ -21,4 +21,12 @@ public class UserController(IUserService userService) : ControllerBase
         Guid result = await userService.ChangeData(idUser, changeDataRequest, cancellationToken);
         return StatusCode(StatusCodes.Status202Accepted, result);
     }
+    
+    [AllowAnonymous]
+    [HttpGet("test")]
+    public async Task<IActionResult> Test()
+    {
+        await userService.Test();
+        return Ok();
+    }
 }

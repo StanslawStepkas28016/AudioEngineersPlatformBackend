@@ -20,12 +20,12 @@ public static class DependencyInjection
         services.AddScoped<IAdvertService, AdvertService>();
 
         // Add settings for JWT
-        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddScoped<ICookieUtil, CookieUtil>();
-        services.Configure<JwtSettings>(
-            configuration.GetSection("JWTSettings")
-        );
+        services.Configure<JwtSettings>(configuration.GetSection("JWTSettings"));
         services.AddScoped<ITokenUtil, TokenUtil>();
+        
+        // Add HttpContextAccessor and CookieUtil for accessing cookies sent in the requests
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddScoped<ICookieUtil, CookieUtil>();
 
         // Add services for current user
         services.AddScoped<ICurrentUserService, CurrentUserService>();
