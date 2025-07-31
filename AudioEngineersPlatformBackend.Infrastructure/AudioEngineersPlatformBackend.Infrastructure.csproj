@@ -46,7 +46,7 @@
 
     <ItemGroup>
       <EmbeddedResource Update="ExternalServices\SESService\EmailMessages.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>EmailMessages.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
