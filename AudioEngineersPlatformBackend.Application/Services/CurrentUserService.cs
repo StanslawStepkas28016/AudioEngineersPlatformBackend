@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using Microsoft.AspNetCore.Http;

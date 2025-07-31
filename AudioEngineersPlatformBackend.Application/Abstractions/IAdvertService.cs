@@ -1,10 +1,8 @@
 using AudioEngineersPlatformBackend.Application.Dtos;
-using AudioEngineersPlatformBackend.Contracts.Advert;
 using AudioEngineersPlatformBackend.Contracts.Advert.AddReview;
 using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
 using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
 using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
-using AudioEngineersPlatformBackend.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;

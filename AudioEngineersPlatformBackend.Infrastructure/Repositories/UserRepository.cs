@@ -1,4 +1,3 @@
-using System.Net.Cache;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;

@@ -1,4 +1,3 @@
-using AudioEngineersPlatformBackend.Contracts.Auth;
 using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
 using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;

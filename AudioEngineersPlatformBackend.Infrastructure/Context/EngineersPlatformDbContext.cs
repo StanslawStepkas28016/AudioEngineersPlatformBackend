@@ -1,4 +1,3 @@
-using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

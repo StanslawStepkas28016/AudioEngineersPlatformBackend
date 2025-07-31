@@ -4,7 +4,6 @@ using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
 using AudioEngineersPlatformBackend.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.Repositories;
 

@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Reflection;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using AudioEngineersPlatformBackend.Application.Abstractions;

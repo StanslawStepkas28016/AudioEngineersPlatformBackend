@@ -1,5 +1,4 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Contracts.User;
 using AudioEngineersPlatformBackend.Contracts.User.ChangeData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

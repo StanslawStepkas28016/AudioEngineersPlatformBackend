@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace AudioEngineersPlatformBackend.Application.Dtos;
 
 public sealed class PagedListDto<T>
