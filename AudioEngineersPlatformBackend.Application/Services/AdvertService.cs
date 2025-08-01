@@ -15,15 +15,15 @@ public class AdvertService : IAdvertService
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IS3Service _s3Service;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserUtil _currentUserUtil;
 
     public AdvertService(IAdvertRepository advertRepository, IUnitOfWork unitOfWork, IS3Service s3Service,
-        ICurrentUserService currentUserService, IUserRepository userRepository)
+        ICurrentUserUtil currentUserUtil, IUserRepository userRepository)
     {
         _advertRepository = advertRepository;
         _unitOfWork = unitOfWork;
         _s3Service = s3Service;
-        _currentUserService = currentUserService;
+        _currentUserUtil = currentUserUtil;
         _userRepository = userRepository;
     }
 
@@ -119,7 +119,7 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the user is authorized to edit the advert (either the owner or an administrator)
-        if (advertByIdAdvert.IdUser != _currentUserService.IdUser && !_currentUserService.IsAdministrator)
+        if (advertByIdAdvert.IdUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified advert does not belong to you.");
         }
@@ -154,15 +154,14 @@ public class AdvertService : IAdvertService
         }
 
         // Check if the user is authorized to delete the advert (either the owner or an administrator)
-        if (advertAndAdvertLog.IdUser != _currentUserService.IdUser && !_currentUserService.IsAdministrator)
+        if (advertAndAdvertLog.IdUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified advert does not belong to you.");
         }
 
         // Mark the advert as deleted
         advertAndAdvertLog.AdvertLog.MarkAsDeleted();
-
-
+        
         // Save the changes
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
@@ -292,7 +291,7 @@ public class AdvertService : IAdvertService
         // Check if the user has already posted a review under the requested advert
         var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvert(
             addReviewRequest.IdAdvert,
-            _currentUserService.IdUser,
+            _currentUserUtil.IdUser,
             cancellationToken
         );
 
@@ -307,7 +306,7 @@ public class AdvertService : IAdvertService
         // Create a Review
         Review review = Review.Create(addReviewRequest.IdAdvert,
             reviewLog.IdReviewLog,
-            _currentUserService.IdUser,
+            _currentUserUtil.IdUser,
             addReviewRequest.Content,
             addReviewRequest.SatisfactionLevel
         );
