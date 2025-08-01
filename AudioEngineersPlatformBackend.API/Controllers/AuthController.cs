@@ -86,12 +86,5 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status202Accepted, resetEmailResponse);
     }
 
-    // TODO: Implement the method to change a password by sending an e-mail with instructions.
-    [AllowAnonymous]
-    [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword()
-    {
-        // Change a password by sending an e-mail with instructions
-        throw new NotImplementedException("Reset password functionality is not implemented yet.");
-    }
+    // TODO: ResetPassword endpoint
 }
