@@ -25,10 +25,11 @@ namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESServi
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService.EmailMessages", typeof(EmailMessages).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService.EmailMes" +
+                            "sages", typeof(EmailMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -36,7 +37,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESServi
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -45,15 +46,27 @@ namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESServi
             }
         }
         
-        internal static string EmailBody {
+        public static string VerificationEmailBody {
             get {
-                return ResourceManager.GetString("EmailBody", resourceCulture);
+                return ResourceManager.GetString("VerificationEmailBody", resourceCulture);
             }
         }
         
-        internal static string EmailSub {
+        public static string VerificationEmailSubject {
             get {
-                return ResourceManager.GetString("EmailSub", resourceCulture);
+                return ResourceManager.GetString("VerificationEmailSubject", resourceCulture);
+            }
+        }
+        
+        public static string EmailResetEmailBody {
+            get {
+                return ResourceManager.GetString("EmailResetEmailBody", resourceCulture);
+            }
+        }
+        
+        public static string EmailResetEmailSubject {
+            get {
+                return ResourceManager.GetString("EmailResetEmailSubject", resourceCulture);
             }
         }
     }
