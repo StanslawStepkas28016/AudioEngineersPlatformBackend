@@ -20,6 +20,20 @@ public class SESService : ISESService
         _localizer = localizer;
     }
 
+    private async Task SendEmailAsync(SendEmailRequest sendEmailRequest)
+    {
+        // Send a request
+        try
+        {
+            await _sesClient.SendEmailAsync(sendEmailRequest);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(
+                $"An error occurred while sending the email, please contact the administrator! {e.Message}");
+        }
+    }
+
     public async Task TrySendRegisterVerificationEmailAsync(string toEmail, string firstName,
         string? verificationCode)
     {
@@ -34,10 +48,10 @@ public class SESService : ISESService
         }
 
         // Read the template
-        string template = _localizer[EmailMessages.EmailBody];
+        string bodyTemplate = _localizer[EmailMessages.VerificationEmailBody];
 
         // Prepare the template
-        var preparedTemplate = template.Replace("{firstName}", firstName)
+        var preparedBodyTemplate = bodyTemplate.Replace("{firstName}", firstName)
             .Replace("{verificationCode}", verificationCode);
 
         // Prepare a request    
@@ -51,26 +65,63 @@ public class SESService : ISESService
             },
             Message = new Message
             {
-                Subject = new Content(_localizer[EmailMessages.EmailSub]),
+                Subject = new Content(_localizer[EmailMessages.VerificationEmailSubject]),
                 Body = new Body
                 {
                     Html = new Content
                     {
                         Charset = "UTF-8",
-                        Data = preparedTemplate
+                        Data = preparedBodyTemplate
                     },
                 }
             }
         };
 
-        // Send a request
-        try
+        await SendEmailAsync(sendRequest);
+    }
+
+    public async Task TrySendEmailResetEmailAsync(string toEmail, string firstName, string uniqueUrl)
+    {
+        // Validate the parameters - this should never happen but just in case, checking
+        if (
+            string.IsNullOrWhiteSpace(toEmail)
+            || string.IsNullOrWhiteSpace(uniqueUrl)
+        )
         {
-            await _sesClient.SendEmailAsync(sendRequest);
+            throw new ArgumentException("You must provide all arguments to send email messages!");
         }
-        catch (Exception e)
+
+        // Read the template
+        string bodyTemplate = _localizer[EmailMessages.EmailResetEmailBody];
+
+        // Prepare the template
+        var preparedBodyTemplate = bodyTemplate.Replace("{firstName}", firstName)
+            .Replace("{uniqueUrlGuid}", uniqueUrl);
+
+
+        // Prepare a request    
+        var sendRequest = new SendEmailRequest
         {
-            throw new Exception($"An error occurred while sending a verification email! {e.Message}");
-        }
+            Source = _settings.SenderEmail,
+            Destination = new Destination
+            {
+                ToAddresses =
+                    new List<string> { toEmail }
+            },
+            Message = new Message
+            {
+                Subject = new Content(_localizer[EmailMessages.EmailResetEmailSubject]),
+                Body = new Body
+                {
+                    Html = new Content
+                    {
+                        Charset = "UTF-8",
+                        Data = preparedBodyTemplate
+                    },
+                }
+            }
+        };
+
+        await SendEmailAsync(sendRequest);
     }
 }
