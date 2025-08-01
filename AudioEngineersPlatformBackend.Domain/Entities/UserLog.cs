@@ -21,10 +21,6 @@ public class UserLog
     private DateTime? _dateLastLogin;
     private string? _refreshToken;
     private DateTime? _refreshTokenExpiration;
-    private Guid? _resetPasswordToken;
-    private DateTime? _resetPasswordTokenExpiration;
-    private Guid? _resetEmailToken;
-    private DateTime? _resetEmailTokenExpiration;
     private ICollection<User> _users;
 
     // Properties
@@ -35,7 +31,7 @@ public class UserLog
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdUserLog cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(IdUserLog)} cannot be empty");
             }
 
             _idUserLog = value;
@@ -49,7 +45,7 @@ public class UserLog
         {
             if (value == null)
             {
-                throw new ArgumentException("DateCreated cannot be null", nameof(value));
+                throw new ArgumentException($"{nameof(DateCreated)} cannot be null");
             }
 
             _dateCreated = value;
@@ -79,7 +75,7 @@ public class UserLog
         get => _verificationCodeExpiration;
         private set => _verificationCodeExpiration = value;
     }
-    
+
     public bool IsVerified
     {
         get => _isVerified;
@@ -103,33 +99,6 @@ public class UserLog
         get => _refreshTokenExpiration;
         private set => _refreshTokenExpiration = value;
     }
-    
-    /**/
-    public Guid? ResetPasswordToken
-    {
-        get => _resetPasswordToken;
-        private set => _resetPasswordToken = value;
-    }
-    
-    public DateTime? ResetPasswordTokenExpiration
-    {
-        get => _resetPasswordTokenExpiration;
-        private set => _resetPasswordTokenExpiration = value;
-    }
-
-    public Guid? ResetEmailToken
-    {
-        get => _resetEmailToken;
-        private set => _resetEmailToken = value;
-    }
-
-    public DateTime? ResetEmailTokenExpiration
-    {
-        get => _resetEmailTokenExpiration;
-        private set => _resetEmailTokenExpiration = value;
-    }
-    /**/
-    
 
     // References
     public ICollection<User> Users
@@ -195,12 +164,12 @@ public class UserLog
     {
         if (string.IsNullOrWhiteSpace(refreshToken))
         {
-            throw new ArgumentException("Refresh token cannot be empty", nameof(refreshToken));
+            throw new ArgumentException($"{nameof(refreshToken)} cannot be empty");
         }
 
         if (refreshTokenExp <= DateTime.UtcNow)
         {
-            throw new ArgumentException("Refresh token expiration date must be in the future", nameof(refreshTokenExp));
+            throw new ArgumentException($"{nameof(refreshTokenExp)} must be in the future");
         }
 
         RefreshToken = refreshToken;
@@ -275,11 +244,5 @@ public class UserLog
             RefreshToken = null,
             RefreshTokenExpiration = null,
         };
-    }
-
-    public void SetEmailResetTokenAndItsExpiration(Guid resetEmailToken)
-    {
-        ResetEmailToken = resetEmailToken;
-        ResetEmailTokenExpiration = DateTime.Now.AddHours(24);
     }
 }

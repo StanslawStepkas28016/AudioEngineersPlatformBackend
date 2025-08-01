@@ -15,7 +15,7 @@ public class SocialMediaName
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdSocialMediaName cannot be empty", nameof(IdSocialMediaName));
+                throw new ArgumentException($"{nameof(IdSocialMediaName)} cannot be empty");
             }
 
             _idSocialMediaName = value;
@@ -29,7 +29,7 @@ public class SocialMediaName
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Name cannot be empty", nameof(Name));
+                throw new ArgumentException($"{nameof(Name)} cannot be empty");
             }
 
             _name = value;

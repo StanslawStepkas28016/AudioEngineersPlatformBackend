@@ -27,7 +27,7 @@ public class User
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdUser cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(IdUser)} cannot be empty.");
             }
 
             _idUser = value;
@@ -41,7 +41,7 @@ public class User
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("FirstName cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(FirstName)} cannot be empty.");
             }
 
             _firstName = value;
@@ -55,7 +55,7 @@ public class User
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("LastName cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(LastName)} cannot be empty.");
             }
 
             _lastName = value;
@@ -69,7 +69,7 @@ public class User
         {
             if (string.IsNullOrWhiteSpace(value) || new EmailVo(value).GetValidEmail() != value)
             {
-                throw new ArgumentException("Invalid email address", nameof(value));
+                throw new ArgumentException($"Invalid {nameof(Email)}.");
             }
 
             _email = value;
@@ -83,7 +83,7 @@ public class User
         {
             if (new PhoneNumberVo(value).GetValidPhoneNumber() != value)
             {
-                throw new ArgumentException("Invalid phone number", nameof(value));
+                throw new ArgumentException($"Invalid {nameof(PhoneNumber)}.");
             }
 
             _phoneNumber = value;
@@ -97,7 +97,7 @@ public class User
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Password cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(Password)} cannot be empty.");
             }
 
             _password = value;
@@ -163,7 +163,7 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(password))
         {
-            throw new ArgumentException("Password cannot be empty", nameof(password));
+            throw new ArgumentException($"{nameof(Password)} cannot be empty.");
         }
 
         Password = password;
@@ -231,7 +231,7 @@ public class User
         // Check if the emails differ 
         if (Email == newEmail)
         {
-            throw new ArgumentException("New email can't be the same as previous!");
+            throw new ArgumentException($"New {nameof(Email).ToLower()} can't be the same as previous.");
         }
 
 
@@ -243,7 +243,7 @@ public class User
         // Check if the numbers differ
         if (newValidPhoneNumber == PhoneNumber)
         {
-            throw new ArgumentException("Phone number must differ from the old one!");
+            throw new ArgumentException($"New {nameof(PhoneNumber).ToLower()} must differ from the old one.");
         }
 
         PhoneNumber = newValidPhoneNumber;

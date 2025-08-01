@@ -27,7 +27,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdReview cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(IdReview)} cannot be empty");
             }
 
             _idReview = value;
@@ -63,8 +63,7 @@ public class Review
             if (value < MinSatisfactionLevel || value > MaxSatisfactionLevel)
             {
                 throw new ArgumentException(
-                    $"SatisfactionLevel must be between {MinSatisfactionLevel} and {MaxSatisfactionLevel}.",
-                    nameof(value));
+                    $"{nameof(SatisfactionLevel)} must be between {MinSatisfactionLevel} and {MaxSatisfactionLevel}.");
             }
 
             _satisfactionLevel = value;
@@ -79,7 +78,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdAdvert cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(IdAdvert)} cannot be empty");
             }
 
             _idAdvert = value;
@@ -99,7 +98,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdReviewLog cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(IdReviewLog)} cannot be empty");
             }
 
             _idReviewLog = value;
@@ -119,7 +118,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdUser cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(IdUser)} cannot be empty");
             }
 
             _idUser = value;

@@ -22,7 +22,7 @@ public class SocialMediaLink
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdSocialMediaLink cannot be empty", nameof(IdSocialMediaLink));
+                throw new ArgumentException($"{nameof(IdSocialMediaLink)} cannot be empty");
             }
 
             _idSocialMediaLink = value;
@@ -36,7 +36,7 @@ public class SocialMediaLink
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Url cannot be empty", nameof(Url));
+                throw new ArgumentException($"{nameof(Url)} cannot be empty");
             }
 
             // Validating the URL for only the allowed ones
@@ -48,7 +48,7 @@ public class SocialMediaLink
             // Any errors from the input Url is going to be caught here
             catch (Exception e)
             {
-                throw new ArgumentException("Url is invalid", nameof(Url));
+                throw new ArgumentException($"{nameof(Url)} is invalid");
             }
 
             if (!AllowedUrls.Contains(uri.Authority))
@@ -82,7 +82,7 @@ public class SocialMediaLink
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdSocialMediaName cannot be empty.", nameof(value));
+                throw new ArgumentException($"{nameof(IdSocialMediaName)} cannot be empty.");
             }
 
             _idSocialMediaName = value;

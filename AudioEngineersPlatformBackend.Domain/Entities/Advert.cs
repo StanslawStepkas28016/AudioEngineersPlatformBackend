@@ -29,7 +29,7 @@ public class Advert
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdAdvert cannot be empty.", nameof(value));
+                throw new ArgumentException($"{nameof(IdAdvert)} cannot be empty.");
             }
 
             _idAdvert = value;
@@ -43,13 +43,13 @@ public class Advert
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Title cannot be empty.", nameof(value));
+                throw new ArgumentException($"{nameof(Title)} cannot be empty.");
             }
 
 
             if (value.Length > MaxTitleLength)
             {
-                throw new ArgumentException($"Title cannot exceed {MaxTitleLength} characters.", nameof(value));
+                throw new ArgumentException($"{nameof(Title)} cannot exceed {MaxTitleLength} characters.");
             }
 
             _title = value;
@@ -63,12 +63,12 @@ public class Advert
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Description cannot be null or whitespace.", nameof(value));
+                throw new ArgumentException($"{nameof(Description)} cannot be null or whitespace.");
             }
 
             if (value.Length > MaxDescriptionLength)
             {
-                throw new ArgumentException($"Description cannot exceed {MaxDescriptionLength} characters.",
+                throw new ArgumentException($"{nameof(Description)} cannot exceed {MaxDescriptionLength} characters.",
                     nameof(value));
             }
 
@@ -83,7 +83,7 @@ public class Advert
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("CoverImageKey cannot be null or whitespace.", nameof(value));
+                throw new ArgumentException($"{nameof(CoverImageKey)} cannot be null or whitespace.");
             }
 
             _coverImageKey = value;
@@ -97,7 +97,7 @@ public class Advert
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("PortfolioUrl cannot be null or whitespace.", nameof(value));
+                throw new ArgumentException($"{nameof(PortfolioUrl)} cannot be null or whitespace.");
             }
 
             _portfolioUrl = value;
@@ -111,12 +111,12 @@ public class Advert
         {
             if (value < 0)
             {
-                throw new ArgumentException("Price cannot be negative.", nameof(value));
+                throw new ArgumentException($"{nameof(Price)} cannot be negative.");
             }
 
             if (value > MaxPrice)
             {
-                throw new ArgumentException($"Price cannot be greater than {MaxPrice}.", nameof(value));
+                throw new ArgumentException($"{nameof(Price)} cannot be greater than {MaxPrice}.");
             }
 
             _price = value;
@@ -131,7 +131,7 @@ public class Advert
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdUser cannot be empty.", nameof(value));
+                throw new ArgumentException($"{nameof(IdUser)} cannot be empty.");
             }
 
             _idUser = value;
@@ -151,7 +151,7 @@ public class Advert
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdAdvertCategory cannot be empty.", nameof(value));
+                throw new ArgumentException($"{nameof(IdAdvertCategory)} cannot be empty.");
             }
 
             _idAdvertCategory = value;
@@ -171,7 +171,7 @@ public class Advert
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdAdvertLog cannot be empty.", nameof(value));
+                throw new ArgumentException($"{nameof(IdAdvertLog)} cannot be empty.");
             }
 
             _idAdvertLog = value;
@@ -272,22 +272,22 @@ public class Advert
         string? portfolioUrl,
         double? price)
     {
-        if (title != null)
+        if (!string.IsNullOrWhiteSpace(title))
         {
             Title = title;
         }
 
-        if (description != null)
+        if (!string.IsNullOrWhiteSpace(description))
         {
             Description = description;
         }
 
-        if (portfolioUrl != null)
+        if (!string.IsNullOrWhiteSpace(portfolioUrl))
         {
             PortfolioUrl = portfolioUrl;
         }
 
-        if (price.HasValue)
+        if (price is > 0 and <= MaxPrice)
         {
             Price = price.Value;
         }
