@@ -2,9 +2,9 @@ using System.Security.Claims;
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using Microsoft.AspNetCore.Http;
 
-namespace AudioEngineersPlatformBackend.Application.Services;
+namespace AudioEngineersPlatformBackend.Application.Util.CurrentUser;
 
-public sealed class CurrentUserService : ICurrentUserService
+public sealed class CurrentUserUtil : ICurrentUserUtil
 {
     private readonly Guid _idUser;
     private readonly bool _isAdministrator;
@@ -32,12 +32,12 @@ public sealed class CurrentUserService : ICurrentUserService
         if (_idUser == Guid.Empty)
         {
             throw new Exception(
-                $"You are trying to access the {nameof(CurrentUserService)} while not being authenticated!"
+                $"You are trying to access the {nameof(CurrentUserUtil)} while not being authenticated!"
             );
         }
     }
 
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    public CurrentUserUtil(IHttpContextAccessor httpContextAccessor)
     {
         var idUser
             = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
