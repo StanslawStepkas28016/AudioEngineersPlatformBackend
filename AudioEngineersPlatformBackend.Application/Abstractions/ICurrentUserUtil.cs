@@ -1,6 +1,6 @@
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
-public interface ICurrentUserService
+public interface ICurrentUserUtil
 {
     Guid IdUser { get; }
     bool IsAdministrator { get; }

@@ -20,7 +20,11 @@ public class UserLog
     private bool _isVerified;
     private DateTime? _dateLastLogin;
     private string? _refreshToken;
-    private DateTime? _refreshTokenExp;
+    private DateTime? _refreshTokenExpiration;
+    private Guid? _resetPasswordToken;
+    private DateTime? _resetPasswordTokenExpiration;
+    private Guid? _resetEmailToken;
+    private DateTime? _resetEmailTokenExpiration;
     private ICollection<User> _users;
 
     // Properties
@@ -75,7 +79,7 @@ public class UserLog
         get => _verificationCodeExpiration;
         private set => _verificationCodeExpiration = value;
     }
-
+    
     public bool IsVerified
     {
         get => _isVerified;
@@ -94,11 +98,38 @@ public class UserLog
         private set => _refreshToken = value;
     }
 
-    public DateTime? RefreshTokenExp
+    public DateTime? RefreshTokenExpiration
     {
-        get => _refreshTokenExp;
-        private set => _refreshTokenExp = value;
+        get => _refreshTokenExpiration;
+        private set => _refreshTokenExpiration = value;
     }
+    
+    /**/
+    public Guid? ResetPasswordToken
+    {
+        get => _resetPasswordToken;
+        private set => _resetPasswordToken = value;
+    }
+    
+    public DateTime? ResetPasswordTokenExpiration
+    {
+        get => _resetPasswordTokenExpiration;
+        private set => _resetPasswordTokenExpiration = value;
+    }
+
+    public Guid? ResetEmailToken
+    {
+        get => _resetEmailToken;
+        private set => _resetEmailToken = value;
+    }
+
+    public DateTime? ResetEmailTokenExpiration
+    {
+        get => _resetEmailTokenExpiration;
+        private set => _resetEmailTokenExpiration = value;
+    }
+    /**/
+    
 
     // References
     public ICollection<User> Users
@@ -173,8 +204,18 @@ public class UserLog
         }
 
         RefreshToken = refreshToken;
-        RefreshTokenExp = refreshTokenExp;
+        RefreshTokenExpiration = refreshTokenExp;
         DateLastLogin = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    ///     Method user for logging the user out of all their sessions.
+    ///     Should only be used when performing operations like resetting emails, password etc.
+    /// </summary>
+    public void SetLogoutData()
+    {
+        RefreshToken = "";
+        RefreshTokenExpiration = null;
     }
 
     /// <summary>
@@ -187,15 +228,6 @@ public class UserLog
     private static string GenerateVerificationCode()
     {
         return RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6");
-    }
-
-    /// <summary>
-    ///     Method used for generating and setting a new verification code.
-    ///     It is primarily used when a user wants to change their email address.
-    /// </summary>
-    public void GenerateAndSetNewVerificationCode()
-    {
-        VerificationCode = GenerateVerificationCode();
     }
 
     /// <summary>
@@ -218,7 +250,7 @@ public class UserLog
             IsVerified = false,
             DateLastLogin = null,
             RefreshToken = null,
-            RefreshTokenExp = null,
+            RefreshTokenExpiration = null,
         };
     }
 
@@ -241,7 +273,13 @@ public class UserLog
             IsVerified = false,
             DateLastLogin = null,
             RefreshToken = null,
-            RefreshTokenExp = null,
+            RefreshTokenExpiration = null,
         };
+    }
+
+    public void SetEmailResetTokenAndItsExpiration(Guid resetEmailToken)
+    {
+        ResetEmailToken = resetEmailToken;
+        ResetEmailTokenExpiration = DateTime.Now.AddHours(24);
     }
 }

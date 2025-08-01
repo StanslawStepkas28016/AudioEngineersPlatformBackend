@@ -5,6 +5,7 @@ using AudioEngineersPlatformBackend.Application.Util.Cookies;
 using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
 using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
@@ -19,15 +20,23 @@ public class AuthService : IAuthService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITokenUtil _tokenUtil;
     private readonly ICookieUtil _cookieUtil;
+    private readonly ICurrentUserUtil _currentUserUtil;
+    private readonly IUserRepository _userRepository;
+    private readonly IUrlGeneratorUtil _urlGeneratorUtil;
 
     public AuthService(ISESService sesService, IAuthRepository authRepository,
-        IUnitOfWork unitOfWork, ITokenUtil tokenUtil, ICookieUtil cookieUtil)
+        IUnitOfWork unitOfWork, ITokenUtil tokenUtil, ICookieUtil cookieUtil, ICurrentUserUtil currentUserUtil,
+        IUserRepository userRepository,
+        IUrlGeneratorUtil urlGeneratorUtil)
     {
         _sesService = sesService;
         _authRepository = authRepository;
         _unitOfWork = unitOfWork;
         _tokenUtil = tokenUtil;
         _cookieUtil = cookieUtil;
+        _currentUserUtil = currentUserUtil;
+        _userRepository = userRepository;
+        _urlGeneratorUtil = urlGeneratorUtil;
     }
 
     public async Task<RegisterResponse> Register(RegisterRequest registerRequest,
@@ -139,7 +148,7 @@ public class AuthService : IAuthService
         // Write both tokens as cookies
         _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
             jwtAccessToken.ValidTo);
-        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExp);
+        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExpiration);
 
         // Persist the changes in the database
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -178,7 +187,7 @@ public class AuthService : IAuthService
 
         // Check if the refresh token is expired - this should never happen, because the token is stored in the cookie
         // and the cookies are being deleted after their expiration date from the browser
-        if (user.UserLog.RefreshTokenExp < DateTime.UtcNow)
+        if (user.UserLog.RefreshTokenExpiration < DateTime.UtcNow)
         {
             throw new UnauthorizedAccessException("Refresh token expired, please login again");
         }
@@ -192,7 +201,7 @@ public class AuthService : IAuthService
         // Write new access token and refresh token as cookies
         _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
             accessToken.ValidTo);
-        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExp);
+        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExpiration);
 
         // Persist the changes in the database
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -206,7 +215,8 @@ public class AuthService : IAuthService
             throw new ArgumentException("Provided idUser is empty");
         }
 
-        UserAssociatedDataDto? userAssociatedData = await _authRepository.GetUserAssociatedDataByIdUser(idUser, cancellationToken);
+        UserAssociatedDataDto? userAssociatedData =
+            await _authRepository.GetUserAssociatedDataByIdUser(idUser, cancellationToken);
 
         // This should never happen, since the idUser is being pulled from the JWT token that resides
         // in an attached cookie, but just in case
@@ -224,5 +234,64 @@ public class AuthService : IAuthService
             userAssociatedData.IdRole,
             userAssociatedData.RoleName!
         );
+    }
+
+    public async Task<ResetEmailResponse> ResetEmail(Guid idUser, ResetEmailRequest resetEmailRequest,
+        CancellationToken cancellationToken)
+    {
+        // Check if the email is provided
+        if (string.IsNullOrWhiteSpace(resetEmailRequest.NewEmail))
+        {
+            throw new ArgumentException("Provided data cannot be null");
+        }
+        
+        // Check if the user is authorized to edit the advert (either the owner or an administrator)
+        if (idUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
+        {
+            throw new UnauthorizedAccessException("Specified data does not belong to you.");
+        }
+
+        // Validate if the user exists
+        if (!await _userRepository.DoesUserExistByIdUser(idUser, cancellationToken))
+        {
+            throw new Exception("User not found.");
+        }
+
+        // Fetch the user data
+        User user = (await _userRepository.FindUserByIdUser(idUser, cancellationToken))!;
+
+        // Ensure the right format of the provided email (will throw an exception if invalid)
+        string newValidEmail = new EmailVo(resetEmailRequest.NewEmail).GetValidEmail();
+
+        // Check if the email is already in use
+        if (await _userRepository.IsEmailAlreadyTaken(newValidEmail, cancellationToken))
+        {
+            throw new Exception("Email is already taken.");
+        }
+        
+        // Fetch the userLog data
+        var userLog = (await _userRepository.FindUserLogByIdUser(idUser, cancellationToken))!;
+
+        // Generate a Guid and save it to the database
+        // Generate an Email Reset URL
+        var resetEmailToken = Guid.NewGuid();
+        var resetEmailUrl = _urlGeneratorUtil.ConstructResetEmailUrl(resetEmailToken);
+        
+        // Update the email itself (will check if provided email is different from the old one)
+        user.TryChangeUser(newValidEmail);
+        
+        // Set email reset token and its expiration
+        userLog.SetEmailResetTokenAndItsExpiration(resetEmailToken);
+        
+        // Logout the user from all sessions, by setting the RefreshToken and RefreshTokenExpiration to null values
+        userLog.SetLogoutData();
+        
+        // Send a new verification email
+        // await _sesService.TrySendEmailResetEmailAsync(newValidEmail, user.FirstName, resetEmailUrl);
+        
+        // Persist all changes
+        // await _unitOfWork.CompleteAsync(cancellationToken);
+
+        return new ResetEmailResponse(resetEmailUrl);
     }
 }

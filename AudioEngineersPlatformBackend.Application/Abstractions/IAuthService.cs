@@ -1,6 +1,7 @@
 using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
 using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
@@ -19,4 +20,7 @@ public interface IAuthService
     Task RefreshToken(CancellationToken cancellationToken = default);
 
     Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default);
+
+    Task<ResetEmailResponse> ResetEmail(Guid idUser, ResetEmailRequest resetEmailRequest,
+        CancellationToken cancellationToken);
 }

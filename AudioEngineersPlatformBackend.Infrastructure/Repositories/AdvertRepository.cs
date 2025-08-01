@@ -2,7 +2,7 @@ using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
-using AudioEngineersPlatformBackend.Infrastructure.Extensions;
+using AudioEngineersPlatformBackend.Infrastructure.Repositories.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.Repositories;

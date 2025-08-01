@@ -1,7 +1,7 @@
 using AudioEngineersPlatformBackend.Application.Dtos;
 using Microsoft.EntityFrameworkCore;
 
-namespace AudioEngineersPlatformBackend.Infrastructure.Extensions;
+namespace AudioEngineersPlatformBackend.Infrastructure.Repositories.Dtos;
 
 public static class PagedListDtoExtension
 {

@@ -1,5 +1,4 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Contracts.User.ChangeData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,23 +8,19 @@ namespace API.Controllers;
 [Route("api/user")]
 public class UserController(IUserService userService) : ControllerBase
 {
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
-    [HttpPatch("{idUser:guid}/change-data")]
-    public async Task<IActionResult> ChangeData(
-        Guid idUser,
-        [FromBody] ChangeDataRequest changeDataRequest,
-        CancellationToken cancellationToken
-    )
-    {
-        Guid result = await userService.ChangeData(idUser, changeDataRequest, cancellationToken);
-        return StatusCode(StatusCodes.Status202Accepted, result);
-    }
+
     
-    [AllowAnonymous]
-    [HttpGet("test")]
-    public async Task<IActionResult> Test()
-    {
-        await userService.Test();
-        return Ok();
-    }
+    // [AllowAnonymous]
+    // [HttpPatch("{emailResetToken:guid}/validate-reset-email")]
+    // public async Task<IActionResult> ValidateResetEmail(Guid emailResetToken)
+    // {
+    //     throw new NotImplementedException();
+    // }
+
+    // [AllowAnonymous]
+    // [HttpPatch("{idUser:guid}/reset-password")]
+    // public async Task<IActionResult> ResetPassword(Guid idUser)
+    // {
+    //     throw new NotImplementedException();
+    // }
 }

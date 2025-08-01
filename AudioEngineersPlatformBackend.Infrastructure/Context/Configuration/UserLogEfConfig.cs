@@ -49,7 +49,7 @@ public class UserLogEfConfig : IEntityTypeConfiguration<UserLog>
             .IsRequired(false);
 
         builder
-            .Property(ul => ul.RefreshTokenExp)
+            .Property(ul => ul.RefreshTokenExpiration)
             .IsRequired(false);
 
         builder

@@ -226,7 +226,7 @@ public class User
         };
     }
 
-    public void TryChangeUserEmail(string newEmail)
+    public void TryChangeUser(string newEmail)
     {
         // Check if the emails differ 
         if (Email == newEmail)

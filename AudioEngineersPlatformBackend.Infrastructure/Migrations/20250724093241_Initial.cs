@@ -287,7 +287,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserLog",
-                columns: new[] { "IdUserLog", "DateCreated", "DateDeleted", "DateLastLogin", "IsDeleted", "IsVerified", "RefreshToken", "RefreshTokenExp", "VerificationCode", "VerificationCodeExpiration" },
+                columns: new[] { "IdUserLog", "DateCreated", "DateDeleted", "DateLastLogin", "IsDeleted", "IsVerified", "RefreshToken", "RefreshTokenExpiration", "VerificationCode", "VerificationCodeExpiration" },
                 values: new object[,]
                 {
                     { new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"), new DateTime(2025, 7, 24, 9, 32, 41, 119, DateTimeKind.Utc).AddTicks(6250), null, null, false, true, null, null, null, null },
