@@ -3,6 +3,7 @@ using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
 using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,8 @@ public class AuthController(IAuthService authService) : ControllerBase
     public async Task<IActionResult> VerifyAccount([FromBody] VerifyAccountRequest verifyAccountRequest,
         CancellationToken cancellationToken)
     {
-        VerifyAccountResponse verifyAccountResponse = await authService.VerifyAccount(verifyAccountRequest, cancellationToken);
+        VerifyAccountResponse verifyAccountResponse =
+            await authService.VerifyAccount(verifyAccountRequest, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, verifyAccountResponse);
     }
 
@@ -69,6 +71,19 @@ public class AuthController(IAuthService authService) : ControllerBase
         CheckAuthResponse checkAuthResponse = await authService.CheckAuth(idUser, cancellationToken);
 
         return StatusCode(StatusCodes.Status200OK, checkAuthResponse);
+    }
+
+    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [HttpPatch("{idUser:guid}/reset-email")]
+    public async Task<IActionResult> ResetEmail(
+        Guid idUser,
+        [FromBody] ResetEmailRequest resetEmailRequest,
+        CancellationToken cancellationToken
+    )
+    {
+        ResetEmailResponse resetEmailResponse =
+            await authService.ResetEmail(idUser, resetEmailRequest, cancellationToken);
+        return StatusCode(StatusCodes.Status202Accepted, resetEmailResponse);
     }
 
     // TODO: Implement the method to change a password by sending an e-mail with instructions.
