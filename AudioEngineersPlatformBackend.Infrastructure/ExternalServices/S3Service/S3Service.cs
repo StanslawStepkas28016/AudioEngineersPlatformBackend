@@ -22,7 +22,7 @@ public class S3Service : IS3Service
     {
         if (file.Length == 0)
         {
-            throw new ArgumentException("File is empty");
+            throw new ArgumentException("File is empty.");
         }
 
         await using Stream? stream = file.OpenReadStream();
@@ -52,7 +52,7 @@ public class S3Service : IS3Service
     {
         if (key == Guid.Empty)
         {
-            throw new ArgumentException("Key is empty");
+            throw new ArgumentException($"{nameof(key)} is empty.");
         }
 
         GetPreSignedUrlRequest request = new GetPreSignedUrlRequest

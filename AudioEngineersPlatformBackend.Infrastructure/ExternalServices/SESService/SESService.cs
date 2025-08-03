@@ -30,7 +30,7 @@ public class SESService : ISESService
         catch (Exception e)
         {
             throw new Exception(
-                $"An error occurred while sending the email, please contact the administrator! {e.Message}");
+                $"An error occurred while sending the {nameof(sendEmailRequest)}, please contact the administrator. {e.Message}");
         }
     }
 
@@ -44,7 +44,7 @@ public class SESService : ISESService
             || string.IsNullOrWhiteSpace(verificationCode)
         )
         {
-            throw new ArgumentException("You must provide all arguments to send email messages!");
+            throw new ArgumentException("You must provide all arguments to send email messages.");
         }
 
         // Read the template
@@ -88,7 +88,7 @@ public class SESService : ISESService
             || string.IsNullOrWhiteSpace(uniqueUrl)
         )
         {
-            throw new ArgumentException("You must provide all arguments to send email messages!");
+            throw new ArgumentException("You must provide all arguments to send email messages.");
         }
 
         // Read the template

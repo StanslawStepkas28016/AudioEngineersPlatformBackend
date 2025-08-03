@@ -15,7 +15,7 @@ public class AdvertCategory
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdAdvertCategory cannot be empty.", nameof(value));
+                throw new ArgumentException($"{nameof(IdAdvertCategory)} cannot be empty.");
             }
 
             _idAdvertCategory = value;
@@ -29,7 +29,7 @@ public class AdvertCategory
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("CategoryName cannot be null or whitespace.", nameof(value));
+                throw new ArgumentException($"{nameof(CategoryName)} cannot be null or whitespace.");
             }
 
             _categoryName = value;

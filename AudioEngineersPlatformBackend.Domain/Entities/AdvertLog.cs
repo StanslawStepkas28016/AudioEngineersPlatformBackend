@@ -19,7 +19,7 @@ public class AdvertLog
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("IdAdvertLog cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(IdAdvertLog)} cannot be empty.");
             }
 
             _idAdvertLog = value;
@@ -61,6 +61,26 @@ public class AdvertLog
     {
         get => _adverts;
         set => _adverts = value;
+    }
+    
+    // Methods
+    public void MarkAsDeleted()
+    {
+        if (IsDeleted || !IsActive || DateDeleted.HasValue)
+        {
+            throw new ArgumentException($"{GetType()} is already deleted.");
+        }
+
+        IsDeleted = true;
+        DateDeleted = DateTime.UtcNow;
+        IsActive = false;
+    }
+
+    public void UndoMarkAsDeleted()
+    {
+        IsDeleted = false;
+        DateDeleted = null;
+        IsActive = true;
     }
 
     // Private constructor for EF Core
@@ -105,24 +125,5 @@ public class AdvertLog
             IsDeleted = false,
             IsActive = true,
         };
-    }
-
-    public void MarkAsDeleted()
-    {
-        if (IsDeleted || !IsActive || DateDeleted.HasValue)
-        {
-            throw new ArgumentException("Advert is already deleted.");
-        }
-
-        IsDeleted = true;
-        DateDeleted = DateTime.UtcNow;
-        IsActive = false;
-    }
-
-    public void UndoMarkAsDeleted()
-    {
-        IsDeleted = false;
-        DateDeleted = null;
-        IsActive = true;
     }
 }

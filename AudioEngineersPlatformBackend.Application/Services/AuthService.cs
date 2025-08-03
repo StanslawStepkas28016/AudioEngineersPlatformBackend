@@ -46,14 +46,14 @@ public class AuthService : IAuthService
         if (await _authRepository.FindUserByEmail(new EmailVo(registerRequest.Email).GetValidEmail(),
                 cancellationToken) != null)
         {
-            throw new ArgumentException("Provided email is already taken");
+            throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
         }
 
         if (await _authRepository.FindUserByPhoneNumber(
                 new PhoneNumberVo(registerRequest.PhoneNumber).GetValidPhoneNumber(), cancellationToken) !=
             null)
         {
-            throw new ArgumentException("Provided phone number is already taken");
+            throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
         }
 
         // Create a UserLog
@@ -64,7 +64,7 @@ public class AuthService : IAuthService
 
         if (role == null)
         {
-            throw new ArgumentException("Invalid role", nameof(registerRequest.RoleName));
+            throw new ArgumentException($"Invalid {nameof(registerRequest.RoleName)}.");
         }
 
         // Create a User, then hash its password
@@ -96,8 +96,7 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            throw new ArgumentException("Provided verification code is invalid",
-                nameof(verifyAccountRequest.VerificationCode));
+            throw new ArgumentException($"Provided {nameof(verifyAccountRequest.VerificationCode)} is invalid.");
         }
 
         // Business logic - verify users account
@@ -109,7 +108,7 @@ public class AuthService : IAuthService
         // If the token is expired inform about deletion of the user
         if (verificationOutcome == VerificationOutcome.VerificationCodeExpired)
         {
-            throw new Exception("VerificationCode expired, User deleted");
+            throw new Exception($"{nameof(verifyAccountRequest.VerificationCode)} expired, User deleted.");
         }
 
         return new VerifyAccountResponse(user!.IdUser);
@@ -124,7 +123,7 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            throw new ArgumentException("User with provided email does not exist");
+            throw new ArgumentException($"User with provided {nameof(loginRequest.Email)} does not exist.");
         }
 
         // Business logic - check if user is deleted or unverified
@@ -139,7 +138,7 @@ public class AuthService : IAuthService
 
         if (passwordVerificationResult != PasswordVerificationResult.Success)
         {
-            throw new ArgumentException("Invalid email or password"); //
+            throw new ArgumentException($"Invalid {nameof(loginRequest.Email)} or {nameof(loginRequest.Password)}.");
         }
 
         // Create the Access Token
@@ -148,7 +147,8 @@ public class AuthService : IAuthService
         // Write both tokens as cookies
         _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
             jwtAccessToken.ValidTo);
-        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExpiration);
+        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
+            user.UserLog.RefreshTokenExpiration);
 
         // Persist the changes in the database
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -182,14 +182,14 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            throw new Exception("User does not exist");
+            throw new Exception("User does not exist.");
         }
 
         // Check if the refresh token is expired - this should never happen, because the token is stored in the cookie
         // and the cookies are being deleted after their expiration date from the browser
         if (user.UserLog.RefreshTokenExpiration < DateTime.UtcNow)
         {
-            throw new UnauthorizedAccessException("Refresh token expired, please login again");
+            throw new UnauthorizedAccessException($"{nameof(refreshToken)} expired, please login again.");
         }
 
         // Set new login associated data (token and expiration date)
@@ -201,7 +201,8 @@ public class AuthService : IAuthService
         // Write new access token and refresh token as cookies
         _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
             accessToken.ValidTo);
-        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!, user.UserLog.RefreshTokenExpiration);
+        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
+            user.UserLog.RefreshTokenExpiration);
 
         // Persist the changes in the database
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -212,7 +213,7 @@ public class AuthService : IAuthService
         // Validate the idUser
         if (idUser == Guid.Empty)
         {
-            throw new ArgumentException("Provided idUser is empty");
+            throw new ArgumentException($"{nameof(idUser)} cannot be empty.");
         }
 
         UserAssociatedDataDto? userAssociatedData =
@@ -222,7 +223,7 @@ public class AuthService : IAuthService
         // in an attached cookie, but just in case
         if (userAssociatedData == null)
         {
-            throw new ArgumentException("User does not exist", nameof(idUser));
+            throw new ArgumentException($"User with the provided {nameof(idUser)} does not exist.");
         }
 
         return new CheckAuthResponse(
@@ -242,9 +243,9 @@ public class AuthService : IAuthService
         // Check if the email is provided
         if (string.IsNullOrWhiteSpace(resetEmailRequest.NewEmail))
         {
-            throw new ArgumentException("Provided data cannot be null");
+            throw new ArgumentException($"You must provide an {nameof(resetEmailRequest.NewEmail)}.");
         }
-        
+
         // Check if the user is authorized to edit the advert (either the owner or an administrator)
         if (idUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
         {
@@ -266,9 +267,9 @@ public class AuthService : IAuthService
         // Check if the email is already in use
         if (await _userRepository.IsEmailAlreadyTaken(newValidEmail, cancellationToken))
         {
-            throw new Exception("Email is already taken.");
+            throw new Exception($"{nameof(resetEmailRequest.NewEmail)} is already taken.");
         }
-        
+
         // Fetch the userLog data
         var userLog = (await _userRepository.FindUserLogByIdUser(idUser, cancellationToken))!;
 
@@ -276,19 +277,20 @@ public class AuthService : IAuthService
         // Generate an Email Reset URL
         var resetEmailToken = Guid.NewGuid();
         var resetEmailUrl = _urlGeneratorUtil.ConstructResetEmailUrl(resetEmailToken);
-        
+
         // Update the email itself (will check if provided email is different from the old one)
-        user.TryChangeUser(newValidEmail);
-        
+        user.TryChangeEmail(newValidEmail);
+
         // Set email reset token and its expiration
-        userLog.SetEmailResetTokenAndItsExpiration(resetEmailToken);
-        
+        // userLog.SetEmailResetTokenAndItsExpiration(resetEmailToken); 
+        // TODO: SetEmailResetTokenAndItsExpiration method
+
         // Logout the user from all sessions, by setting the RefreshToken and RefreshTokenExpiration to null values
         userLog.SetLogoutData();
-        
+
         // Send a new verification email
         // await _sesService.TrySendEmailResetEmailAsync(newValidEmail, user.FirstName, resetEmailUrl);
-        
+
         // Persist all changes
         // await _unitOfWork.CompleteAsync(cancellationToken);
 

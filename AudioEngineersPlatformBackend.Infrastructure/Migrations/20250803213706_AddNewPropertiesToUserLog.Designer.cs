@@ -4,6 +4,7 @@ using AudioEngineersPlatformBackend.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(EngineersPlatformDbContext))]
-    partial class EngineersPlatformDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250803213706_AddNewPropertiesToUserLog")]
+    partial class AddNewPropertiesToUserLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,63 +243,63 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdAdvertLog = new Guid("1b84601e-e225-4e9d-93d2-911fb0a1569e"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(2120),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(3030),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("a9e9762a-2a67-46f3-b371-50405a100d58"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6320),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7800),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("b3d2dce1-a858-4312-937d-c56a6e0178cf"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6330),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7840),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("efe85186-52c9-4c46-b585-d4b47523db47"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6330),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7850),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("24ba6029-f88c-4b12-9a63-bf00c2d9f3e4"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6340),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7850),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("fe0d1832-793e-4cf8-983a-bbe09d7e0fa2"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6350),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7860),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("993648ca-9d51-419a-85e8-046e8fc3162b"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6350),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7860),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("c8ab7e20-e7dd-4616-8862-d15dad3c986a"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6350),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7870),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("70820368-d390-4c01-af1f-9e7b8e8413d2"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6360),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7870),
                             IsActive = true,
                             IsDeleted = false
                         });
@@ -425,43 +428,43 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdReviewLog = new Guid("d9de48fd-0abc-4b52-8371-f9f6959fdc46"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6810),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         },
                         new
                         {
                             IdReviewLog = new Guid("1f642c35-dbfb-4062-ae75-7cf0e3f27f6f"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6810),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         },
                         new
                         {
                             IdReviewLog = new Guid("9473bb77-cff3-42d7-bd0e-2807aa2fef52"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6810),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         },
                         new
                         {
                             IdReviewLog = new Guid("0d38bc51-218b-4e12-8e39-6bef8654419b"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6810),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         },
                         new
                         {
                             IdReviewLog = new Guid("39cc7997-692f-40f4-a3ec-68b00940f6a6"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6810),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         },
                         new
                         {
                             IdReviewLog = new Guid("60bb7ac9-88de-4bd4-933b-ce3e71d9cb45"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6810),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         },
                         new
                         {
                             IdReviewLog = new Guid("3461a295-b612-4526-aaf1-205ea3a6beff"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 36, 14, DateTimeKind.Utc).AddTicks(6810),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         });
                 });
@@ -505,10 +508,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdAdvert")
+                    b.Property<Guid>("IdSocialMediaName")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdSocialMediaName")
+                    b.Property<Guid>("IdUser")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Url")
@@ -518,9 +521,9 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.HasKey("IdSocialMediaLink")
                         .HasName("PK_SocialMediaLink");
 
-                    b.HasIndex("IdAdvert");
-
                     b.HasIndex("IdSocialMediaName");
+
+                    b.HasIndex("IdUser");
 
                     b.ToTable("SocialMediaLink", (string)null);
 
@@ -528,22 +531,22 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdSocialMediaLink = new Guid("8c0d3528-e2cb-430a-bfd4-8e0623c714cf"),
-                            IdAdvert = new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"),
                             IdSocialMediaName = new Guid("02c8722f-dccc-4060-bec3-c95815c67703"),
+                            IdUser = new Guid("828daa53-9a49-40ad-97b3-31b0349bc08d"),
                             Url = "https://www.instagram.com/prod.mustang/"
                         },
                         new
                         {
                             IdSocialMediaLink = new Guid("7667e3a7-e8f9-4049-af10-a0a405dacf40"),
-                            IdAdvert = new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"),
                             IdSocialMediaName = new Guid("371dbd6d-76eb-4266-aaa3-2b431c5cbafe"),
+                            IdUser = new Guid("828daa53-9a49-40ad-97b3-31b0349bc08d"),
                             Url = "https://www.facebook.com/prod.mustangg/"
                         },
                         new
                         {
                             IdSocialMediaLink = new Guid("b5b570dd-43c8-471e-976b-91a0d50de9f5"),
-                            IdAdvert = new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"),
                             IdSocialMediaName = new Guid("4639c978-26fc-4027-b036-3fc5c0d1d221"),
+                            IdUser = new Guid("828daa53-9a49-40ad-97b3-31b0349bc08d"),
                             Url = "https://www.linkedin.com/in/stanisław-stepka/"
                         });
                 });
@@ -636,7 +639,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("d92d29b8-f462-46df-8efb-de6b9aa5109a"),
                             IdUserLog = new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"),
                             LastName = "Kowalski",
-                            Password = "AQAAAAIAAYagAAAAEEuxv6xbsV5lT/jmNMjxGqZXIVIVIMLejQ1P4EJceSoLKfDO2zR4SPSW84BU7KFmLQ==",
+                            Password = "AQAAAAIAAYagAAAAECrAMg55LZuQYIQUWibIMp1NZFZWyGMQwr5ZDt92qo2lQGQEbKG/rCy0xXpseFTf4g==",
                             PhoneNumber = "+48123456789"
                         },
                         new
@@ -647,7 +650,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"),
                             IdUserLog = new Guid("2f765163-6728-48bc-9767-66687efdf86e"),
                             LastName = "Nowak",
-                            Password = "AQAAAAIAAYagAAAAED24Wfxr2MkCRan8lJ1PmCzkm8VUMjDU7TaeY+VFp4Er1cgAKgA8dNA4Fbk1f3Aeww==",
+                            Password = "AQAAAAIAAYagAAAAEDY2G6jb2oqEW3nUk3UIMGHEqeDYCdQALRCYXeJLfs0Q164GMghfaWtkZqf6vFD9Hg==",
                             PhoneNumber = "+48696432123"
                         },
                         new
@@ -658,7 +661,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"),
                             LastName = "Kowalska",
-                            Password = "AQAAAAIAAYagAAAAELVMNGACEVg3gcofp/cbKjJcirazXxhmrFXFwHkSVc/kd2hdGY1Un5NB3gGhFokUJw==",
+                            Password = "AQAAAAIAAYagAAAAEB2wih5/4wnlHNcGv7meVlyX7jN/lDpCy7j752zBYz3qhwpQxJZuVL9hbICdVzm1Pw==",
                             PhoneNumber = "+48543123123"
                         },
                         new
@@ -669,7 +672,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"),
                             LastName = "Nowak",
-                            Password = "AQAAAAIAAYagAAAAELjkePwzRTVXiPXLubbGBuq13Y+IaJTGCwTG5datehlIk/dpdaTzELL8rMToBvkMyw==",
+                            Password = "AQAAAAIAAYagAAAAEDYN0PVfEgLl5LX216l1A8sT+WNZRPb/7X5e6+J1oIynq+HvFXDX2khiHdtROuEEtg==",
                             PhoneNumber = "+48111222333"
                         },
                         new
@@ -680,7 +683,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"),
                             LastName = "Maj",
-                            Password = "AQAAAAIAAYagAAAAEGBK9m89CwKxN0iBqoisGcidTNp5BV3vLxL9uejO6KTJ79xg8yWR1TLPX+72yc5Q0w==",
+                            Password = "AQAAAAIAAYagAAAAELzoDl53H8ShqzHbrpZY5YOy/rkcjVNrSJsdMN1MEJirjCoAEWoW3nyagyIvefoK0Q==",
                             PhoneNumber = "+48111333444"
                         },
                         new
@@ -691,7 +694,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"),
                             LastName = "Zieliński",
-                            Password = "AQAAAAIAAYagAAAAEE8X3mnzjo1aOosd590IBQQz4OT0JKcNQFwB+kwY4Egpx+Gmz0JtzbNsmhv1NfIECQ==",
+                            Password = "AQAAAAIAAYagAAAAEIWDE5TtLIOP1QdeQiBe9u1zKZkj/7F5opBDWEuS9VJRxX/UodnQ+BPtQbZYDPfhMw==",
                             PhoneNumber = "+48111444555"
                         },
                         new
@@ -702,7 +705,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("df0a8813-0938-42a6-ac84-26298701f456"),
                             LastName = "Wójcik",
-                            Password = "AQAAAAIAAYagAAAAEHQPUV+FJl59iehnbjbLdXUi95pqdYr/WN5Gi5Dk0RJ62STfGANTK1gmjO1FScavQg==",
+                            Password = "AQAAAAIAAYagAAAAEEZgI/OOGv7KN0YHUglKOILSBaSQ29RzVdkRoJHBfOaDhL+443V52iJSvTT9jj1EMg==",
                             PhoneNumber = "+48111555666"
                         },
                         new
@@ -713,7 +716,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"),
                             LastName = "Wiśniewska",
-                            Password = "AQAAAAIAAYagAAAAEC7EKB10RzGQhxM5WiyEpilu79oImxoW6r2S4JFqzOucDRAJ6d4KhJ/lfgIR4+BGRg==",
+                            Password = "AQAAAAIAAYagAAAAEJSjmR0UV6cU6mHCdU57TRE+rv9EgGKf5TfgwbpvXKbLmASCBYCaL6E/Ig1Jvwctxw==",
                             PhoneNumber = "+48111666777"
                         },
                         new
@@ -724,7 +727,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"),
                             LastName = "Lewandowski",
-                            Password = "AQAAAAIAAYagAAAAEIMg2MZGmmLch2xSgP14TKMmdi/izjyGwWn5y+kG2wTkvTOtZyEpU0P4CfVFMfiQiA==",
+                            Password = "AQAAAAIAAYagAAAAEHpahjVOx0nhDLWUOHzAAf2ABpjD7gFgra4nnpLIAa39kpkozbJgN6C++UI1baxALQ==",
                             PhoneNumber = "+48111777888"
                         },
                         new
@@ -735,7 +738,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"),
                             LastName = "Wróbel",
-                            Password = "AQAAAAIAAYagAAAAENJ4oavSXRRVMj8N194djXEVymSjwviJaXcWykL2nkmdLtkZPbs3K6ZM39V48KtRIg==",
+                            Password = "AQAAAAIAAYagAAAAED35Eslk8gj+6cD49WZ1LuD36uu3ffnJagxFbGFtGvDSODxJDTD5CPECV4df2QIc4Q==",
                             PhoneNumber = "+48111888999"
                         },
                         new
@@ -746,7 +749,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"),
                             LastName = "Kamiński",
-                            Password = "AQAAAAIAAYagAAAAEIdf5HFE8lz52q4Itsz+NFst0L3lYyg5HlAxszOuvrJDr3hr0z2HTvwhgCDy6H+Oug==",
+                            Password = "AQAAAAIAAYagAAAAEI15m5rX9vaKPsm3S3aysBZbqrTdNKdnExvbeh8nLxLsJfRh5QGnRzIxllbp+ov09w==",
                             PhoneNumber = "+48111999000"
                         },
                         new
@@ -768,7 +771,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"),
                             IdUserLog = new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"),
                             LastName = "Niewiadomski",
-                            Password = "AQAAAAIAAYagAAAAEMHeravCA/XqGT7Z5FC7gw3dk8ca3/ZMT2QcAjnclBHf1OLwsptkiKe0s3KkHHaSog==",
+                            Password = "AQAAAAIAAYagAAAAEIx90/FDEGbe1HYPj+LHee1psM3PTvGKSVvq34u8oBfEFI8w7ARuzTIgNTYu98Cfqg==",
                             PhoneNumber = "+48654123432"
                         },
                         new
@@ -779,7 +782,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"),
                             IdUserLog = new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"),
                             LastName = "Dąbrowska",
-                            Password = "AQAAAAIAAYagAAAAELR1leH5iV3WYT0G/cCM9aZnaYs9i70h5LFErEEM4eFPflEjxoeK4FUCOov61PQZMA==",
+                            Password = "AQAAAAIAAYagAAAAEItYbSAWYJs2hZ9P/M2u68D3qRYIN1EZdICz+31iVERpNdC7Im8V0IZq8sIqZz2KJg==",
                             PhoneNumber = "+48231443225"
                         });
                 });
@@ -802,6 +805,12 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsResettingEmail")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsResettingPassword")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
@@ -809,6 +818,18 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RefreshTokenExpiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ResetEmailToken")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ResetEmailTokenExpiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ResetPasswordToken")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ResetPasswordTokenExpiration")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("VerificationCode")
@@ -826,101 +847,129 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUserLog = new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 559, DateTimeKind.Utc).AddTicks(8850),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 5, 903, DateTimeKind.Utc).AddTicks(1600),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("2f765163-6728-48bc-9767-66687efdf86e"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 596, DateTimeKind.Utc).AddTicks(6330),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 5, 943, DateTimeKind.Utc).AddTicks(5300),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 629, DateTimeKind.Utc).AddTicks(4420),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 5, 978, DateTimeKind.Utc).AddTicks(9340),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 661, DateTimeKind.Utc).AddTicks(8300),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 14, DateTimeKind.Utc).AddTicks(1490),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 692, DateTimeKind.Utc).AddTicks(6640),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 48, DateTimeKind.Utc).AddTicks(3150),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 724, DateTimeKind.Utc).AddTicks(1750),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 83, DateTimeKind.Utc).AddTicks(170),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("df0a8813-0938-42a6-ac84-26298701f456"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 757, DateTimeKind.Utc).AddTicks(80),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 117, DateTimeKind.Utc).AddTicks(860),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 789, DateTimeKind.Utc).AddTicks(430),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 151, DateTimeKind.Utc).AddTicks(4820),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 822, DateTimeKind.Utc).AddTicks(1510),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 186, DateTimeKind.Utc).AddTicks(2000),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 854, DateTimeKind.Utc).AddTicks(7970),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 221, DateTimeKind.Utc).AddTicks(5750),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 887, DateTimeKind.Utc).AddTicks(4460),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 257, DateTimeKind.Utc).AddTicks(810),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 918, DateTimeKind.Utc).AddTicks(2860),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 292, DateTimeKind.Utc).AddTicks(1290),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = false,
-                            VerificationCode = "801439",
-                            VerificationCodeExpiration = new DateTime(2025, 7, 25, 14, 33, 35, 918, DateTimeKind.Utc).AddTicks(2860)
+                            VerificationCode = "554903",
+                            VerificationCodeExpiration = new DateTime(2025, 8, 4, 21, 37, 6, 292, DateTimeKind.Utc).AddTicks(1350)
                         },
                         new
                         {
                             IdUserLog = new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 949, DateTimeKind.Utc).AddTicks(630),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 326, DateTimeKind.Utc).AddTicks(670),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         },
                         new
                         {
                             IdUserLog = new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"),
-                            DateCreated = new DateTime(2025, 7, 24, 14, 33, 35, 981, DateTimeKind.Utc).AddTicks(1880),
+                            DateCreated = new DateTime(2025, 8, 3, 21, 37, 6, 359, DateTimeKind.Utc).AddTicks(8280),
                             IsDeleted = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
                             IsVerified = true
                         });
                 });
@@ -987,13 +1036,6 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.SocialMediaLink", b =>
                 {
-                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.Advert", "Advert")
-                        .WithMany("SocialMediaLinks")
-                        .HasForeignKey("IdAdvert")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_SocialMediaLink_Advert");
-
                     b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.SocialMediaName", "SocialMediaName")
                         .WithMany("SocialMediaLinks")
                         .HasForeignKey("IdSocialMediaName")
@@ -1001,9 +1043,16 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_SocialMediaLink_SocialMediaName");
 
-                    b.Navigation("Advert");
+                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.User", "User")
+                        .WithMany("SocialMediaLinks")
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_SocialMediaLink_User");
 
                     b.Navigation("SocialMediaName");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.User", b =>
@@ -1030,8 +1079,6 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.Advert", b =>
                 {
                     b.Navigation("Reviews");
-
-                    b.Navigation("SocialMediaLinks");
                 });
 
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.AdvertCategory", b =>
@@ -1064,6 +1111,8 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Navigation("Adverts");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("SocialMediaLinks");
                 });
 
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserLog", b =>

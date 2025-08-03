@@ -11,7 +11,7 @@ public readonly struct GeneralIdVo
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException("Provided Id cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(Id)} from {GetType()} cannot be empty.");
             }
 
             _id = value;

@@ -15,12 +15,18 @@ public class UserLog
     private DateTime? _dateCreated;
     private DateTime? _dateDeleted;
     private bool _isDeleted;
+    private string? _refreshToken;
+    private DateTime? _refreshTokenExpiration;
+    private DateTime? _dateLastLogin;
     private string? _verificationCode;
     private DateTime? _verificationCodeExpiration;
     private bool _isVerified;
-    private DateTime? _dateLastLogin;
-    private string? _refreshToken;
-    private DateTime? _refreshTokenExpiration;
+    private Guid? _resetPasswordToken;
+    private DateTime? _resetPasswordTokenExpiration;
+    private bool _isResettingPassword;
+    private Guid? _resetEmailToken;
+    private DateTime? _resetEmailTokenExpiration;
+    private bool _isResettingEmail;
     private ICollection<User> _users;
 
     // Properties
@@ -31,7 +37,7 @@ public class UserLog
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdUserLog)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdUserLog)} cannot be empty.");
             }
 
             _idUserLog = value;
@@ -45,7 +51,7 @@ public class UserLog
         {
             if (value == null)
             {
-                throw new ArgumentException($"{nameof(DateCreated)} cannot be null");
+                throw new ArgumentException($"{nameof(DateCreated)} cannot be null.");
             }
 
             _dateCreated = value;
@@ -62,6 +68,24 @@ public class UserLog
     {
         get => _isDeleted;
         private set => _isDeleted = value;
+    }
+    
+    public string? RefreshToken
+    {
+        get => _refreshToken;
+        private set => _refreshToken = value;
+    }
+
+    public DateTime? RefreshTokenExpiration
+    {
+        get => _refreshTokenExpiration;
+        private set => _refreshTokenExpiration = value;
+    }
+    
+    public DateTime? DateLastLogin
+    {
+        get => _dateLastLogin;
+        private set => _dateLastLogin = value;
     }
 
     public string? VerificationCode
@@ -81,25 +105,43 @@ public class UserLog
         get => _isVerified;
         private set => _isVerified = value;
     }
-
-    public DateTime? DateLastLogin
+    
+    public Guid? ResetEmailToken
     {
-        get => _dateLastLogin;
-        private set => _dateLastLogin = value;
+        get { return _resetEmailToken; }
+        private set { _resetEmailToken = value; }
     }
 
-    public string? RefreshToken
+    public DateTime? ResetEmailTokenExpiration
     {
-        get => _refreshToken;
-        private set => _refreshToken = value;
+        get { return _resetEmailTokenExpiration; }
+        private set { _resetEmailTokenExpiration = value; }
     }
 
-    public DateTime? RefreshTokenExpiration
+    public bool IsResettingEmail
     {
-        get => _refreshTokenExpiration;
-        private set => _refreshTokenExpiration = value;
+        get { return _isResettingEmail; }
+        set { _isResettingEmail = value; }
+    }
+    
+    public Guid? ResetPasswordToken
+    {
+        get { return _resetPasswordToken; }
+        private set { _resetPasswordToken = value; }
     }
 
+    public DateTime? ResetPasswordTokenExpiration
+    {
+        get { return _resetPasswordTokenExpiration; }
+        private set { _resetPasswordTokenExpiration = value; }
+    }
+
+    public bool IsResettingPassword
+    {
+        get { return _isResettingPassword; }
+        set { _isResettingPassword = value; }
+    }
+    
     // References
     public ICollection<User> Users
     {
@@ -144,12 +186,12 @@ public class UserLog
     {
         if (IsDeleted)
         {
-            throw new Exception("User is deleted");
+            throw new Exception("User is deleted.");
         }
 
         if (!IsVerified)
         {
-            throw new Exception("User is not verified");
+            throw new Exception("User is not verified.");
         }
     }
 
@@ -164,12 +206,12 @@ public class UserLog
     {
         if (string.IsNullOrWhiteSpace(refreshToken))
         {
-            throw new ArgumentException($"{nameof(refreshToken)} cannot be empty");
+            throw new ArgumentException($"{nameof(refreshToken)} cannot be empty.");
         }
 
         if (refreshTokenExp <= DateTime.UtcNow)
         {
-            throw new ArgumentException($"{nameof(refreshTokenExp)} must be in the future");
+            throw new ArgumentException($"{nameof(refreshTokenExp)} must be in the future.");
         }
 
         RefreshToken = refreshToken;
@@ -214,12 +256,18 @@ public class UserLog
             DateCreated = DateTime.UtcNow,
             DateDeleted = null,
             IsDeleted = false,
+            RefreshToken = null,
+            RefreshTokenExpiration = null,
+            DateLastLogin = null,
             VerificationCode = GenerateVerificationCode(),
             VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
             IsVerified = false,
-            DateLastLogin = null,
-            RefreshToken = null,
-            RefreshTokenExpiration = null,
+            ResetEmailToken = null,
+            ResetEmailTokenExpiration = null,
+            IsResettingEmail = false,
+            ResetPasswordToken = null,
+            ResetPasswordTokenExpiration = null,
+            IsResettingPassword = false
         };
     }
 
@@ -237,12 +285,18 @@ public class UserLog
             DateCreated = DateTime.UtcNow,
             DateDeleted = null,
             IsDeleted = false,
+            RefreshToken = null,
+            RefreshTokenExpiration = null,
+            DateLastLogin = null,
             VerificationCode = GenerateVerificationCode(),
             VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
             IsVerified = false,
-            DateLastLogin = null,
-            RefreshToken = null,
-            RefreshTokenExpiration = null,
+            ResetEmailToken = null,
+            ResetEmailTokenExpiration = null,
+            IsResettingEmail = false,
+            ResetPasswordToken = null,
+            ResetPasswordTokenExpiration = null,
+            IsResettingPassword = false
         };
     }
 }

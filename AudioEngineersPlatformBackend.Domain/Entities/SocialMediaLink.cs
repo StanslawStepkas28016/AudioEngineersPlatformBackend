@@ -22,7 +22,7 @@ public class SocialMediaLink
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdSocialMediaLink)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdSocialMediaLink)} cannot be empty.");
             }
 
             _idSocialMediaLink = value;
@@ -36,7 +36,7 @@ public class SocialMediaLink
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException($"{nameof(Url)} cannot be empty");
+                throw new ArgumentException($"{nameof(Url)} cannot be empty.");
             }
 
             // Validating the URL for only the allowed ones
@@ -48,14 +48,13 @@ public class SocialMediaLink
             // Any errors from the input Url is going to be caught here
             catch (Exception e)
             {
-                throw new ArgumentException($"{nameof(Url)} is invalid");
+                throw new ArgumentException($"{nameof(Url)} is invalid.");
             }
 
             if (!AllowedUrls.Contains(uri.Authority))
             {
-                throw new ArgumentException($"You can only use urls of {
-                    string.Join(' ', AllowedUrls)
-                }", nameof(Url));
+                throw new ArgumentException(
+                    $"You can only use {nameof(Url).ToLower()}s of {string.Join(' ', AllowedUrls)}.");
             }
 
             _url = value;
@@ -94,6 +93,8 @@ public class SocialMediaLink
         get => _socialMediaName;
         private set => _socialMediaName = value;
     }
+    
+    // Methods
 
     // Private constructor for EF Core
     private SocialMediaLink()

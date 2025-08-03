@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class AddNewPropertiesToUserLog : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -87,12 +87,18 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateLastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
                     VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VerificationCodeExpiration = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    DateLastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshTokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ResetEmailToken = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ResetEmailTokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsResettingEmail = table.Column<bool>(type: "bit", nullable: false),
+                    ResetPasswordToken = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ResetPasswordTokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsResettingPassword = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,15 +246,15 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                 columns: new[] { "IdAdvertLog", "DateCreated", "DateDeleted", "DateModified", "IsActive", "IsDeleted" },
                 values: new object[,]
                 {
-                    { new Guid("1b84601e-e225-4e9d-93d2-911fb0a1569e"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(3430), null, null, true, false },
-                    { new Guid("24ba6029-f88c-4b12-9a63-bf00c2d9f3e4"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8030), null, null, true, false },
-                    { new Guid("70820368-d390-4c01-af1f-9e7b8e8413d2"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8040), null, null, true, false },
-                    { new Guid("993648ca-9d51-419a-85e8-046e8fc3162b"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8040), null, null, true, false },
-                    { new Guid("a9e9762a-2a67-46f3-b371-50405a100d58"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(7970), null, null, true, false },
-                    { new Guid("b3d2dce1-a858-4312-937d-c56a6e0178cf"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(7980), null, null, true, false },
-                    { new Guid("c8ab7e20-e7dd-4616-8862-d15dad3c986a"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8040), null, null, true, false },
-                    { new Guid("efe85186-52c9-4c46-b585-d4b47523db47"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(7980), null, null, true, false },
-                    { new Guid("fe0d1832-793e-4cf8-983a-bbe09d7e0fa2"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8030), null, null, true, false }
+                    { new Guid("1b84601e-e225-4e9d-93d2-911fb0a1569e"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(3030), null, null, true, false },
+                    { new Guid("24ba6029-f88c-4b12-9a63-bf00c2d9f3e4"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7850), null, null, true, false },
+                    { new Guid("70820368-d390-4c01-af1f-9e7b8e8413d2"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7870), null, null, true, false },
+                    { new Guid("993648ca-9d51-419a-85e8-046e8fc3162b"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7860), null, null, true, false },
+                    { new Guid("a9e9762a-2a67-46f3-b371-50405a100d58"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7800), null, null, true, false },
+                    { new Guid("b3d2dce1-a858-4312-937d-c56a6e0178cf"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7840), null, null, true, false },
+                    { new Guid("c8ab7e20-e7dd-4616-8862-d15dad3c986a"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7870), null, null, true, false },
+                    { new Guid("efe85186-52c9-4c46-b585-d4b47523db47"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7850), null, null, true, false },
+                    { new Guid("fe0d1832-793e-4cf8-983a-bbe09d7e0fa2"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(7860), null, null, true, false }
                 });
 
             migrationBuilder.InsertData(
@@ -256,13 +262,13 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                 columns: new[] { "IdReviewLog", "DateCreated", "DateDeleted", "IsDeleted" },
                 values: new object[,]
                 {
-                    { new Guid("0d38bc51-218b-4e12-8e39-6bef8654419b"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8500), null, false },
-                    { new Guid("1f642c35-dbfb-4062-ae75-7cf0e3f27f6f"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8500), null, false },
-                    { new Guid("3461a295-b612-4526-aaf1-205ea3a6beff"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8500), null, false },
-                    { new Guid("39cc7997-692f-40f4-a3ec-68b00940f6a6"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8500), null, false },
-                    { new Guid("60bb7ac9-88de-4bd4-933b-ce3e71d9cb45"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8500), null, false },
-                    { new Guid("9473bb77-cff3-42d7-bd0e-2807aa2fef52"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8500), null, false },
-                    { new Guid("d9de48fd-0abc-4b52-8371-f9f6959fdc46"), new DateTime(2025, 7, 24, 9, 32, 41, 345, DateTimeKind.Utc).AddTicks(8500), null, false }
+                    { new Guid("0d38bc51-218b-4e12-8e39-6bef8654419b"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450), null, false },
+                    { new Guid("1f642c35-dbfb-4062-ae75-7cf0e3f27f6f"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450), null, false },
+                    { new Guid("3461a295-b612-4526-aaf1-205ea3a6beff"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450), null, false },
+                    { new Guid("39cc7997-692f-40f4-a3ec-68b00940f6a6"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450), null, false },
+                    { new Guid("60bb7ac9-88de-4bd4-933b-ce3e71d9cb45"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450), null, false },
+                    { new Guid("9473bb77-cff3-42d7-bd0e-2807aa2fef52"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450), null, false },
+                    { new Guid("d9de48fd-0abc-4b52-8371-f9f6959fdc46"), new DateTime(2025, 8, 3, 21, 37, 6, 393, DateTimeKind.Utc).AddTicks(8450), null, false }
                 });
 
             migrationBuilder.InsertData(
@@ -287,23 +293,23 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserLog",
-                columns: new[] { "IdUserLog", "DateCreated", "DateDeleted", "DateLastLogin", "IsDeleted", "IsVerified", "RefreshToken", "RefreshTokenExpiration", "VerificationCode", "VerificationCodeExpiration" },
+                columns: new[] { "IdUserLog", "DateCreated", "DateDeleted", "DateLastLogin", "IsDeleted", "IsResettingEmail", "IsResettingPassword", "IsVerified", "RefreshToken", "RefreshTokenExpiration", "ResetEmailToken", "ResetEmailTokenExpiration", "ResetPasswordToken", "ResetPasswordTokenExpiration", "VerificationCode", "VerificationCodeExpiration" },
                 values: new object[,]
                 {
-                    { new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"), new DateTime(2025, 7, 24, 9, 32, 41, 119, DateTimeKind.Utc).AddTicks(6250), null, null, false, true, null, null, null, null },
-                    { new Guid("2f765163-6728-48bc-9767-66687efdf86e"), new DateTime(2025, 7, 24, 9, 32, 40, 922, DateTimeKind.Utc).AddTicks(5230), null, null, false, true, null, null, null, null },
-                    { new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"), new DateTime(2025, 7, 24, 9, 32, 41, 216, DateTimeKind.Utc).AddTicks(6100), null, null, false, true, null, null, null, null },
-                    { new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"), new DateTime(2025, 7, 24, 9, 32, 41, 54, DateTimeKind.Utc).AddTicks(7240), null, null, false, true, null, null, null, null },
-                    { new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"), new DateTime(2025, 7, 24, 9, 32, 40, 885, DateTimeKind.Utc).AddTicks(8480), null, null, false, true, null, null, null, null },
-                    { new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"), new DateTime(2025, 7, 24, 9, 32, 40, 954, DateTimeKind.Utc).AddTicks(7600), null, null, false, true, null, null, null, null },
-                    { new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"), new DateTime(2025, 7, 24, 9, 32, 41, 184, DateTimeKind.Utc).AddTicks(500), null, null, false, true, null, null, null, null },
-                    { new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"), new DateTime(2025, 7, 24, 9, 32, 41, 21, DateTimeKind.Utc).AddTicks(9880), null, null, false, true, null, null, null, null },
-                    { new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"), new DateTime(2025, 7, 24, 9, 32, 41, 281, DateTimeKind.Utc).AddTicks(4090), null, null, false, true, null, null, null, null },
-                    { new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"), new DateTime(2025, 7, 24, 9, 32, 41, 151, DateTimeKind.Utc).AddTicks(6520), null, null, false, true, null, null, null, null },
-                    { new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"), new DateTime(2025, 7, 24, 9, 32, 41, 249, DateTimeKind.Utc).AddTicks(5380), null, null, false, false, null, null, "840893", new DateTime(2025, 7, 25, 9, 32, 41, 249, DateTimeKind.Utc).AddTicks(5390) },
-                    { new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"), new DateTime(2025, 7, 24, 9, 32, 41, 313, DateTimeKind.Utc).AddTicks(2480), null, null, false, true, null, null, null, null },
-                    { new Guid("df0a8813-0938-42a6-ac84-26298701f456"), new DateTime(2025, 7, 24, 9, 32, 41, 87, DateTimeKind.Utc).AddTicks(3810), null, null, false, true, null, null, null, null },
-                    { new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"), new DateTime(2025, 7, 24, 9, 32, 40, 988, DateTimeKind.Utc).AddTicks(7270), null, null, false, true, null, null, null, null }
+                    { new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"), new DateTime(2025, 8, 3, 21, 37, 6, 151, DateTimeKind.Utc).AddTicks(4820), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("2f765163-6728-48bc-9767-66687efdf86e"), new DateTime(2025, 8, 3, 21, 37, 5, 943, DateTimeKind.Utc).AddTicks(5300), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"), new DateTime(2025, 8, 3, 21, 37, 6, 257, DateTimeKind.Utc).AddTicks(810), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"), new DateTime(2025, 8, 3, 21, 37, 6, 83, DateTimeKind.Utc).AddTicks(170), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"), new DateTime(2025, 8, 3, 21, 37, 5, 903, DateTimeKind.Utc).AddTicks(1600), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"), new DateTime(2025, 8, 3, 21, 37, 5, 978, DateTimeKind.Utc).AddTicks(9340), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"), new DateTime(2025, 8, 3, 21, 37, 6, 221, DateTimeKind.Utc).AddTicks(5750), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"), new DateTime(2025, 8, 3, 21, 37, 6, 48, DateTimeKind.Utc).AddTicks(3150), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"), new DateTime(2025, 8, 3, 21, 37, 6, 326, DateTimeKind.Utc).AddTicks(670), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"), new DateTime(2025, 8, 3, 21, 37, 6, 186, DateTimeKind.Utc).AddTicks(2000), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"), new DateTime(2025, 8, 3, 21, 37, 6, 292, DateTimeKind.Utc).AddTicks(1290), null, null, false, false, false, false, null, null, null, null, null, null, "554903", new DateTime(2025, 8, 4, 21, 37, 6, 292, DateTimeKind.Utc).AddTicks(1350) },
+                    { new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"), new DateTime(2025, 8, 3, 21, 37, 6, 359, DateTimeKind.Utc).AddTicks(8280), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("df0a8813-0938-42a6-ac84-26298701f456"), new DateTime(2025, 8, 3, 21, 37, 6, 117, DateTimeKind.Utc).AddTicks(860), null, null, false, false, false, true, null, null, null, null, null, null, null, null },
+                    { new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"), new DateTime(2025, 8, 3, 21, 37, 6, 14, DateTimeKind.Utc).AddTicks(1490), null, null, false, false, false, true, null, null, null, null, null, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -311,20 +317,20 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                 columns: new[] { "IdUser", "Email", "FirstName", "IdRole", "IdUserLog", "LastName", "Password", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("07434fd4-3450-4a01-a8c4-c371ed011e48"), "krzysztof.lewandowski@example.com", "Krzysztof", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"), "Lewandowski", "AQAAAAIAAYagAAAAEC2pv2eLbuQJHNlWd+Gt7f9DxxSPMuuMtZ//zbXcbl5LX7K24xMxa5jPbtBf+pYiWA==", "+48111777888" },
-                    { new Guid("156765b0-84a0-4389-af75-78f2f36dea04"), "dab@gmail.pl", "Maria", new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"), new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"), "Dąbrowska", "AQAAAAIAAYagAAAAECOKqfIzLGzPcH9JNahJoNn6JQHtnWkMxK6dRug71FSmrI5cX57dpBWhcKN1tr1o/g==", "+48231443225" },
-                    { new Guid("1d31a511-8d38-4223-96a0-f2b15cc90794"), "pawel.kaminski@example.com", "Paweł", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"), "Kamiński", "AQAAAAIAAYagAAAAEKEohuY6aXx7K002Le5zooC6pdWm4w4JUoSOllgaloM1bW4gJSnj9yUssoHaMp5FNw==", "+48111999000" },
-                    { new Guid("2254933a-66ac-4ab8-a923-25d508d8b5c0"), "piotr.nowak@example.com", "Piotr", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"), "Nowak", "AQAAAAIAAYagAAAAEMJLo7Lk/ZaFpfP9DjFJ2+Z5IyfNMVO1JgSWmUxt11y9qTrIUzkekVlbBHxsTNuGmQ==", "+48111222333" },
-                    { new Guid("29d1d9bd-87d9-4125-99a5-0f15c9df3a30"), "tomasz.zielinski@example.com", "Tomasz", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"), "Zieliński", "AQAAAAIAAYagAAAAED+3n8rODubl5MZXTt927u+B0wDyYSw6ruF26R6/IssT4IC+BLKMpSOutDK5zIURzA==", "+48111444555" },
-                    { new Guid("3fb9e066-38b7-42ae-900c-d7ab5ae280f0"), "michal.wojcik@example.com", "Michał", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("df0a8813-0938-42a6-ac84-26298701f456"), "Wójcik", "AQAAAAIAAYagAAAAEGpXxATZYmHZ2lttvwKD3z8Y03BE0KO1AwUXxmJD+wXthpvLCdvTEFoxUckHTeNGcw==", "+48111555666" },
-                    { new Guid("5bfc9c8d-4789-4065-99d9-81ec5b58c0f5"), "jan.nowak@gmail.com", "Jan", new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"), new Guid("2f765163-6728-48bc-9767-66687efdf86e"), "Nowak", "AQAAAAIAAYagAAAAEIEB8KmnW8YfT7jj3bhreikWsb2lyK4oxlbi5w43qhzDHGQppvuzQG3cHGdHGC8kEQ==", "+48696432123" },
+                    { new Guid("07434fd4-3450-4a01-a8c4-c371ed011e48"), "krzysztof.lewandowski@example.com", "Krzysztof", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"), "Lewandowski", "AQAAAAIAAYagAAAAEHpahjVOx0nhDLWUOHzAAf2ABpjD7gFgra4nnpLIAa39kpkozbJgN6C++UI1baxALQ==", "+48111777888" },
+                    { new Guid("156765b0-84a0-4389-af75-78f2f36dea04"), "dab@gmail.pl", "Maria", new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"), new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"), "Dąbrowska", "AQAAAAIAAYagAAAAEItYbSAWYJs2hZ9P/M2u68D3qRYIN1EZdICz+31iVERpNdC7Im8V0IZq8sIqZz2KJg==", "+48231443225" },
+                    { new Guid("1d31a511-8d38-4223-96a0-f2b15cc90794"), "pawel.kaminski@example.com", "Paweł", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"), "Kamiński", "AQAAAAIAAYagAAAAEI15m5rX9vaKPsm3S3aysBZbqrTdNKdnExvbeh8nLxLsJfRh5QGnRzIxllbp+ov09w==", "+48111999000" },
+                    { new Guid("2254933a-66ac-4ab8-a923-25d508d8b5c0"), "piotr.nowak@example.com", "Piotr", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"), "Nowak", "AQAAAAIAAYagAAAAEDYN0PVfEgLl5LX216l1A8sT+WNZRPb/7X5e6+J1oIynq+HvFXDX2khiHdtROuEEtg==", "+48111222333" },
+                    { new Guid("29d1d9bd-87d9-4125-99a5-0f15c9df3a30"), "tomasz.zielinski@example.com", "Tomasz", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"), "Zieliński", "AQAAAAIAAYagAAAAEIWDE5TtLIOP1QdeQiBe9u1zKZkj/7F5opBDWEuS9VJRxX/UodnQ+BPtQbZYDPfhMw==", "+48111444555" },
+                    { new Guid("3fb9e066-38b7-42ae-900c-d7ab5ae280f0"), "michal.wojcik@example.com", "Michał", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("df0a8813-0938-42a6-ac84-26298701f456"), "Wójcik", "AQAAAAIAAYagAAAAEEZgI/OOGv7KN0YHUglKOILSBaSQ29RzVdkRoJHBfOaDhL+443V52iJSvTT9jj1EMg==", "+48111555666" },
+                    { new Guid("5bfc9c8d-4789-4065-99d9-81ec5b58c0f5"), "jan.nowak@gmail.com", "Jan", new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"), new Guid("2f765163-6728-48bc-9767-66687efdf86e"), "Nowak", "AQAAAAIAAYagAAAAEDY2G6jb2oqEW3nUk3UIMGHEqeDYCdQALRCYXeJLfs0Q164GMghfaWtkZqf6vFD9Hg==", "+48696432123" },
                     { new Guid("655887cb-b3cd-40da-b2bb-48b5e84239f9"), "mar.radw@example.com", "Marcin", new Guid("d92d29b8-f462-46df-8efb-de6b9aa5109a"), new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"), "Radwański", "test", "+48431234765" },
-                    { new Guid("731c7617-9342-415d-8e06-f77ec2d56786"), "ewa.maj@example.com", "Ewa", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"), "Maj", "AQAAAAIAAYagAAAAEJ22OiWmpNlvTWZlhUoEl9jR+J0O+67KQC+UrxBfaWNlqan0SqwCBG1CFJQxEPFJ4g==", "+48111333444" },
-                    { new Guid("828daa53-9a49-40ad-97b3-31b0349bc08d"), "anna.kow@gmail.com", "Anna", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"), "Kowalska", "AQAAAAIAAYagAAAAECZfcZWvkYXS4rZNexUsuwn6KjT/1bCg8SLWHQVbH/iTsNqaEIRp3f3wt88LS7taSg==", "+48543123123" },
-                    { new Guid("ac89f1a4-6988-4211-8136-fbf9b45e4cf2"), "katarzyna.wisniewska@example.com", "Katarzyna", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"), "Wiśniewska", "AQAAAAIAAYagAAAAEEddA8ikXXoJ5CPYhN20iXgAGdLMYZM8eRHSnt4jhu/nijIL9A+j8p+2twLqYzMHWA==", "+48111666777" },
-                    { new Guid("aebc2724-0edf-4691-99e9-65cbd3aab3bf"), "dominik.kow@gmail.com", "Dominik", new Guid("d92d29b8-f462-46df-8efb-de6b9aa5109a"), new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"), "Kowalski", "AQAAAAIAAYagAAAAEF08dmhlONC/gQWgViTI+W9F48Xqlt+Gtkksd2lktchVTFYRYbpBgkUo7W9BhwqkKQ==", "+48123456789" },
-                    { new Guid("e07bc534-3324-4af4-8d97-faee7242e896"), "agnieszka.wrobel@example.com", "Agnieszka", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"), "Wróbel", "AQAAAAIAAYagAAAAEPx3CELRUcI4fvx3bdSnDwvOqXr+idf5T4dIeuF/J6K46Y1JarcjGnGu5cIaNUxyjw==", "+48111888999" },
-                    { new Guid("fdf7bda4-f40f-484f-bc40-adbf8aa98985"), "marian@gmail.pl", "Marian", new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"), new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"), "Niewiadomski", "AQAAAAIAAYagAAAAEJzV6IF3eK99SFrMXYKlhe8YTpjpFA73RQjxDgnq2GnkgejIcDRm3b7l0w1TN5RCdw==", "+48654123432" }
+                    { new Guid("731c7617-9342-415d-8e06-f77ec2d56786"), "ewa.maj@example.com", "Ewa", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"), "Maj", "AQAAAAIAAYagAAAAELzoDl53H8ShqzHbrpZY5YOy/rkcjVNrSJsdMN1MEJirjCoAEWoW3nyagyIvefoK0Q==", "+48111333444" },
+                    { new Guid("828daa53-9a49-40ad-97b3-31b0349bc08d"), "anna.kow@gmail.com", "Anna", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"), "Kowalska", "AQAAAAIAAYagAAAAEB2wih5/4wnlHNcGv7meVlyX7jN/lDpCy7j752zBYz3qhwpQxJZuVL9hbICdVzm1Pw==", "+48543123123" },
+                    { new Guid("ac89f1a4-6988-4211-8136-fbf9b45e4cf2"), "katarzyna.wisniewska@example.com", "Katarzyna", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"), "Wiśniewska", "AQAAAAIAAYagAAAAEJSjmR0UV6cU6mHCdU57TRE+rv9EgGKf5TfgwbpvXKbLmASCBYCaL6E/Ig1Jvwctxw==", "+48111666777" },
+                    { new Guid("aebc2724-0edf-4691-99e9-65cbd3aab3bf"), "dominik.kow@gmail.com", "Dominik", new Guid("d92d29b8-f462-46df-8efb-de6b9aa5109a"), new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"), "Kowalski", "AQAAAAIAAYagAAAAECrAMg55LZuQYIQUWibIMp1NZFZWyGMQwr5ZDt92qo2lQGQEbKG/rCy0xXpseFTf4g==", "+48123456789" },
+                    { new Guid("e07bc534-3324-4af4-8d97-faee7242e896"), "agnieszka.wrobel@example.com", "Agnieszka", new Guid("522c6700-165e-4189-b234-9fb533266e07"), new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"), "Wróbel", "AQAAAAIAAYagAAAAED35Eslk8gj+6cD49WZ1LuD36uu3ffnJagxFbGFtGvDSODxJDTD5CPECV4df2QIc4Q==", "+48111888999" },
+                    { new Guid("fdf7bda4-f40f-484f-bc40-adbf8aa98985"), "marian@gmail.pl", "Marian", new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"), new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"), "Niewiadomski", "AQAAAAIAAYagAAAAEIx90/FDEGbe1HYPj+LHee1psM3PTvGKSVvq34u8oBfEFI8w7ARuzTIgNTYu98Cfqg==", "+48654123432" }
                 });
 
             migrationBuilder.InsertData(
@@ -362,8 +368,8 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     { new Guid("5f3bcc4b-d484-44cc-baa2-339373b7d0f0"), "Great production skills, I am very happy with the final result!", new Guid("8370e2eb-2ea0-4c4e-99e5-b9e719427f03"), new Guid("60bb7ac9-88de-4bd4-933b-ce3e71d9cb45"), new Guid("5bfc9c8d-4789-4065-99d9-81ec5b58c0f5"), (byte)5 },
                     { new Guid("649406c7-a59a-4102-b7cb-c39d16bc7117"), "They way I was treated was great. I will most definitely visit this engineer in the studio again!", new Guid("aff251d8-9e58-4f5c-ba43-4c6597fc8a08"), new Guid("9473bb77-cff3-42d7-bd0e-2807aa2fef52"), new Guid("156765b0-84a0-4389-af75-78f2f36dea04"), (byte)5 },
                     { new Guid("a1b2c3d4-e5f6-7a8b-9c0d-e1f2a3b4c5d6"), "The mix was good, but I expected more attention to detail. Overall, a decent experience.", new Guid("31ba89aa-f10f-40e7-b4b0-7375da567997"), new Guid("3461a295-b612-4526-aaf1-205ea3a6beff"), new Guid("156765b0-84a0-4389-af75-78f2f36dea04"), (byte)3 },
-                    { new Guid("dbe3112c-8914-44b1-8011-d58cb2ba4270"), "I feel like the engineer could not really achieve what I have wanted, however I think they were really patient and creative ;)", new Guid("31ba89aa-f10f-40e7-b4b0-7375da567997"), new Guid("d9de48fd-0abc-4b52-8371-f9f6959fdc46"), new Guid("5bfc9c8d-4789-4065-99d9-81ec5b58c0f5"), (byte)3 },
-                    { new Guid("f88cb211-6464-4b28-aa48-75f257624d86"), "Excellent mixes, I have never worked with such a talented engineer in my life. I will recommend working with him all the way!", new Guid("31ba89aa-f10f-40e7-b4b0-7375da567997"), new Guid("1f642c35-dbfb-4062-ae75-7cf0e3f27f6f"), new Guid("fdf7bda4-f40f-484f-bc40-adbf8aa98985"), (byte)5 },
+                    { new Guid("dbe3112c-8914-44b1-8011-d58cb2ba4270"), "I feel like the engineer could not really achieve what I have wanted, however I think they were really patient and creative ;)", new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"), new Guid("d9de48fd-0abc-4b52-8371-f9f6959fdc46"), new Guid("5bfc9c8d-4789-4065-99d9-81ec5b58c0f5"), (byte)3 },
+                    { new Guid("f88cb211-6464-4b28-aa48-75f257624d86"), "Excellent mixes, I have never worked with such a talented engineer in my life. I will recommend working with him all the way!", new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"), new Guid("1f642c35-dbfb-4062-ae75-7cf0e3f27f6f"), new Guid("fdf7bda4-f40f-484f-bc40-adbf8aa98985"), (byte)5 },
                     { new Guid("fbd98612-7ccd-4b83-afaa-7084e758e746"), "Poor judgement, does not understand the music I like and hates on doing some additional revisions of a master, I can't recommend this person...", new Guid("aff251d8-9e58-4f5c-ba43-4c6597fc8a08"), new Guid("0d38bc51-218b-4e12-8e39-6bef8654419b"), new Guid("655887cb-b3cd-40da-b2bb-48b5e84239f9"), (byte)1 }
                 });
 

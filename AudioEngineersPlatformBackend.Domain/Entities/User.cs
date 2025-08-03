@@ -226,15 +226,14 @@ public class User
         };
     }
 
-    public void TryChangeUser(string newEmail)
+    public void TryChangeEmail(string newEmail)
     {
         // Check if the emails differ 
         if (Email == newEmail)
         {
             throw new ArgumentException($"New {nameof(Email).ToLower()} can't be the same as previous.");
         }
-
-
+        
         Email = newEmail;
     }
 

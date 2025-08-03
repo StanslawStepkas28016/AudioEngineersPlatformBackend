@@ -29,6 +29,18 @@ public class UserLogEfConfig : IEntityTypeConfiguration<UserLog>
             .IsRequired();
 
         builder
+            .Property(ul => ul.RefreshToken)
+            .IsRequired(false);
+
+        builder
+            .Property(ul => ul.RefreshTokenExpiration)
+            .IsRequired(false);
+
+        builder
+            .Property(ul => ul.DateLastLogin)
+            .IsRequired(false);
+
+        builder
             .Property(ul => ul.VerificationCode)
             .IsRequired(false);
 
@@ -41,16 +53,28 @@ public class UserLogEfConfig : IEntityTypeConfiguration<UserLog>
             .IsRequired();
 
         builder
-            .Property(ul => ul.DateLastLogin)
+            .Property(ul => ul.ResetEmailToken)
             .IsRequired(false);
 
         builder
-            .Property(ul => ul.RefreshToken)
+            .Property(ul => ul.ResetEmailTokenExpiration)
             .IsRequired(false);
 
         builder
-            .Property(ul => ul.RefreshTokenExpiration)
+            .Property(ul => ul.IsResettingEmail)
+            .IsRequired();
+        
+        builder
+            .Property(ul => ul.ResetPasswordToken)
             .IsRequired(false);
+
+        builder
+            .Property(ul => ul.ResetPasswordTokenExpiration)
+            .IsRequired(false);
+
+        builder
+            .Property(ul => ul.IsResettingPassword)
+            .IsRequired();
 
         builder
             .ToTable("UserLog");

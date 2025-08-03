@@ -32,7 +32,7 @@ public sealed class CurrentUserUtil : ICurrentUserUtil
         if (_idUser == Guid.Empty)
         {
             throw new Exception(
-                $"You are trying to access the {nameof(CurrentUserUtil)} while not being authenticated!"
+                $"You are trying to access the {nameof(CurrentUserUtil)} while not being authenticated."
             );
         }
     }

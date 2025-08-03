@@ -811,7 +811,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("RefreshTokenExp")
+                    b.Property<DateTime?>("RefreshTokenExpiration")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("VerificationCode")

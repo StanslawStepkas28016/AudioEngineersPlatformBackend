@@ -18,7 +18,7 @@ public class Role
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdRole)} cannot be empty)");
+                throw new ArgumentException($"{nameof(IdRole)} cannot be empty.");
             }
 
             _idRole = value;
@@ -32,13 +32,13 @@ public class Role
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException($"{nameof(RoleName)} cannot be empty");
+                throw new ArgumentException($"{nameof(RoleName)} cannot be empty.");
             }
 
             if (value.Length < RoleNameMinLength)
             {
                 throw new ArgumentException(
-                    $"You must provide at least {RoleNameMinLength} characters for {nameof(RoleName)}");
+                    $"You must provide at least {RoleNameMinLength} characters for {nameof(RoleName)}.");
             }
 
             _roleName = value;
@@ -51,6 +51,8 @@ public class Role
         get => _users;
         private set => _users = value;
     }
+    
+    // Methods
 
     // Private constructor for EF Core
     private Role()

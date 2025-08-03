@@ -8,7 +8,7 @@ public class UserService : IUserService
 {
     public void ResetPhoneNumber()
     {
-        // TODO: Add ResetPhoneNumber endpoint
+        // TODO: ResetPhoneNumber endpoint
         /*// Handle phone number change request if provided
         if (!string.IsNullOrWhiteSpace(resetEmailRequest.PhoneNumber))
         {
@@ -18,7 +18,7 @@ public class UserService : IUserService
             // Check if the phoneNumber is already in use
             if (await _userRepository.IsPhoneNumberAlreadyTaken(newValidPhoneNumber, cancellationToken))
             {
-                throw new Exception("Provided phone number is already taken");
+                throw new Exception($"Provided {nameof(resetEmailRequest.PhoneNumber)} is already taken.");
             }
 
             // Update the data (will check if provided phoneNumber is different from the old one)

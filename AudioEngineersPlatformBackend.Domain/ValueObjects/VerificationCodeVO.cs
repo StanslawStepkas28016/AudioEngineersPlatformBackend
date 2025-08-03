@@ -11,12 +11,12 @@ public readonly struct VerificationCodeVo
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Verification code cannot be null", nameof(value));
+                throw new ArgumentException($"{nameof(VerificationCode)} cannot be null.");
             }
 
             if (value.Length != 6)
             {
-                throw new ArgumentException("Verification code must be 6 characters long", nameof(value));
+                throw new ArgumentException($"{nameof(VerificationCode)} must be 6 characters long.");
             }
 
             _verificationCode = value;

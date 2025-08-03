@@ -17,7 +17,7 @@ public class ReviewLog
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdReviewLog)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdReviewLog)} cannot be empty.");
             }
 
             _idReviewLog = value;

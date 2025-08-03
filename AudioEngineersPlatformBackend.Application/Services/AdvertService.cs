@@ -33,15 +33,16 @@ public class AdvertService : IAdvertService
         // Validate the user from the request
         if (createAdvertRequest.IdUser == Guid.Empty)
         {
-            throw new ArgumentException("User ID cannot be empty.");
+            throw new ArgumentException($"{nameof(createAdvertRequest.IdUser)} cannot be empty.");
         }
 
         // Check if the user exists
-        var findUserByIdUser = await _userRepository.DoesUserExistByIdUser(createAdvertRequest.IdUser, cancellationToken);
+        var findUserByIdUser =
+            await _userRepository.DoesUserExistByIdUser(createAdvertRequest.IdUser, cancellationToken);
 
         if (!findUserByIdUser)
         {
-            throw new ArgumentException("IdUser cannot be empty.", nameof(createAdvertRequest.IdUser));
+            throw new ArgumentException($"{nameof(createAdvertRequest.IdUser)} cannot be empty.");
         }
 
         // Check if there is already an advert posted by the user
@@ -50,13 +51,13 @@ public class AdvertService : IAdvertService
 
         if (advertByIdUser != null)
         {
-            throw new ArgumentException("User already has an advert posted.");
+            throw new ArgumentException($"User already has an {nameof(Advert).ToLower()} posted.");
         }
 
         // Check if the provided category name exists
         if (string.IsNullOrWhiteSpace(createAdvertRequest.CategoryName))
         {
-            throw new ArgumentException("Category name cannot be null or whitespace.",
+            throw new ArgumentException($"{createAdvertRequest.CategoryName} cannot be null or whitespace.",
                 nameof(createAdvertRequest.CategoryName));
         }
 
@@ -65,7 +66,7 @@ public class AdvertService : IAdvertService
 
         if (advertCategory == null)
         {
-            throw new Exception("Category not found.");
+            throw new Exception($"{nameof(AdvertCategory)} not found.");
         }
 
         // Create a new AdvertLog entity
@@ -106,7 +107,7 @@ public class AdvertService : IAdvertService
         // Validate the idAdvert
         if (idAdvert == Guid.Empty)
         {
-            throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
+            throw new ArgumentException($"{nameof(idAdvert)} cannot be empty.");
         }
 
         // Check if the advert exists
@@ -115,13 +116,13 @@ public class AdvertService : IAdvertService
 
         if (advertByIdAdvert == null)
         {
-            throw new Exception("Advert not found.");
+            throw new Exception($"{nameof(Advert)} not found.");
         }
 
         // Check if the user is authorized to edit the advert (either the owner or an administrator)
         if (advertByIdAdvert.IdUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
         {
-            throw new UnauthorizedAccessException("Specified advert does not belong to you.");
+            throw new UnauthorizedAccessException($"Specified {nameof(Advert).ToLower()} does not belong to you.");
         }
 
         // Perform the update
@@ -141,7 +142,7 @@ public class AdvertService : IAdvertService
         // Validate the idAdvert
         if (idAdvert == Guid.Empty)
         {
-            throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
+            throw new ArgumentException($"{nameof(idAdvert)} cannot be empty.");
         }
 
         // Check if the advert exists
@@ -150,18 +151,18 @@ public class AdvertService : IAdvertService
 
         if (advertAndAdvertLog == null)
         {
-            throw new Exception("Advert with the provided idAdvert was not found.");
+            throw new Exception($"{nameof(Advert)} with the provided ${nameof(idAdvert)} was not found.");
         }
 
         // Check if the user is authorized to delete the advert (either the owner or an administrator)
         if (advertAndAdvertLog.IdUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
         {
-            throw new UnauthorizedAccessException("Specified advert does not belong to you.");
+            throw new UnauthorizedAccessException($"Specified {nameof(Advert).ToLower()} does not belong to you.");
         }
 
         // Mark the advert as deleted
         advertAndAdvertLog.AdvertLog.MarkAsDeleted();
-        
+
         // Save the changes
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
@@ -170,7 +171,7 @@ public class AdvertService : IAdvertService
     {
         if (idUser == Guid.Empty)
         {
-            throw new ArgumentException("IdUser cannot be empty.", nameof(idUser));
+            throw new ArgumentException($"{nameof(idUser)} cannot be empty.");
         }
 
         Guid? idAdvertBasedOnIdUser =
@@ -178,7 +179,7 @@ public class AdvertService : IAdvertService
 
         if (idAdvertBasedOnIdUser == null)
         {
-            throw new Exception("Advert not found.");
+            throw new Exception($"{nameof(Advert)} not found.");
         }
 
         return idAdvertBasedOnIdUser.Value;
@@ -190,7 +191,7 @@ public class AdvertService : IAdvertService
         // Validate the advert ID and its existence
         if (idUser == Guid.Empty)
         {
-            throw new ArgumentException("IdUser cannot be empty.", nameof(idUser));
+            throw new ArgumentException($"{nameof(idUser)} cannot be empty.");
         }
 
         AdvertDetailsDto? advert =
@@ -198,7 +199,7 @@ public class AdvertService : IAdvertService
 
         if (advert == null)
         {
-            throw new Exception("You have not posted an advert yet.");
+            throw new Exception($"You have not posted an {nameof(Advert)} yet.");
         }
 
         // Generate a presigned URL for the cover image
@@ -227,7 +228,7 @@ public class AdvertService : IAdvertService
         // Validate the advert ID and its existence
         if (idAdvert == Guid.Empty)
         {
-            throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
+            throw new ArgumentException($"{nameof(idAdvert)} cannot be empty.");
         }
 
         AdvertDetailsDto? advert =
@@ -235,7 +236,7 @@ public class AdvertService : IAdvertService
 
         if (advert == null)
         {
-            throw new Exception("You have not posted an advert yet.");
+            throw new Exception($"You have not posted an {nameof(Advert).ToLower()} yet.");
         }
 
         // Generate a presigned URL for the cover image
@@ -297,7 +298,7 @@ public class AdvertService : IAdvertService
 
         if (findReviewForAdvertByIdUserAndIdAdvert != Guid.Empty)
         {
-            throw new Exception("You have already posted a review under this advert.");
+            throw new Exception($"You have already posted a {nameof(Review)} under this {nameof(Advert)}.");
         }
 
         // Create a ReviewLog
@@ -324,7 +325,7 @@ public class AdvertService : IAdvertService
     {
         if (idAdvert == Guid.Empty)
         {
-            throw new ArgumentException("IdAdvert cannot be empty.", nameof(idAdvert));
+            throw new ArgumentException($"{nameof(idAdvert)} cannot be empty.");
         }
 
         PagedListDto<ReviewDto> reviewsForAdvertPaginated =

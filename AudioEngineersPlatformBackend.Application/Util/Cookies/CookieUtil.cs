@@ -16,7 +16,7 @@ public class CookieUtil : ICookieUtil
     {
         if (expirationDate == null)
         {
-            throw new ArgumentNullException(nameof(expirationDate), "Expiration date cannot be null.");
+            throw new ArgumentNullException($"{nameof(expirationDate)} cannot be null.");
         }
 
         CookieOptions options = new CookieOptions

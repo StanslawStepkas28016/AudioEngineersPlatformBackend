@@ -15,7 +15,7 @@ public class SocialMediaName
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdSocialMediaName)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdSocialMediaName)} cannot be empty.");
             }
 
             _idSocialMediaName = value;
@@ -29,7 +29,7 @@ public class SocialMediaName
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException($"{nameof(Name)} cannot be empty");
+                throw new ArgumentException($"{nameof(Name)} cannot be empty.");
             }
 
             _name = value;
@@ -42,6 +42,8 @@ public class SocialMediaName
         get => _socialMediaLinks;
         set => _socialMediaLinks = value;
     }
+    
+    // Methods
 
     public static SocialMediaName Create(string name)
     {
@@ -52,6 +54,12 @@ public class SocialMediaName
         };
     }
 
+    /// <summary>
+    ///     Factory method...
+    /// </summary>
+    /// <param name="idSocialMediaName"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static SocialMediaName CreateWithId(Guid idSocialMediaName, string name)
     {
         return new SocialMediaName

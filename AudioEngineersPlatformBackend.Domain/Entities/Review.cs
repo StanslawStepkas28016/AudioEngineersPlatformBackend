@@ -27,7 +27,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdReview)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdReview)} cannot be empty.");
             }
 
             _idReview = value;
@@ -41,14 +41,13 @@ public class Review
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Content cannot be empty", nameof(value));
+                throw new ArgumentException($"{nameof(Content)} cannot be empty.");
             }
 
             if (value.Length > MaxContentLength || value.Length < MinContentLength)
             {
                 throw new ArgumentException(
-                    $"Content must be between {MinContentLength} and {MaxContentLength} characters long.",
-                    nameof(value));
+                    $"{nameof(Content)} must be between {MinContentLength} and {MaxContentLength} characters long.");
             }
 
             _content = value;
@@ -78,7 +77,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdAdvert)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdAdvert)} cannot be empty.");
             }
 
             _idAdvert = value;
@@ -98,7 +97,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdReviewLog)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdReviewLog)} cannot be empty.");
             }
 
             _idReviewLog = value;
@@ -118,7 +117,7 @@ public class Review
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdUser)} cannot be empty");
+                throw new ArgumentException($"{nameof(IdUser)} cannot be empty.");
             }
 
             _idUser = value;
@@ -130,6 +129,8 @@ public class Review
         get => _user;
         set => _user = value;
     }
+    
+    // Methods
 
     // Private constructor for EF Core
     private Review()

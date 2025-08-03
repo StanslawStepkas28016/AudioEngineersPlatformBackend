@@ -19,7 +19,7 @@ public readonly struct PhoneNumberVo
             }
             catch (NumberParseException e)
             {
-                throw new ArgumentException(e.Message, nameof(value));
+                throw new ArgumentException(e.Message);
             }
 
 

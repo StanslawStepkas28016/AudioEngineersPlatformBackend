@@ -58,12 +58,13 @@ public readonly struct EmailVo
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Provided address cannot be null or empty", nameof(value));
+                throw new ArgumentException(
+                    $"Provided {nameof(Address)} from {nameof(GetType)} cannot be null or empty.");
             }
 
             if (!IsValidEmail(value))
             {
-                throw new ArgumentException("Provided address is not valid, needs to follow name@domain.com",
+                throw new ArgumentException($"Provided {nameof(Address)} is not valid, needs to follow name@domain.com.",
                     nameof(value));
             }
 
