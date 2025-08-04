@@ -5,6 +5,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyResetEmail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LoginRequest = AudioEngineersPlatformBackend.Contracts.Auth.Login.LoginRequest;
@@ -86,5 +87,14 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status202Accepted, resetEmailResponse);
     }
 
+    [AllowAnonymous]
+    [HttpPost("{resetEmailToken:guid}/verify-reset-email")]
+    public async Task<IActionResult> VerifyResetEmail(Guid resetEmailToken, CancellationToken cancellationToken)
+    {
+        await authService.VerifyResetEmail(resetEmailToken, cancellationToken);
+        return StatusCode(StatusCodes.Status204NoContent);
+    }
+
     // TODO: ResetPassword endpoint
+    // TODO: ResetPhoneNumber endpoint
 }

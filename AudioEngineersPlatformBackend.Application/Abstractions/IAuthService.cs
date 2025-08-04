@@ -3,6 +3,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyResetEmail;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
@@ -23,4 +24,6 @@ public interface IAuthService
 
     Task<ResetEmailResponse> ResetEmail(Guid idUser, ResetEmailRequest resetEmailRequest,
         CancellationToken cancellationToken);
+
+    Task VerifyResetEmail(Guid resetEmailToken, CancellationToken cancellationToken);
 }

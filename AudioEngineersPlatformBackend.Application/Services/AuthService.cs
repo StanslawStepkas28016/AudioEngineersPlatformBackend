@@ -7,6 +7,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyResetEmail;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
@@ -91,7 +92,7 @@ public class AuthService : IAuthService
     {
         // Check database invariants - find if user with given id exits, find if verification code is valid
         User? user = await _authRepository.FindUserAndUserLogByVerificationCode(
-            new VerificationCodeVo(verifyAccountRequest.VerificationCode).GetValidVerificationCode(),
+            new AccountVerificationCodeVO(verifyAccountRequest.VerificationCode).GetValidAccountVerificationCode(),
             cancellationToken);
 
         if (user == null)
@@ -240,60 +241,77 @@ public class AuthService : IAuthService
     public async Task<ResetEmailResponse> ResetEmail(Guid idUser, ResetEmailRequest resetEmailRequest,
         CancellationToken cancellationToken)
     {
-        // Check if the email is provided
-        if (string.IsNullOrWhiteSpace(resetEmailRequest.NewEmail))
-        {
-            throw new ArgumentException($"You must provide an {nameof(resetEmailRequest.NewEmail)}.");
-        }
+        // Ensure the right format of the provided email (will throw an exception if invalid).
+        string newValidEmail = new EmailVo(resetEmailRequest.NewEmail).GetValidEmail();
 
-        // Check if the user is authorized to edit the advert (either the owner or an administrator)
-        if (idUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
+        // Ensure the provided id is correct.
+        Guid validatedIdUser = new GuidVO(idUser).GetValidGuid();
+
+        // Check if the user is authorized to edit the advert (either the owner or an administrator).
+        if (validatedIdUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified data does not belong to you.");
         }
 
-        // Validate if the user exists
-        if (!await _userRepository.DoesUserExistByIdUser(idUser, cancellationToken))
+        // Validate if the user exists.
+        if (!await _userRepository.DoesUserExistByIdUser(validatedIdUser, cancellationToken))
         {
             throw new Exception("User not found.");
         }
 
-        // Fetch the user data
-        User user = (await _userRepository.FindUserByIdUser(idUser, cancellationToken))!;
+        // Fetch the user data.
+        User user = (await _userRepository.FindUserByIdUser(validatedIdUser, cancellationToken))!;
 
-        // Ensure the right format of the provided email (will throw an exception if invalid)
-        string newValidEmail = new EmailVo(resetEmailRequest.NewEmail).GetValidEmail();
-
-        // Check if the email is already in use
+        // Check if the email is already in use.
         if (await _userRepository.IsEmailAlreadyTaken(newValidEmail, cancellationToken))
         {
             throw new Exception($"{nameof(resetEmailRequest.NewEmail)} is already taken.");
         }
 
-        // Fetch the userLog data
-        var userLog = (await _userRepository.FindUserLogByIdUser(idUser, cancellationToken))!;
+        // Fetch the UserLog data.
+        var userLog = (await _userRepository.FindUserLogByIdUser(validatedIdUser, cancellationToken))!;
 
-        // Generate a Guid and save it to the database
-        // Generate an Email Reset URL
+        // Generate a token and generate a reset email url.
         var resetEmailToken = Guid.NewGuid();
-        var resetEmailUrl = _urlGeneratorUtil.ConstructResetEmailUrl(resetEmailToken);
+        var resetEmailUrl = _urlGeneratorUtil.GenerateResetEmailUrl(resetEmailToken);
 
-        // Update the email itself (will check if provided email is different from the old one)
+        // Update the email itself and set email reset data (token, its expiration and user state).
         user.TryChangeEmail(newValidEmail);
+        userLog.SetResetEmailData(resetEmailToken);
 
-        // Set email reset token and its expiration
-        // userLog.SetEmailResetTokenAndItsExpiration(resetEmailToken); 
-        // TODO: SetEmailResetTokenAndItsExpiration method
-
-        // Logout the user from all sessions, by setting the RefreshToken and RefreshTokenExpiration to null values
+        // Logout the user from all sessions, by setting the RefreshToken and RefreshTokenExpiration to null values,
+        // as well as removing the authenthication cookies from their browser.
         userLog.SetLogoutData();
+        _cookieUtil.DeleteCookie(CookieName.accessToken);
+        _cookieUtil.DeleteCookie(CookieName.refreshToken);
 
-        // Send a new verification email
-        // await _sesService.TrySendEmailResetEmailAsync(newValidEmail, user.FirstName, resetEmailUrl);
+        // Send a new verification email.
+        await _sesService.TrySendEmailResetEmailAsync(newValidEmail, user.FirstName, resetEmailUrl);
 
-        // Persist all changes
-        // await _unitOfWork.CompleteAsync(cancellationToken);
+        // Persist all changes.
+        await _unitOfWork.CompleteAsync(cancellationToken);
 
         return new ResetEmailResponse(resetEmailUrl);
+    }
+
+    public async Task VerifyResetEmail(Guid resetEmailToken,
+        CancellationToken cancellationToken)
+    {
+        // Use a VO to extract the guid and ensure that it is not empty.
+        var resetEmailTokenValidated = new GuidVO(resetEmailToken).GetValidGuid();
+
+        // Find the user associated UserLog.
+        var userLog = await _authRepository.FindUserLogByResetEmailToken(resetEmailTokenValidated, cancellationToken);
+
+        if (userLog == null)
+        {
+            throw new Exception($"User with the {nameof(resetEmailToken)} was not found.");
+        }
+
+        // Verify the token.
+        userLog.TryVerifyResetEmail(resetEmailTokenValidated);
+
+        // Persist all changes.
+        await _unitOfWork.CompleteAsync(cancellationToken);
     }
 }

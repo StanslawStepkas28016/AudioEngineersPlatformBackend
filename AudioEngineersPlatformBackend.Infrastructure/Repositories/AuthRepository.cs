@@ -38,7 +38,7 @@ public class AuthRepository : IAuthRepository
             .Roles
             .AsNoTracking()
             .FirstOrDefaultAsync(r => r.RoleName == roleName,
-            cancellationToken);
+                cancellationToken);
     }
 
     public async Task<UserLog> AddUserLog(UserLog userLog, CancellationToken cancellationToken)
@@ -108,5 +108,12 @@ public class AuthRepository : IAuthRepository
                 RoleName = u.Role.RoleName!
             })
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<UserLog?> FindUserLogByResetEmailToken(Guid resetEmailToken, CancellationToken cancellationToken)
+    {
+        return await _context
+            .UserLogs
+            .FirstOrDefaultAsync(ul => ul.ResetEmailToken == resetEmailToken, cancellationToken);
     }
 }

@@ -69,7 +69,7 @@ public class UserLog
         get => _isDeleted;
         private set => _isDeleted = value;
     }
-    
+
     public string? RefreshToken
     {
         get => _refreshToken;
@@ -81,7 +81,7 @@ public class UserLog
         get => _refreshTokenExpiration;
         private set => _refreshTokenExpiration = value;
     }
-    
+
     public DateTime? DateLastLogin
     {
         get => _dateLastLogin;
@@ -105,7 +105,7 @@ public class UserLog
         get => _isVerified;
         private set => _isVerified = value;
     }
-    
+
     public Guid? ResetEmailToken
     {
         get { return _resetEmailToken; }
@@ -123,7 +123,7 @@ public class UserLog
         get { return _isResettingEmail; }
         set { _isResettingEmail = value; }
     }
-    
+
     public Guid? ResetPasswordToken
     {
         get { return _resetPasswordToken; }
@@ -141,7 +141,7 @@ public class UserLog
         get { return _isResettingPassword; }
         set { _isResettingPassword = value; }
     }
-    
+
     // References
     public ICollection<User> Users
     {
@@ -152,6 +152,65 @@ public class UserLog
     // Private constructor used for EF Core
     private UserLog()
     {
+    }
+
+    /// <summary>
+    ///     Factory method for creating a new UserLog instance.
+    ///     This method initializes the UserLog with default values.
+    ///     It is there because EF.Core requires a parameterless constructor for entity classes,
+    ///     thus it is not possible to utilize a parameterless constructor for UserLog creation.
+    /// </summary>
+    /// <returns></returns>
+    public static UserLog Create()
+    {
+        return new UserLog
+        {
+            IdUserLog = Guid.NewGuid(),
+            DateCreated = DateTime.UtcNow,
+            DateDeleted = null,
+            IsDeleted = false,
+            RefreshToken = null,
+            RefreshTokenExpiration = null,
+            DateLastLogin = null,
+            VerificationCode = GenerateVerificationCode(),
+            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
+            IsVerified = false,
+            ResetEmailToken = null,
+            ResetEmailTokenExpiration = null,
+            IsResettingEmail = false,
+            ResetPasswordToken = null,
+            ResetPasswordTokenExpiration = null,
+            IsResettingPassword = false
+        };
+    }
+
+    /// <summary>
+    ///     Factory method for creating a new UserLog with a provided idUserLog.
+    ///     Used for seeding.
+    /// </summary>
+    /// <param name="idUserLog"></param>
+    /// <returns></returns>
+    public static UserLog CreateWithId(Guid idUserLog)
+    {
+        return new UserLog
+        {
+            IdUserLog = idUserLog,
+            DateCreated = DateTime.UtcNow,
+            DateDeleted = null,
+            IsDeleted = false,
+            RefreshToken = null,
+            RefreshTokenExpiration = null,
+            DateLastLogin = null,
+            VerificationCode = GenerateVerificationCode(),
+            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
+            IsVerified = false,
+            ResetEmailToken = null,
+            ResetEmailTokenExpiration = null,
+            IsResettingEmail = false,
+            ResetPasswordToken = null,
+            ResetPasswordTokenExpiration = null,
+            IsResettingPassword = false
+        };
     }
 
     /// <summary>
@@ -233,7 +292,7 @@ public class UserLog
     ///     Method used for generating a 6 digit verification code.
     ///     This code does not need to be unique for now, as it is going to be
     ///     deleted soon after its issuing time - 24 hours for now.
-    ///     This method will probably have to be refactored if the app grows
+    ///     This method will probably have to be refactored if the app grows.
     /// </summary>
     /// <returns></returns>
     private static string GenerateVerificationCode()
@@ -242,61 +301,50 @@ public class UserLog
     }
 
     /// <summary>
-    ///     Factory method for creating a new UserLog instance.
-    ///     This method initializes the UserLog with default values.
-    ///     It is there because EF.Core requires a parameterless constructor for entity classes,
-    ///     thus it is not possible to utilize a parameterless constructor for UserLog creation.
+    ///     Method used for persisting information regarding
+    ///     email resetting.
     /// </summary>
-    /// <returns></returns>
-    public static UserLog Create()
+    /// <param name="resetEmailToken"></param>
+    public void SetResetEmailData(Guid resetEmailToken)
     {
-        return new UserLog
+        if (resetEmailToken == Guid.Empty)
         {
-            IdUserLog = Guid.NewGuid(),
-            DateCreated = DateTime.UtcNow,
-            DateDeleted = null,
-            IsDeleted = false,
-            RefreshToken = null,
-            RefreshTokenExpiration = null,
-            DateLastLogin = null,
-            VerificationCode = GenerateVerificationCode(),
-            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
-            IsVerified = false,
-            ResetEmailToken = null,
-            ResetEmailTokenExpiration = null,
-            IsResettingEmail = false,
-            ResetPasswordToken = null,
-            ResetPasswordTokenExpiration = null,
-            IsResettingPassword = false
-        };
+            throw new ArgumentException($"{nameof(resetEmailToken)} cannot be empty.");
+        }
+
+        ResetEmailToken = resetEmailToken;
+        ResetEmailTokenExpiration = DateTime.UtcNow.AddHours(1);
+        IsResettingEmail = true;
     }
 
     /// <summary>
-    ///     Factory method for creating a new UserLog with a provided idUserLog.
-    ///     Used for seeding.
+    ///     Method used for verifying the reset email related data.
+    ///     It ensures that the token is correct and valid, as well as
+    ///     setting the data reset email data to the correct state
+    ///     provided the verification is successful.
     /// </summary>
-    /// <param name="idUserLog"></param>
-    /// <returns></returns>
-    public static UserLog CreateWithId(Guid idUserLog)
+    /// <param name="resetEmailTokenValidated"></param>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="Exception"></exception>
+    public void TryVerifyResetEmail(Guid resetEmailTokenValidated)
     {
-        return new UserLog
+        if (resetEmailTokenValidated != ResetEmailToken)
         {
-            IdUserLog = idUserLog,
-            DateCreated = DateTime.UtcNow,
-            DateDeleted = null,
-            IsDeleted = false,
-            RefreshToken = null,
-            RefreshTokenExpiration = null,
-            DateLastLogin = null,
-            VerificationCode = GenerateVerificationCode(),
-            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
-            IsVerified = false,
-            ResetEmailToken = null,
-            ResetEmailTokenExpiration = null,
-            IsResettingEmail = false,
-            ResetPasswordToken = null,
-            ResetPasswordTokenExpiration = null,
-            IsResettingPassword = false
-        };
+            throw new ArgumentException($"{nameof(resetEmailTokenValidated)} is not valid.");
+        }
+
+        if (ResetEmailTokenExpiration < DateTime.UtcNow)
+        {
+            throw new Exception($"The ${nameof(ResetEmailToken)} has expired.");
+        }
+
+        if (!IsResettingEmail)
+        {
+            throw new ArgumentException($"{nameof(User)} is not marked as resetting email.");
+        }
+
+        ResetEmailToken = null;
+        ResetEmailTokenExpiration = null;
+        IsResettingEmail = false;
     }
 }

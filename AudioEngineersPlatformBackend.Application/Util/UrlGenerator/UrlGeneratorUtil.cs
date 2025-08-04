@@ -12,8 +12,8 @@ public class UrlGeneratorUtil : IUrlGeneratorUtil
         FrontendSettings = frontendSettings.Value;
     }
 
-    public string ConstructResetEmailUrl(Guid emailResetToken)
+    public string GenerateResetEmailUrl(Guid emailResetToken)
     {
-        return $"{FrontendSettings.Url}/{emailResetToken}/validate-reset-email";
+        return $"{FrontendSettings.Url}/{emailResetToken}/verify-reset-email";
     }
 }
