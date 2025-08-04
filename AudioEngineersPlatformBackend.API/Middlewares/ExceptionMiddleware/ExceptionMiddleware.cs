@@ -30,14 +30,18 @@ public class ExceptionMiddleware
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
         var trace = new StackTrace(exception, true);
-
-        return context.Response.WriteAsync(new ExceptionDetailsDto
+        
+        var exceptionDetailsDto = new ExceptionDetailsDto
         {
             StatusCode = context.Response.StatusCode,
             FromClass = trace.GetFrame(0)!.GetMethod()!.ReflectedType!.FullName!,
             FromMethod = trace.GetFrame(0)!.GetMethod()!.ToString()!,
             FromLine = trace.GetFrame(0)!.GetFileLineNumber().ToString(),
             ExceptionMessage = exception.Message
-        }.ToString());
+        };
+
+        Console.WriteLine(exceptionDetailsDto);
+
+        return context.Response.WriteAsync(exceptionDetailsDto.ToString());
     }
 }
