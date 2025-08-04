@@ -1,6 +1,6 @@
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public class GuidVO
+public readonly struct GuidVO
 {
     private readonly Guid _guid;
 
