@@ -64,8 +64,7 @@ public readonly struct EmailVo
 
             if (!IsValidEmail(value))
             {
-                throw new ArgumentException($"Provided {nameof(Address)} is not valid, needs to follow name@domain.com.",
-                    nameof(value));
+                throw new ArgumentException($"Provided {nameof(Address)} is not valid, needs to follow name@domain.com.");
             }
 
             _address = value;

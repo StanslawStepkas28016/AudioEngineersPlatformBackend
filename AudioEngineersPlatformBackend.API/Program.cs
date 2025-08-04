@@ -26,7 +26,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     // Add support for CORS
     builder.Services.AddCorsPolicy(builder.Configuration);
 
-    // builder.Logging.ClearProviders(); // inject your own logger provider which can save to the db
+    // builder.Logging.ClearProviders(); // inject your own logger provider which can save to the dbw
 }
 
 WebApplication app = builder.Build();
