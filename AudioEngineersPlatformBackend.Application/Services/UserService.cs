@@ -22,7 +22,7 @@ public class UserService : IUserService
             }
 
             // Update the data (will check if provided phoneNumber is different from the old one)
-            user.TryChangePhoneNumber(newValidPhoneNumber);
+            user.ChangePhoneNumber(newValidPhoneNumber);
         }*/
     }
 }

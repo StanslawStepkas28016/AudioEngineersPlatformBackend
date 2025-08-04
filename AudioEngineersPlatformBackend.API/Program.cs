@@ -51,10 +51,10 @@ WebApplication app = builder.Build();
     // Use authentication and authorization
     app.UseAuthentication();
     app.UseAuthorization();
-    
+
     // Use request localization
     app.UseRequestLocalization();
-    
+
     app.MapControllers();
 
     app.Run();

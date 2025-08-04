@@ -3,8 +3,8 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface ISESService
 {
-    Task TrySendRegisterVerificationEmailAsync(string toEmail, string firstName,
+    Task SendRegisterVerificationEmailAsync(string toEmail, string firstName,
         string? verificationCode);
 
-    Task TrySendEmailResetEmailAsync(string toEmail, string firstName, string uniqueUrl);
+    Task SendEmailResetEmailAsync(string toEmail, string firstName, string uniqueUrl);
 }

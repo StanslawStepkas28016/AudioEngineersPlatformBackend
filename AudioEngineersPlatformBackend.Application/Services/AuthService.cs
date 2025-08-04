@@ -7,7 +7,6 @@ using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
-using AudioEngineersPlatformBackend.Contracts.Auth.VerifyResetEmail;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
@@ -70,7 +69,7 @@ public class AuthService : IAuthService
 
         // Create a User, then hash its password
         User user = User.Create(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email,
-            registerRequest.PhoneNumber, registerRequest.Password, role!.IdRole, userLog.IdUserLog);
+            registerRequest.PhoneNumber, registerRequest.Password, role.IdRole, userLog.IdUserLog);
 
         user.SetHashedPassword(new PasswordHasher<User>().HashPassword(user, registerRequest.Password));
 
@@ -79,7 +78,7 @@ public class AuthService : IAuthService
         await _authRepository.AddUser(user, cancellationToken);
 
         // Send a verification email
-        await _sesService.TrySendRegisterVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
+        await _sesService.SendRegisterVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -112,7 +111,7 @@ public class AuthService : IAuthService
             throw new Exception($"{nameof(verifyAccountRequest.VerificationCode)} expired, User deleted.");
         }
 
-        return new VerifyAccountResponse(user!.IdUser);
+        return new VerifyAccountResponse(user.IdUser);
     }
 
     public async Task<LoginResponse> Login(LoginRequest loginRequest, CancellationToken cancellationToken = default)
@@ -128,7 +127,7 @@ public class AuthService : IAuthService
         }
 
         // Business logic - check if user is deleted or unverified
-        user.UserLog.TryCheckUserStatus();
+        user.UserLog.EnsureCorrectUserStatus();
 
         // Business logic - set login associated data
         user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
@@ -146,9 +145,10 @@ public class AuthService : IAuthService
         JwtSecurityToken jwtAccessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write both tokens as cookies
-        _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
+        await _cookieUtil.WriteAsCookie(CookieName.accessToken,
+            new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
             jwtAccessToken.ValidTo);
-        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
+        await _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
             user.UserLog.RefreshTokenExpiration);
 
         // Persist the changes in the database
@@ -166,17 +166,16 @@ public class AuthService : IAuthService
         );
     }
 
-    public Task Logout()
+    public async Task Logout()
     {
-        _cookieUtil.DeleteCookie(CookieName.accessToken);
-        _cookieUtil.DeleteCookie(CookieName.refreshToken);
-        return Task.CompletedTask;
+        await _cookieUtil.DeleteCookie(CookieName.accessToken);
+        await _cookieUtil.DeleteCookie(CookieName.refreshToken);
     }
 
     public async Task RefreshToken(CancellationToken cancellationToken = default)
     {
         // Get the token from the cookie, method will throw an exception if the cookie is not present
-        string refreshToken = _cookieUtil.TryGetCookie(CookieName.refreshToken);
+        string refreshToken = await _cookieUtil.GetCookie(CookieName.refreshToken);
 
         // Find a user by the refresh token
         User? user = await _authRepository.FindUserAndUserLogByRefreshToken(refreshToken, cancellationToken);
@@ -200,9 +199,9 @@ public class AuthService : IAuthService
         JwtSecurityToken accessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write new access token and refresh token as cookies
-        _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
+        await _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
             accessToken.ValidTo);
-        _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
+        await _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
             user.UserLog.RefreshTokenExpiration);
 
         // Persist the changes in the database
@@ -273,20 +272,20 @@ public class AuthService : IAuthService
 
         // Generate a token and generate a reset email url.
         var resetEmailToken = Guid.NewGuid();
-        var resetEmailUrl = _urlGeneratorUtil.GenerateResetEmailUrl(resetEmailToken);
+        var resetEmailUrl = await _urlGeneratorUtil.GenerateResetEmailUrl(resetEmailToken);
 
         // Update the email itself and set email reset data (token, its expiration and user state).
-        user.TryChangeEmail(newValidEmail);
+        user.ChangeEmail(newValidEmail);
         userLog.SetResetEmailData(resetEmailToken);
 
         // Logout the user from all sessions, by setting the RefreshToken and RefreshTokenExpiration to null values,
-        // as well as removing the authenthication cookies from their browser.
+        // as well as removing the authentication cookies from their browser.
         userLog.SetLogoutData();
-        _cookieUtil.DeleteCookie(CookieName.accessToken);
-        _cookieUtil.DeleteCookie(CookieName.refreshToken);
+        await _cookieUtil.DeleteCookie(CookieName.accessToken);
+        await _cookieUtil.DeleteCookie(CookieName.refreshToken);
 
         // Send a new verification email.
-        await _sesService.TrySendEmailResetEmailAsync(newValidEmail, user.FirstName, resetEmailUrl);
+        await _sesService.SendEmailResetEmailAsync(newValidEmail, user.FirstName, resetEmailUrl);
 
         // Persist all changes.
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -309,7 +308,7 @@ public class AuthService : IAuthService
         }
 
         // Verify the token.
-        userLog.TryVerifyResetEmail(resetEmailTokenValidated);
+        userLog.VerifyResetEmailData(resetEmailTokenValidated);
 
         // Persist all changes.
         await _unitOfWork.CompleteAsync(cancellationToken);

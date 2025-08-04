@@ -12,7 +12,7 @@ public class CookieUtil : ICookieUtil
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public void WriteAsCookie(CookieName cookieName, string value, DateTime? expirationDate)
+    public Task WriteAsCookie(CookieName cookieName, string value, DateTime? expirationDate)
     {
         if (expirationDate == null)
         {
@@ -28,9 +28,11 @@ public class CookieUtil : ICookieUtil
         };
 
         _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieName.ToString(), value, options);
+
+        return Task.CompletedTask;
     }
 
-    public string TryGetCookie(CookieName cookieName)
+    public Task<string> GetCookie(CookieName cookieName)
     {
         string? cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieName.ToString()];
 
@@ -39,11 +41,12 @@ public class CookieUtil : ICookieUtil
             throw new UnauthorizedAccessException("Session expired, please log in again.");
         }
 
-        return cookieValue;
+        return Task.FromResult(cookieValue);
     }
 
-    public void DeleteCookie(CookieName cookieName)
+    public Task DeleteCookie(CookieName cookieName)
     {
         _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookieName.ToString());
+        return Task.CompletedTask;
     }
 }

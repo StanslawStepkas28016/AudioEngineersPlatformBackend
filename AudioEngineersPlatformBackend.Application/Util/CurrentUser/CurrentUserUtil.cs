@@ -13,7 +13,7 @@ public sealed class CurrentUserUtil : ICurrentUserUtil
     {
         get
         {
-            TryAuthenticate();
+            EnsureAuthenticated();
             return _idUser;
         }
     }
@@ -22,12 +22,16 @@ public sealed class CurrentUserUtil : ICurrentUserUtil
     {
         get
         {
-            TryAuthenticate();
+            EnsureAuthenticated();
             return _isAdministrator;
         }
     }
 
-    private void TryAuthenticate()
+    /// <summary>
+    ///     Method used for validating if 
+    /// </summary>
+    /// <exception cref="Exception"></exception>
+    private void EnsureAuthenticated()
     {
         if (_idUser == Guid.Empty)
         {
@@ -37,13 +41,19 @@ public sealed class CurrentUserUtil : ICurrentUserUtil
         }
     }
 
+    /// <summary>
+    ///     Constructor used for accessing the requests http context and extracting the users claims.
+    /// </summary>
+    /// <param name="httpContextAccessor"></param>
     public CurrentUserUtil(IHttpContextAccessor httpContextAccessor)
     {
+        // Extract the idUser.
         var idUser
             = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         Guid.TryParse(idUser, out _idUser);
 
+        // Extract the role claim boolean.
         _isAdministrator
             = httpContextAccessor.HttpContext.User.IsInRole("Administrator");
     }

@@ -17,7 +17,7 @@ public class S3Service : IS3Service
         _s3Client = s3Client;
     }
     
-    public async Task<Guid> TryUploadFileAsync(IFormFile file,
+    public async Task<Guid> UploadFileAsync(IFormFile file,
         CancellationToken cancellationToken)
     {
         if (file.Length == 0)
@@ -47,7 +47,7 @@ public class S3Service : IS3Service
         return key;
     }
 
-    public async Task<string> TryGetPreSignedUrlAsync(Guid key,
+    public async Task<string> GetPreSignedUrlAsync(Guid key,
         CancellationToken cancellationToken = default)
     {
         if (key == Guid.Empty)

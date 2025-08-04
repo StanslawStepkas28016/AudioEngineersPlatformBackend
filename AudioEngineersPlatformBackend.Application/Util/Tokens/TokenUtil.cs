@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AudioEngineersPlatformBackend.Application.Util.Tokens;
 
-public class TokenUtil : ITokenUtil
+public class   TokenUtil : ITokenUtil
 {
     private readonly JwtSettings _jwtSettings;
 

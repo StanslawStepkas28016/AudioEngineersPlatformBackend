@@ -226,7 +226,7 @@ public class User
         };
     }
 
-    public void TryChangeEmail(string newEmail)
+    public void ChangeEmail(string newEmail)
     {
         // Check if the emails differ 
         if (Email == newEmail)
@@ -237,7 +237,7 @@ public class User
         Email = newEmail;
     }
 
-    public void TryChangePhoneNumber(string newValidPhoneNumber)
+    public void ChangePhoneNumber(string newValidPhoneNumber)
     {
         // Check if the numbers differ
         if (newValidPhoneNumber == PhoneNumber)

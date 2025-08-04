@@ -34,7 +34,7 @@ public class SESService : ISESService
         }
     }
 
-    public async Task TrySendRegisterVerificationEmailAsync(string toEmail, string firstName,
+    public async Task SendRegisterVerificationEmailAsync(string toEmail, string firstName,
         string? verificationCode)
     {
         // Validate the parameters - this should never happen but just in case, checking
@@ -80,7 +80,7 @@ public class SESService : ISESService
         await SendEmailAsync(sendRequest);
     }
 
-    public async Task TrySendEmailResetEmailAsync(string toEmail, string firstName, string uniqueUrl)
+    public async Task SendEmailResetEmailAsync(string toEmail, string firstName, string uniqueUrl)
     {
         // Validate the parameters - this should never happen but just in case, checking
         if (

@@ -2,5 +2,5 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface IUrlGeneratorUtil
 {
-    string GenerateResetEmailUrl(Guid emailResetToken);
+    Task<string> GenerateResetEmailUrl(Guid emailResetToken);
 }

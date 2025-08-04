@@ -238,10 +238,9 @@ public class UserLog
 
     /// <summary>
     ///     Method used for checking if the user is deleted or not verified.
-    ///     As the Try... suggests this method will throw an exception based on the user status.
     /// </summary>
     /// <exception cref="Exception"></exception>
-    public void TryCheckUserStatus()
+    public void EnsureCorrectUserStatus()
     {
         if (IsDeleted)
         {
@@ -326,16 +325,16 @@ public class UserLog
     /// <param name="resetEmailTokenValidated"></param>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="Exception"></exception>
-    public void TryVerifyResetEmail(Guid resetEmailTokenValidated)
+    public void VerifyResetEmailData(Guid resetEmailTokenValidated)
     {
         if (resetEmailTokenValidated != ResetEmailToken)
         {
-            throw new ArgumentException($"{nameof(resetEmailTokenValidated)} is not valid.");
+            throw new ArgumentException($"{nameof(resetEmailTokenValidated).ToUpper()} is not valid.");
         }
 
         if (ResetEmailTokenExpiration < DateTime.UtcNow)
         {
-            throw new Exception($"The ${nameof(ResetEmailToken)} has expired.");
+            throw new Exception($"The {nameof(ResetEmailToken)} has expired.");
         }
 
         if (!IsResettingEmail)
