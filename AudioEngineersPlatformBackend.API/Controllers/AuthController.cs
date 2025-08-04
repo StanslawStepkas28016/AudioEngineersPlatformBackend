@@ -17,6 +17,12 @@ namespace API.Controllers;
 [Route("api/auth")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
+    /// <summary>
+    ///     Endpoint used for registering a user.
+    /// </summary>
+    /// <param name="registerRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest,
@@ -26,6 +32,12 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, registerResponse);
     }
 
+    /// <summary>
+    ///     Endpoint used for verifying a newly registered user.  
+    /// </summary>
+    /// <param name="verifyAccountRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("verify-account")]
     public async Task<IActionResult> VerifyAccount([FromBody] VerifyAccountRequest verifyAccountRequest,
@@ -36,6 +48,12 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status200OK, verifyAccountResponse);
     }
 
+    /// <summary>
+    ///     Endpoint used for logging in.
+    /// </summary>
+    /// <param name="loginRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
@@ -44,6 +62,11 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status202Accepted, loginResponse);
     }
 
+    /// <summary>
+    ///     Endpoint used for refreshing tokens.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken(
@@ -53,6 +76,10 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status202Accepted);
     }
 
+    /// <summary>
+    ///     Endpoint used for logging out.
+    /// </summary>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
@@ -61,6 +88,12 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status200OK);
     }
 
+    /// <summary>
+    ///     Endpoint used for checking the authentication state of a user
+    ///     and retrieving their crucial information.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [Authorize(Roles = "Admin, Client, Audio engineer")]
     [HttpGet("check-auth")]
     public async Task<IActionResult> CheckAuth(CancellationToken cancellationToken)
@@ -74,6 +107,13 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status200OK, checkAuthResponse);
     }
 
+    /// <summary>
+    ///     Endpoint used for resetting the email address of a specified user. 
+    /// </summary>
+    /// <param name="idUser"></param>
+    /// <param name="resetEmailRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [Authorize(Roles = "Admin, Client, Audio engineer")]
     [HttpPatch("{idUser:guid}/reset-email")]
     public async Task<IActionResult> ResetEmail(
@@ -87,6 +127,12 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status202Accepted, resetEmailResponse);
     }
 
+    /// <summary>
+    ///     Endpoint used for verifying a newly set email. 
+    /// </summary>
+    /// <param name="resetEmailToken"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("{resetEmailToken:guid}/verify-reset-email")]
     public async Task<IActionResult> VerifyResetEmail(Guid resetEmailToken, CancellationToken cancellationToken)

@@ -14,7 +14,7 @@ namespace API.Controllers;
 public class AdvertController(IAdvertService advertService) : ControllerBase
 {
     /// <summary>
-    ///     Endpoint for creating an advert.
+    ///     Endpoint used for creating an advert.
     /// </summary>
     /// <param name="createAdvertRequest"></param>
     /// <param name="cancellationToken"></param>
@@ -29,6 +29,13 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, createAdvertResponse);
     }
 
+    /// <summary>
+    ///     Endpoint used for changing data assigned to an advert with a specified idAdvert.
+    /// </summary>
+    /// <param name="idAdvert"></param>
+    /// <param name="changeAdvertDataRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpPatch("{idAdvert:guid}")]
     public async Task<IActionResult> ChangeAdvertData(Guid idAdvert,
@@ -40,7 +47,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     }
 
     /// <summary>
-    ///     Method used for soft-deleting an advert.
+    ///     Endpoint used for soft-deleting an advert by its idAdvert.
     /// </summary>
     /// <param name="idAdvert"></param>
     /// <param name="cancellationToken"></param>
@@ -54,6 +61,12 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
+    /// <summary>
+    ///     Endpoint used for retrieving an idAdvert assigned to a user with a specified idUser.
+    /// </summary>
+    /// <param name="idUser"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [Authorize(Roles = "Admin, Audio engineer")]
     [HttpGet("{idUser:guid}/id-advert")]
     public async Task<IActionResult> GetAdvertIdByUserId(Guid idUser, CancellationToken cancellationToken)
@@ -63,7 +76,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     }
 
     /// <summary>
-    ///     Method used for fetching an advert associated with a specific idUser assigned.
+    ///     Endpoint used for retrieving advert associated data by the idUser.
     /// </summary>
     /// <param name="idUser"></param>
     /// <param name="cancellationToken"></param>
@@ -78,7 +91,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     }
 
     /// <summary>
-    ///     Method used for fetching an advert associated with a specific idAdvert assigned.
+    ///     Endpoint used for retrieving advert associated data by the idAdvert.
     /// </summary>
     /// <param name="idAdvert"></param>
     /// <param name="cancellationToken"></param>
@@ -94,7 +107,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     }
 
     /// <summary>
-    ///     Endpoint for getting all adverts with pagination and optional search functionality.
+    ///     Endpoint used for getting all adverts with pagination and optional search functionality.
     /// </summary>
     /// <param name="sortOrder"></param>
     /// <param name="page"></param>
@@ -114,7 +127,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     }
 
     /// <summary>
-    ///     Method used for uploading mock images for testing purposes.
+    ///     Endpoint used for uploading mock images for testing purposes.
     /// </summary>
     /// <param name="coverImageFile"></param>
     /// <param name="cancellationToken"></param>
@@ -128,6 +141,12 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         return StatusCode(StatusCodes.Status200OK, mockImageUploadResponse);
     }
 
+    /// <summary>
+    ///     Endpoint used for adding a review to a specified advert.
+    /// </summary>
+    /// <param name="addReviewRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [Authorize(Roles = "Admin, Client")]
     [HttpPost("review")]
     public async Task<IActionResult> AddReview(AddReviewRequest addReviewRequest, CancellationToken cancellationToken)
@@ -136,6 +155,14 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, addReview);
     }
 
+    /// <summary>
+    ///     Endpoint used for retrieving reviews for a specified advert.
+    /// </summary>
+    /// <param name="idAdvert"></param>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpGet("reviews")]
     public async Task<IActionResult> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
