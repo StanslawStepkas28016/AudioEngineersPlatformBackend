@@ -38,7 +38,7 @@ public class AdvertService : IAdvertService
 
         // Check if the user exists
         var findUserByIdUser =
-            await _userRepository.DoesUserExistByIdUser(createAdvertRequest.IdUser, cancellationToken);
+            await _userRepository.DoesUserExistByIdUserAsync(createAdvertRequest.IdUser, cancellationToken);
 
         if (!findUserByIdUser)
         {
@@ -47,7 +47,7 @@ public class AdvertService : IAdvertService
 
         // Check if there is already an advert posted by the user
         Advert? advertByIdUser =
-            await _advertRepository.GetActiveAndNonDeletedAdvertByIdUser(createAdvertRequest.IdUser, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertByIdUserAsync(createAdvertRequest.IdUser, cancellationToken);
 
         if (advertByIdUser != null)
         {
@@ -62,7 +62,7 @@ public class AdvertService : IAdvertService
         }
 
         AdvertCategory? advertCategory = await _advertRepository
-            .GetAdvertCategoryByCategoryName(createAdvertRequest.CategoryName, cancellationToken);
+            .GetAdvertCategoryByCategoryNameAsync(createAdvertRequest.CategoryName, cancellationToken);
 
         if (advertCategory == null)
         {
@@ -88,8 +88,8 @@ public class AdvertService : IAdvertService
         );
 
         // Add AdvertLog and Advert to the repository
-        await _advertRepository.AddAdvertLog(advertLog, cancellationToken);
-        await _advertRepository.AddAdvert(advert, cancellationToken);
+        await _advertRepository.AddAdvertLogAsync(advertLog, cancellationToken);
+        await _advertRepository.AddAdvertAsync(advert, cancellationToken);
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -112,7 +112,7 @@ public class AdvertService : IAdvertService
 
         // Check if the advert exists
         Advert? advertByIdAdvert =
-            await _advertRepository.GetActiveAndNonDeletedAdvertByIdAdvert(idAdvert, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertByIdAdvertAsync(idAdvert, cancellationToken);
 
         if (advertByIdAdvert == null)
         {
@@ -147,7 +147,7 @@ public class AdvertService : IAdvertService
 
         // Check if the advert exists
         Advert? advertAndAdvertLog =
-            await _advertRepository.GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvert(idAdvert, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvertAsync(idAdvert, cancellationToken);
 
         if (advertAndAdvertLog == null)
         {
@@ -175,7 +175,7 @@ public class AdvertService : IAdvertService
         }
 
         Guid? idAdvertBasedOnIdUser =
-            await _advertRepository.GetActiveAndNonDeletedIdAdvertByIdUser(idUser, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedIdAdvertByIdUserAsync(idUser, cancellationToken);
 
         if (idAdvertBasedOnIdUser == null)
         {
@@ -195,7 +195,7 @@ public class AdvertService : IAdvertService
         }
 
         AdvertDetailsDto? advert =
-            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdUser(idUser, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdUserAsync(idUser, cancellationToken);
 
         if (advert == null)
         {
@@ -232,7 +232,7 @@ public class AdvertService : IAdvertService
         }
 
         AdvertDetailsDto? advert =
-            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvert(idAdvert, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvertAsync(idAdvert, cancellationToken);
 
         if (advert == null)
         {
@@ -265,7 +265,7 @@ public class AdvertService : IAdvertService
     {
         // Fetch paginated adverts
         PagedListDto<AdvertOverviewDto> allAdvertsWithPagination =
-            await _advertRepository.GetAllActiveAndNonDeletedAdvertsSummariesWithPagination(sortOrder, page, pageSize,
+            await _advertRepository.GetAllActiveAndNonDeletedAdvertsSummariesWithPaginationAsync(sortOrder, page, pageSize,
                 searchTerm,
                 cancellationToken);
 
@@ -290,7 +290,7 @@ public class AdvertService : IAdvertService
         CancellationToken cancellationToken)
     {
         // Check if the user has already posted a review under the requested advert
-        var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvert(
+        var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvertAsync(
             addReviewRequest.IdAdvert,
             _currentUserUtil.IdUser,
             cancellationToken
@@ -313,8 +313,8 @@ public class AdvertService : IAdvertService
         );
 
         // Persist the data
-        await _advertRepository.AddReviewLog(reviewLog, cancellationToken);
-        await _advertRepository.AddReview(review, cancellationToken);
+        await _advertRepository.AddReviewLogAsync(reviewLog, cancellationToken);
+        await _advertRepository.AddReviewAsync(review, cancellationToken);
         await _unitOfWork.CompleteAsync(cancellationToken);
 
         return review.IdReview;
@@ -329,7 +329,7 @@ public class AdvertService : IAdvertService
         }
 
         PagedListDto<ReviewDto> reviewsForAdvertPaginated =
-            await _advertRepository.GetReviewsForAdvertPaginated(idAdvert, page, pageSize, cancellationToken);
+            await _advertRepository.GetReviewsForAdvertPaginatedAsync(idAdvert, page, pageSize, cancellationToken);
 
         return reviewsForAdvertPaginated;
     }

@@ -141,6 +141,6 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
-    // TODO: ResetPassword endpoint
-    // TODO: ResetPhoneNumber endpoint
+    // TODO: ResetPassword endpoint.
+    // TODO: ResetPhoneNumber endpoint.
 }

@@ -16,7 +16,7 @@ public class AuthRepository : IAuthRepository
         _context = context;
     }
 
-    public async Task<User?> FindUserByEmail(string email, CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await _context
             .Users
@@ -24,7 +24,7 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User?> FindUserByPhoneNumber(string phoneNumber, CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken = default)
     {
         return await _context
             .Users
@@ -32,7 +32,7 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
     }
 
-    public async Task<Role?> FindRoleByName(string roleName, CancellationToken cancellationToken)
+    public async Task<Role?> FindRoleByNameAsync(string roleName, CancellationToken cancellationToken)
     {
         return await _context
             .Roles
@@ -41,7 +41,7 @@ public class AuthRepository : IAuthRepository
                 cancellationToken);
     }
 
-    public async Task<UserLog> AddUserLog(UserLog userLog, CancellationToken cancellationToken)
+    public async Task<UserLog> AddUserLogAsync(UserLog userLog, CancellationToken cancellationToken)
     {
         EntityEntry<UserLog> res = await _context
             .UserLogs
@@ -51,7 +51,7 @@ public class AuthRepository : IAuthRepository
             res.Entity;
     }
 
-    public async Task<User> AddUser(User user, CancellationToken cancellationToken)
+    public async Task<User> AddUserAsync(User user, CancellationToken cancellationToken)
     {
         EntityEntry<User> res = await _context
             .Users
@@ -61,7 +61,7 @@ public class AuthRepository : IAuthRepository
             res.Entity;
     }
 
-    public async Task<User?> FindUserAndUserLogByVerificationCode(string verificationCode,
+    public async Task<User?> FindUserAndUserLogByVerificationCodeAsync(string verificationCode,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -71,7 +71,7 @@ public class AuthRepository : IAuthRepository
                 cancellationToken);
     }
 
-    public async Task<User?> FindUserAndUserLogAndRoleByEmail(string email,
+    public async Task<User?> FindUserAndUserLogAndRoleByEmailAsync(string email,
         CancellationToken cancellationToken = default)
     {
         return await _context
@@ -81,7 +81,7 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User?> FindUserAndUserLogByRefreshToken(string refreshToken,
+    public async Task<User?> FindUserAndUserLogByRefreshTokenAsync(string refreshToken,
         CancellationToken cancellationToken = default)
     {
         return await _context
@@ -91,7 +91,7 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.UserLog.RefreshToken == refreshToken, cancellationToken);
     }
 
-    public async Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUser(Guid idUser,
+    public async Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUserAsync(Guid idUser,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -110,7 +110,7 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<UserLog?> FindUserLogByResetEmailToken(Guid resetEmailToken, CancellationToken cancellationToken)
+    public async Task<UserLog?> FindUserLogByResetEmailTokenAsync(Guid resetEmailToken, CancellationToken cancellationToken)
     {
         return await _context
             .UserLogs

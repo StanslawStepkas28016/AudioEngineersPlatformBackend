@@ -1,12 +1,12 @@
 namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
-public readonly struct AccountVerificationCodeVO
+public readonly struct AccountVerificationCodeVo
 {
-    private readonly string? _verificationCode;
+    private readonly string _verificationCode;
 
-    private string VerificationCode
+    public string VerificationCode
     {
-        get { return _verificationCode; }
+        get => _verificationCode;
         init
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -23,13 +23,8 @@ public readonly struct AccountVerificationCodeVO
         }
     }
 
-    public AccountVerificationCodeVO(string verificationCode)
+    public AccountVerificationCodeVo(string verificationCode)
     {
         VerificationCode = verificationCode;
-    }
-
-    public string GetValidAccountVerificationCode()
-    {
-        return VerificationCode;
     }
 }

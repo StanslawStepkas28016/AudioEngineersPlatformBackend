@@ -5,38 +5,38 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface IAdvertRepository
 {
-    Task<Advert?> GetActiveAndNonDeletedAdvertByIdUser(Guid idUser, CancellationToken cancellationToken);
-    Task<Advert?> GetActiveAndNonDeletedAdvertByIdAdvert(Guid idAdvert, CancellationToken cancellationToken);
+    Task<Advert?> GetActiveAndNonDeletedAdvertByIdUserAsync(Guid idUser, CancellationToken cancellationToken);
+    Task<Advert?> GetActiveAndNonDeletedAdvertByIdAdvertAsync(Guid idAdvert, CancellationToken cancellationToken);
 
     Task<Advert?>
-        GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvert(Guid idAdvert, CancellationToken cancellationToken);
+        GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvertAsync(Guid idAdvert, CancellationToken cancellationToken);
 
-    Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdUser(Guid idUser,
+    Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdUserAsync(Guid idUser,
         CancellationToken cancellationToken);
 
-    Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+    Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvertAsync(Guid idAdvert,
         CancellationToken cancellationToken);
 
-    Task<AdvertCategory?> GetAdvertCategoryByCategoryName(string categoryName, CancellationToken cancellationToken);
-    Task AddAdvert(Advert advert, CancellationToken cancellationToken);
-    Task AddAdvertLog(AdvertLog advertLog, CancellationToken cancellationToken);
+    Task<AdvertCategory?> GetAdvertCategoryByCategoryNameAsync(string categoryName, CancellationToken cancellationToken);
+    Task AddAdvertAsync(Advert advert, CancellationToken cancellationToken);
+    Task AddAdvertLogAsync(AdvertLog advertLog, CancellationToken cancellationToken);
 
-    Task<PagedListDto<AdvertOverviewDto>> GetAllActiveAndNonDeletedAdvertsSummariesWithPagination(
+    Task<PagedListDto<AdvertOverviewDto>> GetAllActiveAndNonDeletedAdvertsSummariesWithPaginationAsync(
         string? sortOrder,
         int page,
         int pageSize,
         string? searchTerm, CancellationToken cancellationToken
     );
 
-    Task<Guid?> GetActiveAndNonDeletedIdAdvertByIdUser(Guid idUser, CancellationToken cancellationToken);
+    Task<Guid?> GetActiveAndNonDeletedIdAdvertByIdUserAsync(Guid idUser, CancellationToken cancellationToken);
 
-    Task<Guid> FindReviewForAdvertByIdUserAndIdAdvert(Guid idAdvert, Guid idUser,
+    Task<Guid> FindReviewForAdvertByIdUserAndIdAdvertAsync(Guid idAdvert, Guid idUser,
         CancellationToken cancellationToken);
 
-    Task AddReview(Review review, CancellationToken cancellationToken);
+    Task AddReviewAsync(Review review, CancellationToken cancellationToken);
 
-    Task AddReviewLog(ReviewLog reviewLog, CancellationToken cancellationToken);
+    Task AddReviewLogAsync(ReviewLog reviewLog, CancellationToken cancellationToken);
 
-    Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
+    Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginatedAsync(Guid idAdvert, int page, int pageSize,
         CancellationToken cancellationToken);
 }

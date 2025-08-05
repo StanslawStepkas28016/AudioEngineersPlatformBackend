@@ -42,9 +42,12 @@ public class SocialMediaName
         get => _socialMediaLinks;
         set => _socialMediaLinks = value;
     }
-    
-    // Methods
 
+    /// <summary>
+    ///     Factory method for creating a SocialMediaName entity.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static SocialMediaName Create(string name)
     {
         return new SocialMediaName
@@ -55,7 +58,8 @@ public class SocialMediaName
     }
 
     /// <summary>
-    ///     Factory method...
+    ///     Factory method for creating a SocialMediaName entity with a specific idSocialMediaName,
+    ///     used for seeding purposes.
     /// </summary>
     /// <param name="idSocialMediaName"></param>
     /// <param name="name"></param>

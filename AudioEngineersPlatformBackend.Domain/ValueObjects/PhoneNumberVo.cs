@@ -4,11 +4,11 @@ namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
 public readonly struct PhoneNumberVo
 {
-    private readonly string _number;
+    private readonly string _phoneNumber;
 
-    private string Number
+    public string PhoneNumber
     {
-        get { return _number; }
+        get => _phoneNumber;
         init
         {
             PhoneNumberUtil? phoneNumberUtil = PhoneNumberUtil.GetInstance();
@@ -23,17 +23,12 @@ public readonly struct PhoneNumberVo
             }
 
 
-            _number = value;
+            _phoneNumber = value;
         }
     }
 
-    public PhoneNumberVo(string phoneNumber)
+    public PhoneNumberVo(string phonePhoneNumber)
     {
-        _number = phoneNumber;
-    }
-
-    public string GetValidPhoneNumber()
-    {
-        return Number;
+        PhoneNumber = phonePhoneNumber;
     }
 }

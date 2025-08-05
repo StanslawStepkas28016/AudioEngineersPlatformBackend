@@ -42,25 +42,26 @@ public class AuthService : IAuthService
     public async Task<RegisterResponse> Register(RegisterRequest registerRequest,
         CancellationToken cancellationToken)
     {
-        // Check database invariants - find if email or phone number is already used
-        if (await _authRepository.FindUserByEmail(new EmailVo(registerRequest.Email).GetValidEmail(),
-                cancellationToken) != null)
+        // Check if the provided email or phone number is already used.
+        if (await _authRepository.FindUserByEmailAsync(
+                new EmailVo(registerRequest.Email).Email, cancellationToken) != null
+           )
         {
             throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
         }
 
-        if (await _authRepository.FindUserByPhoneNumber(
-                new PhoneNumberVo(registerRequest.PhoneNumber).GetValidPhoneNumber(), cancellationToken) !=
-            null)
+        string validPhoneNumber = new PhoneNumberVo(registerRequest.PhoneNumber).PhoneNumber;
+
+        if (await _authRepository.FindUserByPhoneNumberAsync(validPhoneNumber, cancellationToken) != null)
         {
             throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
         }
 
-        // Create a UserLog
+        // Create a UserLog.
         UserLog userLog = UserLog.Create();
 
-        // Check database invariants - find a specified role by its name
-        Role? role = await _authRepository.FindRoleByName(registerRequest.RoleName, cancellationToken);
+        // Check if the provided role exists.
+        Role? role = await _authRepository.FindRoleByNameAsync(registerRequest.RoleName, cancellationToken);
 
         if (role == null)
         {
@@ -68,14 +69,22 @@ public class AuthService : IAuthService
         }
 
         // Create a User, then hash its password
-        User user = User.Create(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email,
-            registerRequest.PhoneNumber, registerRequest.Password, role.IdRole, userLog.IdUserLog);
+        User user = User.Create(
+            registerRequest.FirstName,
+            registerRequest.LastName,
+            registerRequest.Email,
+            registerRequest.PhoneNumber,
+            registerRequest.Password,
+            role.IdRole,
+            userLog.IdUserLog
+        );
 
+        // Hash and set the password
         user.SetHashedPassword(new PasswordHasher<User>().HashPassword(user, registerRequest.Password));
 
         // Add UserLog and User
-        await _authRepository.AddUserLog(userLog, cancellationToken);
-        await _authRepository.AddUser(user, cancellationToken);
+        await _authRepository.AddUserLogAsync(userLog, cancellationToken);
+        await _authRepository.AddUserAsync(user, cancellationToken);
 
         // Send a verification email
         await _sesService.SendRegisterVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
@@ -90,16 +99,19 @@ public class AuthService : IAuthService
         CancellationToken cancellationToken = default)
     {
         // Check database invariants - find if user with given id exits, find if verification code is valid
-        User? user = await _authRepository.FindUserAndUserLogByVerificationCode(
-            new AccountVerificationCodeVO(verifyAccountRequest.VerificationCode).GetValidAccountVerificationCode(),
-            cancellationToken);
+        string validAccountVerificationCode =
+            new AccountVerificationCodeVo(verifyAccountRequest.VerificationCode).VerificationCode;
+
+        User? user =
+            await _authRepository.FindUserAndUserLogByVerificationCodeAsync(validAccountVerificationCode,
+                cancellationToken);
 
         if (user == null)
         {
             throw new ArgumentException($"Provided {nameof(verifyAccountRequest.VerificationCode)} is invalid.");
         }
 
-        // Business logic - verify users account
+        // Verify the users account
         VerificationOutcome verificationOutcome = user.UserLog.VerifyUserAccount();
 
         // Save all changes
@@ -116,9 +128,9 @@ public class AuthService : IAuthService
 
     public async Task<LoginResponse> Login(LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
-        // Check database invariants - find if user exists
-        User? user = await _authRepository.FindUserAndUserLogAndRoleByEmail(
-            new EmailVo(loginRequest.Email).GetValidEmail(),
+        // Check database invariants - find if user exists.
+        User? user = await _authRepository.FindUserAndUserLogAndRoleByEmailAsync(
+            new EmailVo(loginRequest.Email).Email,
             cancellationToken);
 
         if (user == null)
@@ -126,13 +138,13 @@ public class AuthService : IAuthService
             throw new ArgumentException($"User with provided {nameof(loginRequest.Email)} does not exist.");
         }
 
-        // Business logic - check if user is deleted or unverified
+        // Ensure that the user is neither deleted nor unverified.
         user.UserLog.EnsureCorrectUserStatus();
 
-        // Business logic - set login associated data
+        // Set login associated data.
         user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
 
-        // Verify hashed password
+        // Verify the input password against the database.
         PasswordVerificationResult passwordVerificationResult =
             new PasswordHasher<User>().VerifyHashedPassword(user, user.Password, loginRequest.Password);
 
@@ -141,20 +153,20 @@ public class AuthService : IAuthService
             throw new ArgumentException($"Invalid {nameof(loginRequest.Email)} or {nameof(loginRequest.Password)}.");
         }
 
-        // Create the Access Token
+        // Create an Access Token.
         JwtSecurityToken jwtAccessToken = _tokenUtil.CreateJwtAccessToken(user);
 
-        // Write both tokens as cookies
+        // Write both tokens as cookies.
         await _cookieUtil.WriteAsCookie(CookieName.accessToken,
             new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
             jwtAccessToken.ValidTo);
         await _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
             user.UserLog.RefreshTokenExpiration);
 
-        // Persist the changes in the database
+        // Persist the changes in the database.
         await _unitOfWork.CompleteAsync(cancellationToken);
 
-        // Send the user data in the response
+        // Send the user data in the response.
         return new LoginResponse(
             user.IdUser,
             user.FirstName,
@@ -168,17 +180,18 @@ public class AuthService : IAuthService
 
     public async Task Logout()
     {
+        // Remove both cookies from the clients browser, effectively logging them out. 
         await _cookieUtil.DeleteCookie(CookieName.accessToken);
         await _cookieUtil.DeleteCookie(CookieName.refreshToken);
     }
 
     public async Task RefreshToken(CancellationToken cancellationToken = default)
     {
-        // Get the token from the cookie, method will throw an exception if the cookie is not present
+        // Get the token from requests cookies.
         string refreshToken = await _cookieUtil.GetCookie(CookieName.refreshToken);
 
-        // Find a user by the refresh token
-        User? user = await _authRepository.FindUserAndUserLogByRefreshToken(refreshToken, cancellationToken);
+        // Find a user by the refresh token.
+        User? user = await _authRepository.FindUserAndUserLogByRefreshTokenAsync(refreshToken, cancellationToken);
 
         if (user == null)
         {
@@ -186,25 +199,25 @@ public class AuthService : IAuthService
         }
 
         // Check if the refresh token is expired - this should never happen, because the token is stored in the cookie
-        // and the cookies are being deleted after their expiration date from the browser
+        // and the cookies are being deleted after their expiration date from the browser.
         if (user.UserLog.RefreshTokenExpiration < DateTime.UtcNow)
         {
             throw new UnauthorizedAccessException($"{nameof(refreshToken)} expired, please login again.");
         }
 
-        // Set new login associated data (token and expiration date)
+        // Set new login associated data (token and expiration date).
         user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
 
-        // Generate a new access token
+        // Generate a new access token.
         JwtSecurityToken accessToken = _tokenUtil.CreateJwtAccessToken(user);
 
-        // Write new access token and refresh token as cookies
+        // Write new access token and refresh token as cookies.
         await _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
             accessToken.ValidTo);
         await _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
             user.UserLog.RefreshTokenExpiration);
 
-        // Persist the changes in the database
+        // Persist the changes in the database.
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
 
@@ -217,7 +230,7 @@ public class AuthService : IAuthService
         }
 
         UserAssociatedDataDto? userAssociatedData =
-            await _authRepository.GetUserAssociatedDataByIdUser(idUser, cancellationToken);
+            await _authRepository.GetUserAssociatedDataByIdUserAsync(idUser, cancellationToken);
 
         // This should never happen, since the idUser is being pulled from the JWT token that resides
         // in an attached cookie, but just in case
@@ -241,34 +254,34 @@ public class AuthService : IAuthService
         CancellationToken cancellationToken)
     {
         // Ensure the right format of the provided email (will throw an exception if invalid).
-        string newValidEmail = new EmailVo(resetEmailRequest.NewEmail).GetValidEmail();
+        string newValidEmail = new EmailVo(resetEmailRequest.NewEmail).Email;
 
         // Ensure the provided id is correct.
-        Guid validatedIdUser = new GuidVO(idUser).GetValidGuid();
+        Guid idUserValidated = new GuidVo(idUser).Guid;
 
         // Check if the user is authorized to edit the advert (either the owner or an administrator).
-        if (validatedIdUser != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
+        if (idUserValidated != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
         {
             throw new UnauthorizedAccessException("Specified data does not belong to you.");
         }
 
         // Validate if the user exists.
-        if (!await _userRepository.DoesUserExistByIdUser(validatedIdUser, cancellationToken))
+        if (!await _userRepository.DoesUserExistByIdUserAsync(idUserValidated, cancellationToken))
         {
             throw new Exception("User not found.");
         }
 
         // Fetch the user data.
-        User user = (await _userRepository.FindUserByIdUser(validatedIdUser, cancellationToken))!;
+        User user = (await _userRepository.FindUserByIdUserAsync(idUserValidated, cancellationToken))!;
 
         // Check if the email is already in use.
-        if (await _userRepository.IsEmailAlreadyTaken(newValidEmail, cancellationToken))
+        if (await _userRepository.IsEmailAlreadyTakenAsync(newValidEmail, cancellationToken))
         {
             throw new Exception($"{nameof(resetEmailRequest.NewEmail)} is already taken.");
         }
 
         // Fetch the UserLog data.
-        var userLog = (await _userRepository.FindUserLogByIdUser(validatedIdUser, cancellationToken))!;
+        var userLog = (await _userRepository.FindUserLogByIdUserAsync(idUserValidated, cancellationToken))!;
 
         // Generate a token and generate a reset email url.
         var resetEmailToken = Guid.NewGuid();
@@ -297,10 +310,11 @@ public class AuthService : IAuthService
         CancellationToken cancellationToken)
     {
         // Use a VO to extract the guid and ensure that it is not empty.
-        var resetEmailTokenValidated = new GuidVO(resetEmailToken).GetValidGuid();
+        var resetEmailTokenValidated = new GuidVo(resetEmailToken).Guid;
 
         // Find the user associated UserLog.
-        var userLog = await _authRepository.FindUserLogByResetEmailToken(resetEmailTokenValidated, cancellationToken);
+        var userLog =
+            await _authRepository.FindUserLogByResetEmailTokenAsync(resetEmailTokenValidated, cancellationToken);
 
         if (userLog == null)
         {

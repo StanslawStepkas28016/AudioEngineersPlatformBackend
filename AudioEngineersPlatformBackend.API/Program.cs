@@ -26,7 +26,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     // Add support for CORS
     builder.Services.AddCorsPolicy(builder.Configuration);
 
-    // builder.Logging.ClearProviders(); // inject your own logger provider which can save to the dbw
+    // TODO: Add a logger.
+    // builder.Logging.ClearProviders(); 
 }
 
 WebApplication app = builder.Build();
@@ -41,10 +42,10 @@ WebApplication app = builder.Build();
         app.UseSwaggerUI();
     }
 
+    // Use redirections from HTTP to HTTPS
     app.UseHttpsRedirection();
 
-    // User routing an CORS, would need to specify the PolicyName in app.UseCors
-    // if the AddCorsPolicy did not have a default policy set 
+    // User routing an CORS 
     app.UseRouting();
     app.UseCors();
 
@@ -55,6 +56,7 @@ WebApplication app = builder.Build();
     // Use request localization
     app.UseRequestLocalization();
 
+    // Map controllers to endpoints
     app.MapControllers();
 
     app.Run();

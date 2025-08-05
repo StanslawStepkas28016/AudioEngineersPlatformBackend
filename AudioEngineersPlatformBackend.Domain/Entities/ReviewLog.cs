@@ -83,7 +83,7 @@ public class ReviewLog
     /// <summary>
     ///     Method used for soft deleting a ReviewLog.
     /// </summary>
-    public void Delete()
+    public void SoftDelete()
     {
         _dateDeleted = DateTime.UtcNow;
         _isDeleted = true;

@@ -67,7 +67,7 @@ public class User
         get => _email;
         private set
         {
-            if (string.IsNullOrWhiteSpace(value) || new EmailVo(value).GetValidEmail() != value)
+            if (string.IsNullOrWhiteSpace(value) || new EmailVo(value).Email != value)
             {
                 throw new ArgumentException($"Invalid {nameof(Email)}.");
             }
@@ -81,7 +81,7 @@ public class User
         get => _phoneNumber;
         private set
         {
-            if (new PhoneNumberVo(value).GetValidPhoneNumber() != value)
+            if (new PhoneNumberVo(value).PhoneNumber != value)
             {
                 throw new ArgumentException($"Invalid {nameof(PhoneNumber)}.");
             }
@@ -153,24 +153,6 @@ public class User
     }
 
     /// <summary>
-    ///     Method used for setting the hashed password for the user, as hashing a password is not a
-    ///     domain responsibility but rather the application layer's responsibility. This method is provided
-    ///     since the Password has a private setter, and it is not possible to set it directly.
-    /// </summary>
-    /// <param name="password"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetHashedPassword(string password)
-    {
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            throw new ArgumentException($"{nameof(Password)} cannot be empty.");
-        }
-
-        Password = password;
-    }
-
-
-    /// <summary>
     ///     Factory method to create a new User.
     /// </summary>
     /// <param name="firstName"></param>
@@ -226,6 +208,23 @@ public class User
         };
     }
 
+    /// <summary>
+    ///     Method used for setting the hashed password for the user, as hashing a password is not a
+    ///     domain responsibility but rather the application layer's responsibility. This method is provided
+    ///     since the Password has a private setter, and it is not possible to set it directly.
+    /// </summary>
+    /// <param name="password"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void SetHashedPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException($"{nameof(Password)} cannot be empty.");
+        }
+
+        Password = password;
+    }
+
     public void ChangeEmail(string newEmail)
     {
         // Check if the emails differ 
@@ -233,7 +232,7 @@ public class User
         {
             throw new ArgumentException($"New {nameof(Email).ToLower()} can't be the same as previous.");
         }
-        
+
         Email = newEmail;
     }
 

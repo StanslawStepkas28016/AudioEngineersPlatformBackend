@@ -17,7 +17,7 @@ public class AdvertRepository : IAdvertRepository
     }
 
 
-    public async Task<Advert?> GetActiveAndNonDeletedAdvertByIdUser(Guid idUser, CancellationToken cancellationToken)
+    public async Task<Advert?> GetActiveAndNonDeletedAdvertByIdUserAsync(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Adverts
@@ -25,7 +25,7 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Advert?> GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvert(Guid idAdvert,
+    public async Task<Advert?> GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvertAsync(Guid idAdvert,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -35,7 +35,7 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Advert?> GetActiveAndNonDeletedAdvertByIdAdvert(Guid idAdvert,
+    public async Task<Advert?> GetActiveAndNonDeletedAdvertByIdAdvertAsync(Guid idAdvert,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -44,7 +44,7 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdUser(Guid idUser,
+    public async Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdUserAsync(Guid idUser,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -68,7 +68,7 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvert(Guid idAdvert,
+    public async Task<AdvertDetailsDto?> GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvertAsync(Guid idAdvert,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -92,7 +92,7 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<AdvertCategory?> GetAdvertCategoryByCategoryName(string categoryName,
+    public async Task<AdvertCategory?> GetAdvertCategoryByCategoryNameAsync(string categoryName,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -100,17 +100,17 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(ac => ac.CategoryName == categoryName, cancellationToken);
     }
 
-    public async Task AddAdvert(Advert advert, CancellationToken cancellationToken)
+    public async Task AddAdvertAsync(Advert advert, CancellationToken cancellationToken)
     {
         await _context.Adverts.AddAsync(advert, cancellationToken);
     }
 
-    public async Task AddAdvertLog(AdvertLog advertLog, CancellationToken cancellationToken)
+    public async Task AddAdvertLogAsync(AdvertLog advertLog, CancellationToken cancellationToken)
     {
         await _context.AdvertLogs.AddAsync(advertLog, cancellationToken);
     }
 
-    public async Task<PagedListDto<AdvertOverviewDto>> GetAllActiveAndNonDeletedAdvertsSummariesWithPagination(
+    public async Task<PagedListDto<AdvertOverviewDto>> GetAllActiveAndNonDeletedAdvertsSummariesWithPaginationAsync(
         string? sortOrder, int page,
         int pageSize, string? searchTerm, CancellationToken cancellationToken)
     {
@@ -157,7 +157,7 @@ public class AdvertRepository : IAdvertRepository
         return await PagedListDtoExtension.ToPagedListAsync(queryable, page, pageSize, cancellationToken);
     }
 
-    public async Task<Guid?> GetActiveAndNonDeletedIdAdvertByIdUser(Guid idUser, CancellationToken cancellationToken)
+    public async Task<Guid?> GetActiveAndNonDeletedIdAdvertByIdUserAsync(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Adverts
@@ -166,7 +166,7 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Guid> FindReviewForAdvertByIdUserAndIdAdvert(Guid idAdvert, Guid idUser,
+    public async Task<Guid> FindReviewForAdvertByIdUserAndIdAdvertAsync(Guid idAdvert, Guid idUser,
         CancellationToken cancellationToken)
     {
         return await _context
@@ -176,17 +176,17 @@ public class AdvertRepository : IAdvertRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task AddReviewLog(ReviewLog reviewLog, CancellationToken cancellationToken)
+    public async Task AddReviewLogAsync(ReviewLog reviewLog, CancellationToken cancellationToken)
     {
         await _context.ReviewLogs.AddAsync(reviewLog, cancellationToken);
     }
 
-    public async Task AddReview(Review review, CancellationToken cancellationToken)
+    public async Task AddReviewAsync(Review review, CancellationToken cancellationToken)
     {
         await _context.Reviews.AddAsync(review, cancellationToken);
     }
 
-    public async Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
+    public async Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginatedAsync(Guid idAdvert, int page, int pageSize,
         CancellationToken cancellationToken)
     {
         var queryable = _context

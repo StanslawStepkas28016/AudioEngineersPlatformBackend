@@ -8,15 +8,14 @@ public class UserService : IUserService
 {
     public void ResetPhoneNumber()
     {
-        // TODO: ResetPhoneNumber endpoint
         /*// Handle phone number change request if provided
         if (!string.IsNullOrWhiteSpace(resetEmailRequest.PhoneNumber))
         {
             // Ensure the right format of the provided phoneNumber (will throw an exception if invalid)
-            var newValidPhoneNumber = new PhoneNumberVo(resetEmailRequest.PhoneNumber).GetValidPhoneNumber();
+            var newValidPhoneNumber = new PhoneNumberVo(resetEmailRequest.PhoneNumber).PhoneNumber();
 
             // Check if the phoneNumber is already in use
-            if (await _userRepository.IsPhoneNumberAlreadyTaken(newValidPhoneNumber, cancellationToken))
+            if (await _userRepository.IsPhoneNumberAlreadyTakenAsync(newValidPhoneNumber, cancellationToken))
             {
                 throw new Exception($"Provided {nameof(resetEmailRequest.PhoneNumber)} is already taken.");
             }

@@ -5,7 +5,28 @@ namespace AudioEngineersPlatformBackend.Domain.ValueObjects;
 
 public readonly struct EmailVo
 {
-    private readonly string? _address;
+    private readonly string _email;
+
+    public string Email
+    {
+        get => _email;
+        init
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException(
+                    $"Provided {nameof(Email)} from {nameof(GetType)} cannot be null or empty.");
+            }
+
+            if (!IsValidEmail(value))
+            {
+                throw new ArgumentException(
+                    $"Provided {nameof(Email)} is not valid, needs to follow name@domain.com.");
+            }
+
+            _email = value;
+        }
+    }
 
     private bool IsValidEmail(string email)
     {
@@ -51,33 +72,8 @@ public readonly struct EmailVo
         }
     }
 
-    private string Address
+    public EmailVo(string email)
     {
-        get { return _address; }
-        init
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentException(
-                    $"Provided {nameof(Address)} from {nameof(GetType)} cannot be null or empty.");
-            }
-
-            if (!IsValidEmail(value))
-            {
-                throw new ArgumentException($"Provided {nameof(Address)} is not valid, needs to follow name@domain.com.");
-            }
-
-            _address = value;
-        }
-    }
-
-    public EmailVo(string address)
-    {
-        Address = address;
-    }
-
-    public string GetValidEmail()
-    {
-        return _address;
+        Email = email;
     }
 }

@@ -14,7 +14,7 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<bool> DoesUserExistByIdUser(Guid idUser, CancellationToken cancellationToken)
+    public async Task<bool> DoesUserExistByIdUserAsync(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Users
@@ -23,7 +23,7 @@ public class UserRepository : IUserRepository
             .AnyAsync(cancellationToken);
     }
 
-    public async Task<bool> IsEmailAlreadyTaken(string email, CancellationToken cancellationToken)
+    public async Task<bool> IsEmailAlreadyTakenAsync(string email, CancellationToken cancellationToken)
     {
         return
             await _context
@@ -32,7 +32,7 @@ public class UserRepository : IUserRepository
                 .AnyAsync(cancellationToken);
     }
 
-    public async Task<User?> FindUserByIdUser(Guid idUser, CancellationToken cancellationToken)
+    public async Task<User?> FindUserByIdUserAsync(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Users
@@ -40,7 +40,7 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<bool> IsPhoneNumberAlreadyTaken(string phoneNumber, CancellationToken cancellationToken)
+    public async Task<bool> IsPhoneNumberAlreadyTakenAsync(string phoneNumber, CancellationToken cancellationToken)
     {
         return await _context
             .Users
@@ -48,7 +48,7 @@ public class UserRepository : IUserRepository
             .AnyAsync(cancellationToken);
     }
 
-    public async Task<UserLog?> FindUserLogByIdUser(Guid idUser, CancellationToken cancellationToken)
+    public async Task<UserLog?> FindUserLogByIdUserAsync(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Users
