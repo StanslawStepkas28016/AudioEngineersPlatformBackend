@@ -1,11 +1,12 @@
-using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Shared.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/user")]
-public class UserController(IUserService userService) : ControllerBase
+public class UserController : ControllerBase
 {
 }

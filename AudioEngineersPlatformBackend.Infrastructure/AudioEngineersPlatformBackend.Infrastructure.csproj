@@ -25,6 +25,7 @@
     <ItemGroup>
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Domain\AudioEngineersPlatformBackend.Domain.csproj"/>
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Application\AudioEngineersPlatformBackend.Application.csproj"/>
+        <ProjectReference Include="..\AudioEngineersPlatformBackend.Shared\AudioEngineersPlatformBackend.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,22 +34,10 @@
       <Compile Remove="Migrations\20250724002307_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724091428_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724091428_Initial.cs" />
-      <Compile Update="ExternalServices\SESService\EmailMessages.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>EmailMessages.resx</DependentUpon>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Migrations\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="ExternalServices\SESService\EmailMessages.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>EmailMessages.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

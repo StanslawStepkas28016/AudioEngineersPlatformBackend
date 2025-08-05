@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService {
+namespace AudioEngineersPlatformBackend.Shared.Resources {
     using System;
     
     
@@ -25,11 +25,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESServi
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static System.Resources.ResourceManager ResourceManager {
+        internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService.EmailMes" +
-                            "sages", typeof(EmailMessages).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Shared.Resources.EmailMessages", typeof(EmailMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

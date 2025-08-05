@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBacke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.Contracts", "AudioEngineersPlatformBackend.Contracts\AudioEngineersPlatformBackend.Contracts.csproj", "{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.Shared", "AudioEngineersPlatformBackend.Shared\AudioEngineersPlatformBackend.Shared.csproj", "{1721EB34-DDAF-4D99-A4B6-9B53E87E557E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1721EB34-DDAF-4D99-A4B6-9B53E87E557E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1721EB34-DDAF-4D99-A4B6-9B53E87E557E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1721EB34-DDAF-4D99-A4B6-9B53E87E557E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1721EB34-DDAF-4D99-A4B6-9B53E87E557E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6DBE958A-0E89-4AF1-9CA6-E5EC46202D3E} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
@@ -48,5 +54,6 @@ Global
 		{95E6F712-6FC7-4B52-A89E-8C481F9C4DB4} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 		{FC6AE930-AAEB-47E0-82DC-6A559714074C} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 		{E0B2BE5E-BC5A-40F9-A2D2-8F777499ABB8} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
+		{1721EB34-DDAF-4D99-A4B6-9B53E87E557E} = {E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}
 	EndGlobalSection
 EndGlobal

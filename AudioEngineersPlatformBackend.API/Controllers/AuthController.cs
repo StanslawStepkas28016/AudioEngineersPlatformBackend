@@ -5,7 +5,6 @@ using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
-using AudioEngineersPlatformBackend.Contracts.Auth.VerifyResetEmail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LoginRequest = AudioEngineersPlatformBackend.Contracts.Auth.Login.LoginRequest;

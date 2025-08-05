@@ -5,18 +5,19 @@ namespace API.Extensions;
 
 public static class LocalizationExtension
 {
-    public static IServiceCollection AddLocalizationExtension(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddLocalizationExtension(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        // The path is not specified, as it will be specified in a different assembly!
-        // This is caused by the fact that each assembly is responsible for different things in Clean Architecture
+        // The resource bundle file path is not specified, as it will be specified
+        // in a different assembly while using the IStringLocalizer!
         services.AddLocalization();
 
         services.Configure<RequestLocalizationOptions>(opts =>
         {
             var supportedCultures = new List<CultureInfo>
             {
-                new CultureInfo("pl-pl"),
-                new CultureInfo("en-us")
+                new("pl-PL"),
+                new("en-US")
             };
 
             opts.DefaultRequestCulture = new RequestCulture("en", "en");

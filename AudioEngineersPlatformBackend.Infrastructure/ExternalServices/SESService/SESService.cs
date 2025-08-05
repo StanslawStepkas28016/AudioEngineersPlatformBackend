@@ -1,6 +1,7 @@
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Shared.Resources;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 

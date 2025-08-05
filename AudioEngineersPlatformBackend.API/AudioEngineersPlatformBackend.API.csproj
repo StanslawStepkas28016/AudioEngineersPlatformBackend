@@ -25,4 +25,8 @@
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Infrastructure\AudioEngineersPlatformBackend.Infrastructure.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Filters\" />
+    </ItemGroup>
+
 </Project>
