@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Net;
-using API.Extensions;
 
 namespace API.Middlewares.ExceptionMiddleware;
 

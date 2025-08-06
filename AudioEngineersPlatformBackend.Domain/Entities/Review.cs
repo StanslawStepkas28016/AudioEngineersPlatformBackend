@@ -170,7 +170,7 @@ public class Review
     /// <param name="satisfactionLevel"></param>
     /// <returns></returns>
     /// 
-    public static Review CreateWithId(Guid idReview, Guid idAdvert, Guid idReviewLog, Guid idUser, string content,
+    public static Review CreateWithIdAndStaticData(Guid idReview, Guid idAdvert, Guid idReviewLog, Guid idUser, string content,
         byte satisfactionLevel)
     {
         return new Review

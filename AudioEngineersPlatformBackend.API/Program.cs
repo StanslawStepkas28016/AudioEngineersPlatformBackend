@@ -1,7 +1,11 @@
 using API.Extensions;
 using API.Middlewares.ExceptionMiddleware;
 using AudioEngineersPlatformBackend.Application;
+using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure;
+using AudioEngineersPlatformBackend.Infrastructure.Context;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
@@ -42,6 +46,11 @@ WebApplication app = builder.Build();
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+
+        // Run migrations
+        using var scope = app.Services.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<EngineersPlatformDbContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
     // Use redirections from HTTP to HTTPS

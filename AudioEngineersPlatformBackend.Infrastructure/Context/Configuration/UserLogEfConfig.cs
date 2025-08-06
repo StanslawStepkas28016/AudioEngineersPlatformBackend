@@ -63,7 +63,7 @@ public class UserLogEfConfig : IEntityTypeConfiguration<UserLog>
         builder
             .Property(ul => ul.IsResettingEmail)
             .IsRequired();
-        
+
         builder
             .Property(ul => ul.ResetPasswordToken)
             .IsRequired(false);

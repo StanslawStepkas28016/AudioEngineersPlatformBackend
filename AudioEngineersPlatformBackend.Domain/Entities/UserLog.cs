@@ -189,21 +189,22 @@ public class UserLog
     ///     Used for seeding.
     /// </summary>
     /// <param name="idUserLog"></param>
+    /// <param name="dateCreated"></param>
     /// <returns></returns>
-    public static UserLog CreateWithId(Guid idUserLog)
+    public static UserLog CreateWithIdAndStaticData(Guid idUserLog, DateTime dateCreated)
     {
         return new UserLog
         {
             IdUserLog = idUserLog,
-            DateCreated = DateTime.UtcNow,
+            DateCreated = dateCreated,
             DateDeleted = null,
             IsDeleted = false,
             RefreshToken = null,
             RefreshTokenExpiration = null,
             DateLastLogin = null,
-            VerificationCode = GenerateVerificationCode(),
-            VerificationCodeExpiration = DateTime.UtcNow.AddHours(24),
-            IsVerified = false,
+            VerificationCode = null,
+            VerificationCodeExpiration = null,
+            IsVerified = true,
             ResetEmailToken = null,
             ResetEmailTokenExpiration = null,
             IsResettingEmail = false,

@@ -1,4 +1,3 @@
-using AudioEngineersPlatformBackend.Application;
 using AudioEngineersPlatformBackend.Application.Util.UrlGenerator;
 
 namespace API.Extensions;

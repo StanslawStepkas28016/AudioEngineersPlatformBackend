@@ -241,7 +241,7 @@ public class Advert
     /// <param name="idAdvertCategory"></param>
     /// <param name="idAdvertLog"></param>
     /// <returns></returns>
-    public static Advert CreateWithId(
+    public static Advert CreateWithIdAndStaticData(
         Guid idAdvert,
         string title,
         string description,

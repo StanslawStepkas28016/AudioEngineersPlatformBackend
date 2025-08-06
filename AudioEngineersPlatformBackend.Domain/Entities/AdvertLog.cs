@@ -62,7 +62,7 @@ public class AdvertLog
         get => _adverts;
         set => _adverts = value;
     }
-    
+
     // Methods
     public void MarkAsDeleted()
     {
@@ -114,12 +114,12 @@ public class AdvertLog
     /// </summary>
     /// <param name="idAdvertLog"></param>
     /// <returns></returns>
-    public static AdvertLog CreateWithId(Guid idAdvertLog)
+    public static AdvertLog CreateWithIdAndStaticData(Guid idAdvertLog, DateTime dateCreated)
     {
         return new AdvertLog
         {
             IdAdvertLog = idAdvertLog,
-            DateCreated = DateTime.UtcNow,
+            DateCreated = dateCreated,
             DateModified = null,
             DateDeleted = null,
             IsDeleted = false,

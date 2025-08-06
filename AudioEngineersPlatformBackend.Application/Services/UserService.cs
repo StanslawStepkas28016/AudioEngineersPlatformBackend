@@ -1,6 +1,4 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Domain.Entities;
-using AudioEngineersPlatformBackend.Domain.ValueObjects;
 
 namespace AudioEngineersPlatformBackend.Application.Services;
 

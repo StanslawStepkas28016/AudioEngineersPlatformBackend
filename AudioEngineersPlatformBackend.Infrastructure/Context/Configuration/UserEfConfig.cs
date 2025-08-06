@@ -53,14 +53,16 @@ public class UserEfConfig : IEntityTypeConfiguration<User>
         builder
             .HasIndex(u => u.IdUser)
             .HasDatabaseName("IX_User_ForCheckAuth")
-            .IncludeProperties(u => new
-            {
-                u.Email,
-                u.FirstName,
-                u.LastName,
-                u.PhoneNumber,
-                u.IdRole
-            });
+            .IncludeProperties
+            (u => new
+                {
+                    u.Email,
+                    u.FirstName,
+                    u.LastName,
+                    u.PhoneNumber,
+                    u.IdRole
+                }
+            );
 
         builder
             .ToTable("User");

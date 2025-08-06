@@ -57,10 +57,10 @@ public class ReviewLog
     {
         return new ReviewLog
         {
-            _idReviewLog = Guid.NewGuid(),
-            _dateCreated = DateTime.UtcNow,
-            _dateDeleted = null,
-            _isDeleted = false,
+            IdReviewLog = Guid.NewGuid(),
+            DateCreated = DateTime.UtcNow,
+            DateDeleted = null,
+            IsDeleted = false,
         };
     }
 
@@ -69,14 +69,14 @@ public class ReviewLog
     /// </summary>
     /// <param name="idReviewLog"></param>
     /// <returns></returns>
-    public static ReviewLog CreateWithId(Guid idReviewLog)
+    public static ReviewLog CreateWithIdAndStaticData(Guid idReviewLog, DateTime dateCreated)
     {
         return new ReviewLog
         {
-            _idReviewLog = idReviewLog,
-            _dateCreated = DateTime.UtcNow,
-            _dateDeleted = null,
-            _isDeleted = false,
+            IdReviewLog = idReviewLog,
+            DateCreated = dateCreated,
+            DateDeleted = null,
+            IsDeleted = false,
         };
     }
 
@@ -85,7 +85,7 @@ public class ReviewLog
     /// </summary>
     public void SoftDelete()
     {
-        _dateDeleted = DateTime.UtcNow;
-        _isDeleted = true;
+        DateDeleted = DateTime.UtcNow;
+        IsDeleted = true;
     }
 }
