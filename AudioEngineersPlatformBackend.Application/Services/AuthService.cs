@@ -6,6 +6,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
 using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
@@ -43,8 +44,10 @@ public class AuthService : IAuthService
         CancellationToken cancellationToken)
     {
         // Check if the provided email or phone number is already used.
-        if (await _authRepository.FindUserByEmailAsync(
-                new EmailVo(registerRequest.Email).Email, cancellationToken) != null
+        if (await _authRepository.FindUserByEmailAsNoTrackingAsync
+            (
+                new EmailVo(registerRequest.Email).Email, cancellationToken
+            ) != null
            )
         {
             throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
@@ -52,7 +55,7 @@ public class AuthService : IAuthService
 
         string validPhoneNumber = new PhoneNumberVo(registerRequest.PhoneNumber).PhoneNumber;
 
-        if (await _authRepository.FindUserByPhoneNumberAsync(validPhoneNumber, cancellationToken) != null)
+        if (await _authRepository.FindUserByPhoneNumberAsNoTrackingAsync(validPhoneNumber, cancellationToken) != null)
         {
             throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
         }
@@ -61,7 +64,7 @@ public class AuthService : IAuthService
         UserLog userLog = UserLog.Create();
 
         // Check if the provided role exists.
-        Role? role = await _authRepository.FindRoleByNameAsync(registerRequest.RoleName, cancellationToken);
+        Role? role = await _authRepository.FindRoleByNameAsNoTrackingAsync(registerRequest.RoleName, cancellationToken);
 
         if (role == null)
         {
@@ -69,7 +72,8 @@ public class AuthService : IAuthService
         }
 
         // Create a User, then hash its password
-        User user = User.Create(
+        User user = User.Create
+        (
             registerRequest.FirstName,
             registerRequest.LastName,
             registerRequest.Email,
@@ -103,8 +107,11 @@ public class AuthService : IAuthService
             new AccountVerificationCodeVo(verifyAccountRequest.VerificationCode).VerificationCode;
 
         User? user =
-            await _authRepository.FindUserAndUserLogByVerificationCodeAsync(validAccountVerificationCode,
-                cancellationToken);
+            await _authRepository.FindUserAndUserLogByVerificationCodeAsync
+            (
+                validAccountVerificationCode,
+                cancellationToken
+            );
 
         if (user == null)
         {
@@ -129,9 +136,11 @@ public class AuthService : IAuthService
     public async Task<LoginResponse> Login(LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
         // Check database invariants - find if user exists.
-        User? user = await _authRepository.FindUserAndUserLogAndRoleByEmailAsync(
+        User? user = await _authRepository.FindUserAndUserLogAndRoleByEmailAsync
+        (
             new EmailVo(loginRequest.Email).Email,
-            cancellationToken);
+            cancellationToken
+        );
 
         if (user == null)
         {
@@ -157,17 +166,24 @@ public class AuthService : IAuthService
         JwtSecurityToken jwtAccessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write both tokens as cookies.
-        await _cookieUtil.WriteAsCookie(CookieName.accessToken,
+        await _cookieUtil.WriteAsCookie
+        (
+            CookieNames.accessToken,
             new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
-            jwtAccessToken.ValidTo);
-        await _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
-            user.UserLog.RefreshTokenExpiration);
+            jwtAccessToken.ValidTo
+        );
+        await _cookieUtil.WriteAsCookie
+        (
+            CookieNames.refreshToken, user.UserLog.RefreshToken!,
+            user.UserLog.RefreshTokenExpiration
+        );
 
         // Persist the changes in the database.
         await _unitOfWork.CompleteAsync(cancellationToken);
 
         // Send the user data in the response.
-        return new LoginResponse(
+        return new LoginResponse
+        (
             user.IdUser,
             user.FirstName,
             user.LastName,
@@ -181,14 +197,14 @@ public class AuthService : IAuthService
     public async Task Logout()
     {
         // Remove both cookies from the clients browser, effectively logging them out. 
-        await _cookieUtil.DeleteCookie(CookieName.accessToken);
-        await _cookieUtil.DeleteCookie(CookieName.refreshToken);
+        await _cookieUtil.DeleteCookie(CookieNames.accessToken);
+        await _cookieUtil.DeleteCookie(CookieNames.refreshToken);
     }
 
     public async Task RefreshToken(CancellationToken cancellationToken = default)
     {
         // Get the token from requests cookies.
-        string refreshToken = await _cookieUtil.GetCookie(CookieName.refreshToken);
+        string refreshToken = await _cookieUtil.GetCookie(CookieNames.refreshToken);
 
         // Find a user by the refresh token.
         User? user = await _authRepository.FindUserAndUserLogByRefreshTokenAsync(refreshToken, cancellationToken);
@@ -212,10 +228,16 @@ public class AuthService : IAuthService
         JwtSecurityToken accessToken = _tokenUtil.CreateJwtAccessToken(user);
 
         // Write new access token and refresh token as cookies.
-        await _cookieUtil.WriteAsCookie(CookieName.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
-            accessToken.ValidTo);
-        await _cookieUtil.WriteAsCookie(CookieName.refreshToken, user.UserLog.RefreshToken!,
-            user.UserLog.RefreshTokenExpiration);
+        await _cookieUtil.WriteAsCookie
+        (
+            CookieNames.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
+            accessToken.ValidTo
+        );
+        await _cookieUtil.WriteAsCookie
+        (
+            CookieNames.refreshToken, user.UserLog.RefreshToken!,
+            user.UserLog.RefreshTokenExpiration
+        );
 
         // Persist the changes in the database.
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -239,7 +261,8 @@ public class AuthService : IAuthService
             throw new ArgumentException($"User with the provided {nameof(idUser)} does not exist.");
         }
 
-        return new CheckAuthResponse(
+        return new CheckAuthResponse
+        (
             idUser,
             userAssociatedData.Email!,
             userAssociatedData.FirstName!,
@@ -294,8 +317,8 @@ public class AuthService : IAuthService
         // Logout the user from all sessions, by setting the RefreshToken and RefreshTokenExpiration to null values,
         // as well as removing the authentication cookies from their browser.
         userLog.SetLogoutData();
-        await _cookieUtil.DeleteCookie(CookieName.accessToken);
-        await _cookieUtil.DeleteCookie(CookieName.refreshToken);
+        await _cookieUtil.DeleteCookie(CookieNames.accessToken);
+        await _cookieUtil.DeleteCookie(CookieNames.refreshToken);
 
         // Send a new verification email.
         await _sesService.SendEmailResetEmailAsync(newValidEmail, user.FirstName, resetEmailUrl);
@@ -325,6 +348,37 @@ public class AuthService : IAuthService
         userLog.VerifyResetEmailData(resetEmailTokenValidated);
 
         // Persist all changes.
+        await _unitOfWork.CompleteAsync(cancellationToken);
+    }
+
+    public async Task ResetPassword(Guid idUser, ResetPasswordRequest resetPasswordRequest,
+        CancellationToken cancellationToken)
+    {
+        // Ensure the provided id is correct.
+        Guid idUserValidated = new GuidVo(idUser).Guid;
+
+        User? userById = await _userRepository.FindUserByIdUserAsync(idUserValidated, cancellationToken);
+
+        // Ensure the user exists.
+        if (userById == null)
+        {
+            throw new ArgumentException($"Provided {nameof(idUser)} is incorrect.");
+        }
+
+        // Check if the user is authorized to reset their email (either an admin or the user himself).
+        if (idUserValidated != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
+        {
+            throw new UnauthorizedAccessException("Specified data does not belong to you.");
+        }
+
+        // Change the password, ensuring the logic is correct inside the used method.
+        userById.ChangePassword(resetPasswordRequest.OldPassword, resetPasswordRequest.NewPassword);
+        
+        // Set the reset password data, so that the user is unable to login until they verify their new password. 
+        Guid passwordResetToken = Guid.NewGuid();
+        // userById.SetResetPasswordData(passwordResetToken);
+
+        // Persist all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
 }

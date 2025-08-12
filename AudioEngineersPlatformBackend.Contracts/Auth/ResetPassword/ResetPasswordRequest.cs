@@ -1,6 +1,7 @@
 namespace AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
 
-public class ResetPasswordRequest
-{
-    
-}
+public record ResetPasswordRequest
+(
+    string OldPassword,
+    string NewPassword
+);

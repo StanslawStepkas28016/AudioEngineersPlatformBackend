@@ -20,8 +20,10 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         // Add DbContexts
-        services.AddDbContext<EngineersPlatformDbContext>(options => options
-            .UseSqlServer(configuration.GetConnectionString("DevDB")));
+        services.AddDbContext<EngineersPlatformDbContext>
+        (options => options
+            .UseSqlServer(configuration.GetConnectionString("DevDB"))
+        );
 
         // Add Repositories
         services.AddScoped<IAuthRepository, AuthRepository>();
@@ -29,9 +31,10 @@ public static class DependencyInjection
         services.AddScoped<IAdvertRepository, AdvertRepository>();
 
         // Add AWS SES
-        services.Configure<SESSettings>(configuration.GetSection("SESSettings"));
+        services.Configure<SESSettings>(configuration.GetSection(nameof(SESSettings)));
         services.AddScoped<ISESService, SESService>();
-        services.AddSingleton<IAmazonSimpleEmailService>(sp =>
+        services.AddSingleton<IAmazonSimpleEmailService>
+        (sp =>
             {
                 SESSettings sesSettings = sp.GetRequiredService<IOptions<SESSettings>>().Value;
 
@@ -47,22 +50,24 @@ public static class DependencyInjection
         );
 
         // Add AWS S3
-        services.Configure<S3Settings>(configuration.GetSection("S3Settings"));
+        services.Configure<S3Settings>(configuration.GetSection(nameof(S3Settings)));
         services.AddScoped<IS3Service, S3Service>();
-        services.AddSingleton<IAmazonS3>(sp =>
-        {
-            S3Settings s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
-
-            BasicAWSCredentials credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
-
-            AmazonS3Config config = new AmazonS3Config
+        services.AddSingleton<IAmazonS3>
+        (sp =>
             {
-                RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
-            };
+                S3Settings s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
 
-            return new AmazonS3Client(credentials, config);
-        });
-        
+                BasicAWSCredentials credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
+
+                AmazonS3Config config = new AmazonS3Config
+                {
+                    RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
+                };
+
+                return new AmazonS3Client(credentials, config);
+            }
+        );
+
         // Add a unit of work
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 

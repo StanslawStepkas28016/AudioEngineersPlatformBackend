@@ -6,20 +6,26 @@ public static class CorsExtensions
 {
     public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(policy =>
+        services.AddCors
+        (options =>
             {
-                FrontendSettings frontendSettings =
-                    configuration.GetSection("FrontendSettings").Get<FrontendSettings>()!;
+                options.AddDefaultPolicy
+                (policy =>
+                    {
+                        FrontendSettings frontendSettings =
+                            configuration
+                                .GetSection(nameof(FrontendSettings))
+                                .Get<FrontendSettings>()!;
 
-                policy
-                    .WithOrigins(frontendSettings.Url)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
-        });
+                        policy
+                            .WithOrigins(frontendSettings.Url)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    }
+                );
+            }
+        );
 
         return services;
     }

@@ -1,5 +1,4 @@
 using AudioEngineersPlatformBackend.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.Context;

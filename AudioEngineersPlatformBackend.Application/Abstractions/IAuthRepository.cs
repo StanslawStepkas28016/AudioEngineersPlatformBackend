@@ -5,9 +5,9 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface IAuthRepository
 {
-    Task<User?> FindUserByEmailAsync(string email, CancellationToken cancellationToken);
-    Task<User?> FindUserByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken);
-    Task<Role?> FindRoleByNameAsync(string roleName, CancellationToken cancellationToken);
+    Task<User?> FindUserByEmailAsNoTrackingAsync(string email, CancellationToken cancellationToken);
+    Task<User?> FindUserByPhoneNumberAsNoTrackingAsync(string phoneNumber, CancellationToken cancellationToken);
+    Task<Role?> FindRoleByNameAsNoTrackingAsync(string roleName, CancellationToken cancellationToken);
     Task<UserLog> AddUserLogAsync(UserLog userLog, CancellationToken cancellationToken);
     Task<User> AddUserAsync(User user, CancellationToken cancellationToken);
     Task<User?> FindUserAndUserLogByVerificationCodeAsync(string verificationCode, CancellationToken cancellationToken);

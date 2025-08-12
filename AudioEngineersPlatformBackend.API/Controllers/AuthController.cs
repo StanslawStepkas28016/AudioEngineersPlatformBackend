@@ -4,6 +4,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
 using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -140,6 +141,33 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
-    // TODO: ResetPassword endpoint.
+
+    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [HttpPatch("{idUser:guid}/reset-password")]
+    public async Task<IActionResult> ResetPassword(Guid idUser, [FromBody] ResetPasswordRequest resetPasswordRequest,
+        CancellationToken cancellationToken)
+    {
+        await authService.ResetPassword(idUser, resetPasswordRequest, cancellationToken);
+        return StatusCode(StatusCodes.Status204NoContent);
+    }
+
     // TODO: ResetPhoneNumber endpoint.
+    /*public void ResetPhoneNumber()
+    {
+        // Handle phone number change request if provided
+        if (!string.IsNullOrWhiteSpace(resetEmailRequest.PhoneNumber))
+        {
+            // Ensure the right format of the provided phoneNumber (will throw an exception if invalid)
+            var newValidPhoneNumber = new PhoneNumberVo(resetEmailRequest.PhoneNumber).PhoneNumber();
+
+            // Check if the phoneNumber is already in use
+            if (await _userRepository.IsPhoneNumberAlreadyTakenAsync(newValidPhoneNumber, cancellationToken))
+            {
+                throw new Exception($"Provided {nameof(resetEmailRequest.PhoneNumber)} is already taken.");
+            }
+
+            // Update the data (will check if provided phoneNumber is different from the old one)
+            user.ChangePhoneNumber(newValidPhoneNumber);
+        }
+    }*/
 }

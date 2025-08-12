@@ -238,6 +238,11 @@ public class User
 
     public void ChangePhoneNumber(string newValidPhoneNumber)
     {
+        if (string.IsNullOrWhiteSpace(newValidPhoneNumber))
+        {
+            throw new ArgumentException($"New {nameof(PhoneNumber).ToLower()} cannot be empty.");
+        }
+
         // Check if the numbers differ
         if (newValidPhoneNumber == PhoneNumber)
         {
@@ -245,5 +250,20 @@ public class User
         }
 
         PhoneNumber = newValidPhoneNumber;
+    }
+
+    public void ChangePassword(string oldPassword, string newPassword)
+    {
+        if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
+        {
+            throw new ArgumentException($"Provided {nameof(oldPassword)} or {nameof(newPassword)} is empty.");
+        }
+
+        if (oldPassword == newPassword)
+        {
+            throw new Exception($"{nameof(newPassword)} must differ from {nameof(oldPassword)}.");
+        }
+
+        Password = newPassword;
     }
 }

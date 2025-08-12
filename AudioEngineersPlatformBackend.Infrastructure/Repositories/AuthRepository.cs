@@ -16,7 +16,7 @@ public class AuthRepository : IAuthRepository
         _context = context;
     }
 
-    public async Task<User?> FindUserByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserByEmailAsNoTrackingAsync(string email, CancellationToken cancellationToken = default)
     {
         return await _context
             .Users
@@ -24,7 +24,7 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User?> FindUserByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserByPhoneNumberAsNoTrackingAsync(string phoneNumber, CancellationToken cancellationToken = default)
     {
         return await _context
             .Users
@@ -32,7 +32,7 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
     }
 
-    public async Task<Role?> FindRoleByNameAsync(string roleName, CancellationToken cancellationToken)
+    public async Task<Role?> FindRoleByNameAsNoTrackingAsync(string roleName, CancellationToken cancellationToken)
     {
         return await _context
             .Roles

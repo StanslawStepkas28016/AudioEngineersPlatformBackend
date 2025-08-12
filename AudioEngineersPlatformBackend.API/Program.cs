@@ -1,14 +1,15 @@
 using API.Extensions;
 using API.Middlewares.ExceptionMiddleware;
 using AudioEngineersPlatformBackend.Application;
-using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
+    // Add logging via Serilog
+    builder.Host.AddSerilogLogging();
+    
     // Add Swagger fore development
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -38,15 +39,17 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 WebApplication app = builder.Build();
 {
+    // Logging first, what if exception happens, how do I know
+
     // Use custom middlewares
     app.UseMiddleware<ExceptionMiddleware>();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     // Use swagger for development
     if (app.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-
         // Run migrations
         using var scope = app.Services.CreateScope();
         await using var dbContext = scope.ServiceProvider.GetRequiredService<EngineersPlatformDbContext>();

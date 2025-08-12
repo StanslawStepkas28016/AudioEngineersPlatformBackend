@@ -1,7 +1,5 @@
 using System.Globalization;
-using AudioEngineersPlatformBackend.Shared.Resources;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Localization;
 
 namespace API.Extensions;
 

@@ -4,9 +4,9 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface ICookieUtil
 {
-    Task WriteAsCookie(CookieName cookieName, string value, DateTime? expirationDate);
+    Task WriteAsCookie(CookieNames cookieNames, string value, DateTime? expirationDate);
 
-    Task<string> GetCookie(CookieName cookieName);
+    Task<string> GetCookie(CookieNames cookieNames);
 
-    Task DeleteCookie(CookieName cookieName);
+    Task DeleteCookie(CookieNames cookieNames);
 }

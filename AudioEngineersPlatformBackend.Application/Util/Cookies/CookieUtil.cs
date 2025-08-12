@@ -12,7 +12,7 @@ public class CookieUtil : ICookieUtil
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public Task WriteAsCookie(CookieName cookieName, string value, DateTime? expirationDate)
+    public Task WriteAsCookie(CookieNames cookieNames, string value, DateTime? expirationDate)
     {
         if (expirationDate == null)
         {
@@ -27,14 +27,14 @@ public class CookieUtil : ICookieUtil
             Expires = expirationDate
         };
 
-        _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieName.ToString(), value, options);
+        _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieNames.ToString(), value, options);
 
         return Task.CompletedTask;
     }
 
-    public Task<string> GetCookie(CookieName cookieName)
+    public Task<string> GetCookie(CookieNames cookieNames)
     {
-        string? cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieName.ToString()];
+        string? cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieNames.ToString()];
 
         if (string.IsNullOrWhiteSpace(cookieValue))
         {
@@ -44,9 +44,9 @@ public class CookieUtil : ICookieUtil
         return Task.FromResult(cookieValue);
     }
 
-    public Task DeleteCookie(CookieName cookieName)
+    public Task DeleteCookie(CookieNames cookieNames)
     {
-        _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookieName.ToString());
+        _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookieNames.ToString());
         return Task.CompletedTask;
     }
 }

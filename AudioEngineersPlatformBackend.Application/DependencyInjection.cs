@@ -20,7 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IAdvertService, AdvertService>();
 
         // Add settings for JWT
-        services.Configure<JwtSettings>(configuration.GetSection("JWTSettings"));
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddScoped<ITokenUtil, TokenUtil>();
 
         // Add HttpContextAccessor and CookieUtil for accessing cookies sent in the requests
@@ -28,7 +28,7 @@ public static class DependencyInjection
         services.AddScoped<ICookieUtil, CookieUtil>();
 
         // Add frontend settings for generating an email reset Url
-        services.Configure<FrontendSettings>(configuration.GetSection("FrontendSettings"));
+        services.Configure<FrontendSettings>(configuration.GetSection(nameof(FrontendSettings)));
         services.AddScoped<IUrlGeneratorUtil, UrlGeneratorUtil>();
 
         // Add services for current user
