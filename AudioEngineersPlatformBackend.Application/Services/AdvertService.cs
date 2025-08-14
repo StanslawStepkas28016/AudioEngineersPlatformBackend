@@ -5,6 +5,7 @@ using AudioEngineersPlatformBackend.Contracts.Advert.ChangeAdverData;
 using AudioEngineersPlatformBackend.Contracts.Advert.CreateAdvert;
 using AudioEngineersPlatformBackend.Contracts.Advert.GetAdvertDetails;
 using AudioEngineersPlatformBackend.Domain.Entities;
+using AudioEngineersPlatformBackend.Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
 
 namespace AudioEngineersPlatformBackend.Application.Services;
@@ -47,7 +48,8 @@ public class AdvertService : IAdvertService
 
         // Check if there is already an advert posted by the user
         Advert? advertByIdUser =
-            await _advertRepository.GetActiveAndNonDeletedAdvertByIdUserAsync(createAdvertRequest.IdUser, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertByIdUserAsync
+                (createAdvertRequest.IdUser, cancellationToken);
 
         if (advertByIdUser != null)
         {
@@ -57,8 +59,11 @@ public class AdvertService : IAdvertService
         // Check if the provided category name exists
         if (string.IsNullOrWhiteSpace(createAdvertRequest.CategoryName))
         {
-            throw new ArgumentException($"{createAdvertRequest.CategoryName} cannot be null or whitespace.",
-                nameof(createAdvertRequest.CategoryName));
+            throw new ArgumentException
+            (
+                $"{createAdvertRequest.CategoryName} cannot be null or whitespace.",
+                nameof(createAdvertRequest.CategoryName)
+            );
         }
 
         AdvertCategory? advertCategory = await _advertRepository
@@ -76,7 +81,8 @@ public class AdvertService : IAdvertService
         Guid imageKey = await _s3Service.UploadFileAsync(createAdvertRequest.CoverImageFile, cancellationToken);
 
         // Create a new Advert entity
-        Advert advert = Advert.Create(
+        Advert advert = Advert.Create
+        (
             createAdvertRequest.Title,
             createAdvertRequest.Description,
             imageKey,
@@ -95,7 +101,8 @@ public class AdvertService : IAdvertService
         await _unitOfWork.CompleteAsync(cancellationToken);
 
         // Map the response
-        return new CreateAdvertResponse(
+        return new CreateAdvertResponse
+        (
             advert.IdAdvert,
             advert.IdUser
         );
@@ -126,7 +133,8 @@ public class AdvertService : IAdvertService
         }
 
         // Perform the update
-        advertByIdAdvert.PartialUpdate(
+        advertByIdAdvert.PartialUpdate
+        (
             changeAdvertDataRequest.Title,
             changeAdvertDataRequest.Description,
             changeAdvertDataRequest.PortfolioUrl,
@@ -147,7 +155,8 @@ public class AdvertService : IAdvertService
 
         // Check if the advert exists
         Advert? advertAndAdvertLog =
-            await _advertRepository.GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvertAsync(idAdvert, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertAndAdvertLogByIdAdvertAsync
+                (idAdvert, cancellationToken);
 
         if (advertAndAdvertLog == null)
         {
@@ -206,7 +215,8 @@ public class AdvertService : IAdvertService
         string preSignedUrl = await _s3Service.GetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
 
         // Map the response to GetAdvertResponse
-        return new GetAdvertDetailsResponse(
+        return new GetAdvertDetailsResponse
+        (
             advert.IdUser,
             advert.IdAdvert,
             advert.Title!,
@@ -232,7 +242,8 @@ public class AdvertService : IAdvertService
         }
 
         AdvertDetailsDto? advert =
-            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvertAsync(idAdvert, cancellationToken);
+            await _advertRepository.GetActiveAndNonDeletedAdvertAssociatedDataByIdAdvertAsync
+                (idAdvert, cancellationToken);
 
         if (advert == null)
         {
@@ -243,7 +254,8 @@ public class AdvertService : IAdvertService
         string preSignedUrl = await _s3Service.GetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
 
         // Map the response to GetAdvertResponse
-        return new GetAdvertDetailsResponse(
+        return new GetAdvertDetailsResponse
+        (
             advert.IdUser,
             advert.IdAdvert,
             advert.Title!,
@@ -265,9 +277,12 @@ public class AdvertService : IAdvertService
     {
         // Fetch paginated adverts
         PagedListDto<AdvertOverviewDto> allAdvertsWithPagination =
-            await _advertRepository.GetAllActiveAndNonDeletedAdvertsSummariesWithPaginationAsync(sortOrder, page, pageSize,
+            await _advertRepository.GetAllActiveAndNonDeletedAdvertsSummariesWithPaginationAsync
+            (
+                sortOrder, page, pageSize,
                 searchTerm,
-                cancellationToken);
+                cancellationToken
+            );
 
 
         // Generate presigned URLs for cover images
@@ -286,12 +301,16 @@ public class AdvertService : IAdvertService
         return key;
     }
 
-    public async Task<Guid> AddReview(AddReviewRequest addReviewRequest,
+    public async Task<Guid> AddReview(Guid idAdvert, AddReviewRequest addReviewRequest,
         CancellationToken cancellationToken)
     {
+        // Ensure correct data.
+        Guid idAdvertValidated = new GuidVo(idAdvert).Guid;
+
         // Check if the user has already posted a review under the requested advert
-        var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvertAsync(
-            addReviewRequest.IdAdvert,
+        var findReviewForAdvertByIdUserAndIdAdvert = await _advertRepository.FindReviewForAdvertByIdUserAndIdAdvertAsync
+        (
+            idAdvertValidated,
             _currentUserUtil.IdUser,
             cancellationToken
         );
@@ -305,7 +324,9 @@ public class AdvertService : IAdvertService
         ReviewLog reviewLog = ReviewLog.Create();
 
         // Create a Review
-        Review review = Review.Create(addReviewRequest.IdAdvert,
+        Review review = Review.Create
+        (
+            idAdvertValidated,
             reviewLog.IdReviewLog,
             _currentUserUtil.IdUser,
             addReviewRequest.Content,

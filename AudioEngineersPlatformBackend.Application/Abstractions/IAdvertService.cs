@@ -30,7 +30,7 @@ public interface IAdvertService
 
     Task<Guid> MockImageUpload(IFormFile coverImageFile, CancellationToken cancellationToken);
 
-    Task<Guid> AddReview(AddReviewRequest addReviewRequest,
+    Task<Guid> AddReview(Guid idAdvert, AddReviewRequest addReviewRequest,
         CancellationToken cancellationToken);
 
     Task<PagedListDto<ReviewDto>> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
