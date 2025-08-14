@@ -159,6 +159,13 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
+    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [HttpPatch("{idUser:guid}/reset-phone-number")]
+    public async Task<IActionResult> ResetPhoneNumber(Guid idUser, CancellationToken cancellationToken)
+    {
+        return StatusCode(StatusCodes.Status204NoContent);
+    }
+    
     // TODO: ResetPhoneNumber endpoint.
     /*public void ResetPhoneNumber()
     {

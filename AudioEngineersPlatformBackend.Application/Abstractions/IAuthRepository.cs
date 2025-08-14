@@ -15,4 +15,5 @@ public interface IAuthRepository
     Task<User?> FindUserAndUserLogByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
     Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUserAsync(Guid idUser, CancellationToken cancellationToken);
     Task<UserLog?> FindUserLogByResetEmailTokenAsync(Guid resetEmailToken, CancellationToken cancellationToken);
+    Task<UserLog?> FindUserLogByResetPasswordTokenAsync(Guid resetPasswordToken, CancellationToken cancellationToken);
 }

@@ -344,7 +344,7 @@ public class AuthService : IAuthService
             throw new Exception($"User with the {nameof(resetEmailToken)} was not found.");
         }
 
-        // Verify the token.
+        // Verify the token, including its expiration and user flags.
         userLog.VerifyResetEmailData(resetEmailTokenValidated);
 
         // Persist all changes.
@@ -381,7 +381,7 @@ public class AuthService : IAuthService
         }
 
         Guid resetPasswordToken = Guid.NewGuid();
-        
+
         // Reset the password, ensuring the current password is correct and that new passwords are correct.
         PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
 
@@ -416,6 +416,21 @@ public class AuthService : IAuthService
 
     public async Task VerifyResetPassword(Guid resetPasswordToken, CancellationToken cancellationToken)
     {
+        // Use a VO to extract the guid and ensure that it is not empty.
+        Guid resetPasswordTokenValidated = new GuidVo(resetPasswordToken).Guid;
+
+        UserLog? userLog = await _authRepository.FindUserLogByResetPasswordTokenAsync
+            (resetPasswordTokenValidated, cancellationToken);
+
+        if (userLog == null)
+        {
+            throw new Exception($"{nameof(User)} with the provided {nameof(resetPasswordToken)} does not exist.");
+        }
+
+        // Verify the token, including its expiration and user flags.
+        userLog.VerifyResetPasswordData(resetPasswordTokenValidated);
         
+        // Persist all changes.
+        await _unitOfWork.CompleteAsync(cancellationToken);
     }
 }

@@ -245,12 +245,22 @@ public class UserLog
     {
         if (IsDeleted)
         {
-            throw new Exception("User is deleted.");
+            throw new Exception($"{nameof(User)} is deleted.");
         }
 
         if (!IsVerified)
         {
-            throw new Exception("User is not verified.");
+            throw new Exception($"{nameof(User)} is not verified.");
+        }
+
+        if (IsResettingEmail)
+        {
+            throw new Exception($"{nameof(User)} is resetting their email address.");
+        }
+
+        if (IsResettingPassword)
+        {
+            throw new Exception($"{nameof(User)} is resetting their password.");
         }
     }
 
@@ -328,19 +338,19 @@ public class UserLog
     /// <exception cref="Exception"></exception>
     public void VerifyResetEmailData(Guid resetEmailTokenValidated)
     {
+        if (!IsResettingEmail)
+        {
+            throw new ArgumentException($"{nameof(User)} is not marked as resetting email.");
+        }
+
         if (resetEmailTokenValidated != ResetEmailToken)
         {
-            throw new ArgumentException($"{nameof(resetEmailTokenValidated).ToUpper()} is not valid.");
+            throw new ArgumentException($"{nameof(resetEmailTokenValidated)} is not valid.");
         }
 
         if (ResetEmailTokenExpiration < DateTime.UtcNow)
         {
             throw new Exception($"The {nameof(ResetEmailToken)} has expired.");
-        }
-
-        if (!IsResettingEmail)
-        {
-            throw new ArgumentException($"{nameof(User)} is not marked as resetting email.");
         }
 
         ResetEmailToken = null;
@@ -358,5 +368,28 @@ public class UserLog
         ResetPasswordToken = resetPasswordToken;
         ResetPasswordTokenExpiration = DateTime.UtcNow.AddHours(1);
         IsResettingPassword = true;
+    }
+
+    public void VerifyResetPasswordData(Guid resetPasswordTokenValidated)
+    {
+        if (!IsResettingPassword)
+        {
+            throw new ArgumentException($"{nameof(User)} is not marked as resetting password.");
+        }
+
+        if (resetPasswordTokenValidated != ResetPasswordToken)
+        {
+            throw new ArgumentException($"{nameof(resetPasswordTokenValidated)} is not valid.");
+        }
+
+        if (ResetPasswordTokenExpiration < DateTime.UtcNow)
+        {
+            throw new Exception($"The {nameof(ResetPasswordTokenExpiration)} has expired.");
+        }
+
+
+        ResetPasswordToken = null;
+        ResetPasswordTokenExpiration = null;
+        IsResettingPassword = false;
     }
 }
