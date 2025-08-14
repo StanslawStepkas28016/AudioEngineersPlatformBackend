@@ -45,7 +45,7 @@
     <data name="VerificationEmailSubject" xml:space="preserve">
         <value>Oto twój kod weryfikacyjny :)</value>
     </data>
-    <data name="EmailResetEmailBody" xml:space="preserve">
+    <data name="ResetEmailEmailBody" xml:space="preserve">
         <value>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
@@ -75,10 +75,40 @@
 &lt;/body&gt;
 &lt;/html&gt;</value>
     </data>
-    <data name="EmailResetEmailSubject" xml:space="preserve">
+    <data name="ResetEmailEmailSubject" xml:space="preserve">
         <value>Poprosiłeś o zmianę adresu e-mail!</value>
     </data>
-    <data name="Welcoming" xml:space="preserve">
-        <value>Elo</value>
+    <data name="ResetPasswordEmailBody" xml:space="preserve">
+        <value>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"&gt;
+&lt;div style="background: black; padding: 20px; text-align: center;"&gt;
+    &lt;h1 style="color: white; margin: 0;"&gt;Poprosiłeś o zmianę hasła!&lt;/h1&gt;
+&lt;/div&gt;
+&lt;div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;"&gt;
+    &lt;p&gt;Witaj {firstName},&lt;/p&gt;
+    &lt;p&gt;
+        W celu zatwierdzenia zmiany swojego hasła musisz kliknąć poniższy link!
+    &lt;/p&gt;
+    &lt;div style="margin-top: 25px;"&gt;
+        &lt;a href="{uniqueUrl}" style=""&gt;Kliknij mnie!&lt;/a&gt;
+
+    &lt;/div&gt;
+    &lt;p&gt;Jeśli to nie ty poprosiłeś o zmianę hasła, zignoruj tę wiadomość.&lt;/p&gt;
+    &lt;p&gt;Pozdrawiamy,
+        &lt;br&gt;AudioEngineersPlatform&lt;/p&gt;
+&lt;/div&gt;
+&lt;div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;"&gt;
+    &lt;p&gt;To jest wiadomość automatyczna, nie odpowiadaj na ten email.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
+    </data>
+    <data name="ResetPasswordEmailSubject" xml:space="preserve">
+        <value>Poprosiłeś o zmianę hasła!</value>
     </data>
 </root>

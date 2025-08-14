@@ -30,8 +30,10 @@ public class SESService : ISESService
         }
         catch (Exception e)
         {
-            throw new Exception(
-                $"An error occurred while sending the {nameof(sendEmailRequest)}, please contact the administrator. {e.Message}");
+            throw new Exception
+            (
+                $"An error occurred while sending the {nameof(sendEmailRequest)}, please contact the administrator. {e.Message}"
+            );
         }
     }
 
@@ -86,6 +88,7 @@ public class SESService : ISESService
         // Validate the parameters - this should never happen but just in case, checking
         if (
             string.IsNullOrWhiteSpace(toEmail)
+            || string.IsNullOrWhiteSpace(firstName)
             || string.IsNullOrWhiteSpace(uniqueUrl)
         )
         {
@@ -93,11 +96,11 @@ public class SESService : ISESService
         }
 
         // Read the template
-        string bodyTemplate = _localizer[EmailMessages.EmailResetEmailBody];
+        string bodyTemplate = _localizer[EmailMessages.ResetEmailEmailBody];
 
         // Prepare the template
         var preparedBodyTemplate = bodyTemplate.Replace("{firstName}", firstName)
-            .Replace("{uniqueUrlGuid}", uniqueUrl);
+            .Replace("{uniqueUrl}", uniqueUrl);
 
 
         // Prepare a request    
@@ -111,7 +114,54 @@ public class SESService : ISESService
             },
             Message = new Message
             {
-                Subject = new Content(_localizer[EmailMessages.EmailResetEmailSubject]),
+                Subject = new Content(_localizer[EmailMessages.ResetEmailEmailSubject]),
+                Body = new Body
+                {
+                    Html = new Content
+                    {
+                        Charset = "UTF-8",
+                        Data = preparedBodyTemplate
+                    },
+                }
+            }
+        };
+
+        await SendEmailAsync(sendRequest);
+    }
+
+    public async Task SendPasswordResetEmailAsync(string toEmail, string firstName, string uniqueUrl)
+    {
+        // Validate the parameters - this should never happen but just in case, checking
+        if (
+            string.IsNullOrWhiteSpace(toEmail)
+            || string.IsNullOrWhiteSpace(firstName)
+            || string.IsNullOrWhiteSpace(uniqueUrl)
+        )
+        {
+            throw new ArgumentException("You must provide all arguments to send email messages.");
+        }
+
+        // Read the template
+        string bodyTemplate = _localizer[EmailMessages.ResetPasswordEmailBody];
+
+
+        // Prepare the template
+        var preparedBodyTemplate = bodyTemplate.Replace("{firstName}", firstName)
+            .Replace("{uniqueUrl}", uniqueUrl);
+
+
+        // Prepare a request    
+        var sendRequest = new SendEmailRequest
+        {
+            Source = _settings.SenderEmail,
+            Destination = new Destination
+            {
+                ToAddresses =
+                    new List<string> { toEmail }
+            },
+            Message = new Message
+            {
+                Subject = new Content(_localizer[EmailMessages.ResetPasswordEmailSubject]),
                 Body = new Body
                 {
                     Html = new Content

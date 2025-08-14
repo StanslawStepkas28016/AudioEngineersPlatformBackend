@@ -177,12 +177,12 @@ public class AdvertService : IAdvertService
         Guid? idAdvertBasedOnIdUser =
             await _advertRepository.GetActiveAndNonDeletedIdAdvertByIdUserAsync(idUser, cancellationToken);
 
-        if (idAdvertBasedOnIdUser == null)
+        if (idAdvertBasedOnIdUser == Guid.Empty)
         {
-            throw new Exception($"{nameof(Advert)} not found.");
+            throw new Exception($"You have not posted an {nameof(Advert)} yet.");
         }
 
-        return idAdvertBasedOnIdUser.Value;
+        return idAdvertBasedOnIdUser!.Value;
     }
 
     public async Task<GetAdvertDetailsResponse> GetAdvertAssociatedDataByIdUser(Guid idUser,

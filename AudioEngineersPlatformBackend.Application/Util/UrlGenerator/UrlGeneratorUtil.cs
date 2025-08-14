@@ -12,8 +12,13 @@ public class UrlGeneratorUtil : IUrlGeneratorUtil
         FrontendSettings = frontendSettings.Value;
     }
 
-    public Task<string> GenerateResetEmailUrl(Guid emailResetToken)
+    public Task<string> GenerateResetVerificationUrl(Guid token, string path)
     {
-        return Task.FromResult($"{FrontendSettings.Url}/{emailResetToken}/verify-reset-email");
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentException($"{path} cannot be empty.");
+        }
+        
+        return Task.FromResult($"{FrontendSettings.Url}/{token}/{path}");
     }
 }

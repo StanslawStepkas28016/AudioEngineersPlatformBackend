@@ -68,7 +68,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "Admin, Audio engineer")]
-    [HttpGet("{idUser:guid}/id-advert")]
+    [HttpGet("id-advert/{idUser:guid}")]
     public async Task<IActionResult> GetAdvertIdByUserId(Guid idUser, CancellationToken cancellationToken)
     {
         Guid? advertIdAdvertByIdUser = await advertService.GetAdvertIdAdvertByIdUser(idUser, cancellationToken);
@@ -82,7 +82,7 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [AllowAnonymous]
-    [HttpGet("by-id-user/{idUser:guid}")]
+    [HttpGet("details/{idUser:guid}")]
     public async Task<IActionResult> GetAdvertAssociatedDataByIdUser(Guid idUser, CancellationToken cancellationToken)
     {
         GetAdvertDetailsResponse getAdvertResponse =

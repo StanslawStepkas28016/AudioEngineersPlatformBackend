@@ -225,7 +225,7 @@ public class User
         Password = password;
     }
 
-    public void ChangeEmail(string newEmail)
+    public void ResetEmail(string newEmail)
     {
         // Check if the emails differ 
         if (Email == newEmail)
@@ -250,20 +250,5 @@ public class User
         }
 
         PhoneNumber = newValidPhoneNumber;
-    }
-
-    public void ChangePassword(string oldPassword, string newPassword)
-    {
-        if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
-        {
-            throw new ArgumentException($"Provided {nameof(oldPassword)} or {nameof(newPassword)} is empty.");
-        }
-
-        if (oldPassword == newPassword)
-        {
-            throw new Exception($"{nameof(newPassword)} must differ from {nameof(oldPassword)}.");
-        }
-
-        Password = newPassword;
     }
 }

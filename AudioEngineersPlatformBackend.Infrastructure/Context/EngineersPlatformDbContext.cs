@@ -19,7 +19,7 @@ public class EngineersPlatformDbContext : DbContext
     public virtual DbSet<AdvertLog> AdvertLogs { get; set; }
     public virtual DbSet<Review> Reviews { get; set; }
     public virtual DbSet<ReviewLog> ReviewLogs { get; set; }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply configurations from the assembly
@@ -185,6 +185,7 @@ public class EngineersPlatformDbContext : DbContext
                 Guid.Parse("32AFFE63-9BB3-4C86-BBF8-6D5E37C7FB3F"),
                 new DateTime(2023, 12, 3, 0, 0, 0, DateTimeKind.Utc)
             );
+            
             User u11 = User.CreateWithId
             (
                 Guid.Parse("1D31A511-8D38-4223-96A0-F2B15CC90794"), "Paweł", "Kamiński",
@@ -198,13 +199,14 @@ public class EngineersPlatformDbContext : DbContext
                 Guid.Parse("CD9E4F1F-8EDD-4488-B0DA-256521A720E8"),
                 new DateTime(2025, 2, 2, 0, 0, 0, DateTimeKind.Utc)
             );
+            
             User u12 = User.CreateWithId
             (
                 Guid.Parse("655887CB-B3CD-40DA-B2BB-48B5E84239F9"), "Marcin", "Radwański",
                 "mar.radw@example.com", "+48431234765", "test",
                 adminRole.IdRole, ul12.IdUserLog
             );
-            u11.SetHashedPassword(precomputedPasswordHash);
+            u12.SetHashedPassword(precomputedPasswordHash);
 
             UserLog ul13 = UserLog.CreateWithIdAndStaticData
             (

@@ -7,4 +7,5 @@ public interface ISESService
         string? verificationCode);
 
     Task SendEmailResetEmailAsync(string toEmail, string firstName, string uniqueUrl);
+    Task SendPasswordResetEmailAsync(string toEmail, string firstName, string uniqueUrl);
 }

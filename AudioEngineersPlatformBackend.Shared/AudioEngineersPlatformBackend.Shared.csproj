@@ -8,18 +8,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="ResourceBundles\EmailMessages.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>EmailMessages.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Resources\EmailMessages.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>EmailMessages.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="ResourceBundles\EmailMessages.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>EmailMessages.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Resources\EmailMessages.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>EmailMessages.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

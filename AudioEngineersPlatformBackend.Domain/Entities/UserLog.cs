@@ -347,4 +347,16 @@ public class UserLog
         ResetEmailTokenExpiration = null;
         IsResettingEmail = false;
     }
+
+    public void SetResetPasswordData(Guid resetPasswordToken)
+    {
+        if (resetPasswordToken == Guid.Empty)
+        {
+            throw new Exception($"{nameof(resetPasswordToken)} cannot be empty.");
+        }
+
+        ResetPasswordToken = resetPasswordToken;
+        ResetPasswordTokenExpiration = DateTime.UtcNow.AddHours(1);
+        IsResettingPassword = true;
+    }
 }

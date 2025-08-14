@@ -25,7 +25,7 @@ namespace AudioEngineersPlatformBackend.Shared.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Shared.Resources.EmailMessages", typeof(EmailMessages).Assembly);
@@ -57,15 +57,27 @@ namespace AudioEngineersPlatformBackend.Shared.Resources {
             }
         }
         
-        public static string EmailResetEmailBody {
+        public static string ResetEmailEmailBody {
             get {
-                return ResourceManager.GetString("EmailResetEmailBody", resourceCulture);
+                return ResourceManager.GetString("ResetEmailEmailBody", resourceCulture);
             }
         }
         
-        public static string EmailResetEmailSubject {
+        public static string ResetEmailEmailSubject {
             get {
-                return ResourceManager.GetString("EmailResetEmailSubject", resourceCulture);
+                return ResourceManager.GetString("ResetEmailEmailSubject", resourceCulture);
+            }
+        }
+        
+        public static string ResetPasswordEmailBody {
+            get {
+                return ResourceManager.GetString("ResetPasswordEmailBody", resourceCulture);
+            }
+        }
+        
+        public static string ResetPasswordEmailSubject {
+            get {
+                return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
             }
         }
     }

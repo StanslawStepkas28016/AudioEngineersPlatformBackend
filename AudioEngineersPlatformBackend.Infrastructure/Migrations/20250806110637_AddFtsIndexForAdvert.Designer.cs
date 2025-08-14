@@ -760,7 +760,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                             IdRole = new Guid("d92d29b8-f462-46df-8efb-de6b9aa5109a"),
                             IdUserLog = new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"),
                             LastName = "Radwański",
-                            Password = "test",
+                            Password = "AQAAAAIAAYagAAAAEFIagC5C9vbbJvt0Laj4EFwEie4imyDjDa7Ug56CJY8hKm9ftbEdPRtKo/dXKkW3cQ==",
                             PhoneNumber = "+48431234765"
                         },
                         new

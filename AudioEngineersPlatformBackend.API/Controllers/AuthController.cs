@@ -151,6 +151,14 @@ public class AuthController(IAuthService authService) : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
+    [AllowAnonymous]
+    [HttpPost("{resetPasswordToken:guid}/verify-reset-password")]
+    public async Task<IActionResult> VerifyResetPassword(Guid resetPasswordToken, CancellationToken cancellationToken)
+    {
+        await authService.VerifyResetPassword(resetPasswordToken, cancellationToken);
+        return StatusCode(StatusCodes.Status204NoContent);
+    }
+
     // TODO: ResetPhoneNumber endpoint.
     /*public void ResetPhoneNumber()
     {

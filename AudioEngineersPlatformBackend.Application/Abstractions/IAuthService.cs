@@ -27,4 +27,5 @@ public interface IAuthService
 
     Task VerifyResetEmail(Guid resetEmailToken, CancellationToken cancellationToken);
     Task ResetPassword(Guid idUser, ResetPasswordRequest resetPasswordRequest, CancellationToken cancellationToken);
+    Task VerifyResetPassword(Guid resetPasswordToken, CancellationToken cancellationToken);
 }

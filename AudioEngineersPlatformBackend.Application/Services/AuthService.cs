@@ -308,10 +308,10 @@ public class AuthService : IAuthService
 
         // Generate a token and generate a reset email url.
         var resetEmailToken = Guid.NewGuid();
-        var resetEmailUrl = await _urlGeneratorUtil.GenerateResetEmailUrl(resetEmailToken);
+        var resetEmailUrl = await _urlGeneratorUtil.GenerateResetVerificationUrl(resetEmailToken, "verify-reset-email");
 
         // Update the email itself and set email reset data (token, its expiration and user state).
-        user.ChangeEmail(newValidEmail);
+        user.ResetEmail(newValidEmail);
         userLog.SetResetEmailData(resetEmailToken);
 
         // Logout the user from all sessions, by setting the RefreshToken and RefreshTokenExpiration to null values,
@@ -371,14 +371,51 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException("Specified data does not belong to you.");
         }
 
-        // Change the password, ensuring the logic is correct inside the used method.
-        userById.ChangePassword(resetPasswordRequest.OldPassword, resetPasswordRequest.NewPassword);
-        
-        // Set the reset password data, so that the user is unable to login until they verify their new password. 
-        Guid passwordResetToken = Guid.NewGuid();
-        // userById.SetResetPasswordData(passwordResetToken);
+        // Change the password, ensuring the logic is correct inside the used method and set the reset password data,
+        // so that the user is unable to login until they verify their new password. 
+        UserLog? userLog = await _userRepository.FindUserLogByIdUserAsync(idUserValidated, cancellationToken);
 
-        // Persist all changes
+        if (userLog == null)
+        {
+            throw new Exception($"{nameof(userLog)} was not found.");
+        }
+
+        Guid resetPasswordToken = Guid.NewGuid();
+        
+        // Reset the password, ensuring the current password is correct and that new passwords are correct.
+        PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+
+        PasswordVerificationResult passwordVerificationResult = passwordHasher.VerifyHashedPassword
+            (userById, userById.Password, resetPasswordRequest.CurrentPassword);
+
+        if (passwordVerificationResult != PasswordVerificationResult.Success)
+        {
+            throw new Exception($"{nameof(resetPasswordRequest.CurrentPassword)} is invalid.");
+        }
+
+        if (resetPasswordRequest.NewPassword != resetPasswordRequest.NewPasswordRepeated)
+        {
+            throw new Exception
+            (
+                $"{nameof(resetPasswordRequest.NewPassword)} and {nameof(resetPasswordRequest.NewPasswordRepeated)} do not match."
+            );
+        }
+
+        userById.SetHashedPassword(passwordHasher.HashPassword(userById, resetPasswordRequest.NewPassword));
+        userLog.SetResetPasswordData(resetPasswordToken);
+
+        // Send an email with a confirmation link.
+        string resetPasswordUrl = await _urlGeneratorUtil.GenerateResetVerificationUrl
+            (resetPasswordToken, "verify-reset-password");
+
+        await _sesService.SendPasswordResetEmailAsync(userById.Email, userById.FirstName, resetPasswordUrl);
+
+        // Persist all changes.
         await _unitOfWork.CompleteAsync(cancellationToken);
+    }
+
+    public async Task VerifyResetPassword(Guid resetPasswordToken, CancellationToken cancellationToken)
+    {
+        
     }
 }
