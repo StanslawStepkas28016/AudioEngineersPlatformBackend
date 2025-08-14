@@ -5,6 +5,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetPhoneNumber;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -161,28 +162,10 @@ public class AuthController(IAuthService authService) : ControllerBase
 
     [Authorize(Roles = "Admin, Client, Audio engineer")]
     [HttpPatch("{idUser:guid}/reset-phone-number")]
-    public async Task<IActionResult> ResetPhoneNumber(Guid idUser, CancellationToken cancellationToken)
+    public async Task<IActionResult> ResetPhoneNumber(Guid idUser,
+        [FromBody] ResetPhoneNumberRequest resetPhoneNumberRequest, CancellationToken cancellationToken)
     {
+        await authService.ResetPhoneNumber(idUser, resetPhoneNumberRequest, cancellationToken);
         return StatusCode(StatusCodes.Status204NoContent);
     }
-    
-    // TODO: ResetPhoneNumber endpoint.
-    /*public void ResetPhoneNumber()
-    {
-        // Handle phone number change request if provided
-        if (!string.IsNullOrWhiteSpace(resetEmailRequest.PhoneNumber))
-        {
-            // Ensure the right format of the provided phoneNumber (will throw an exception if invalid)
-            var newValidPhoneNumber = new PhoneNumberVo(resetEmailRequest.PhoneNumber).PhoneNumber();
-
-            // Check if the phoneNumber is already in use
-            if (await _userRepository.IsPhoneNumberAlreadyTakenAsync(newValidPhoneNumber, cancellationToken))
-            {
-                throw new Exception($"Provided {nameof(resetEmailRequest.PhoneNumber)} is already taken.");
-            }
-
-            // Update the data (will check if provided phoneNumber is different from the old one)
-            user.ChangePhoneNumber(newValidPhoneNumber);
-        }
-    }*/
 }

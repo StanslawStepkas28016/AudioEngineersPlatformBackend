@@ -25,14 +25,13 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User?> FindUserByPhoneNumberAsNoTrackingAsync(string phoneNumber,
-        CancellationToken cancellationToken = default)
+    public async Task<bool> IsPhoneNumberAlreadyTaken(string phoneNumber, CancellationToken cancellationToken)
     {
         return await _context
             .Users
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
+            .AnyAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
     }
+
 
     public async Task<Role?> FindRoleByNameAsNoTrackingAsync(string roleName, CancellationToken cancellationToken)
     {

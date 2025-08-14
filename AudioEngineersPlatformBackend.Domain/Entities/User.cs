@@ -240,13 +240,13 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(newValidPhoneNumber))
         {
-            throw new ArgumentException($"New {nameof(PhoneNumber).ToLower()} cannot be empty.");
+            throw new ArgumentException($"New {nameof(PhoneNumber)} cannot be empty.");
         }
 
         // Check if the numbers differ
         if (newValidPhoneNumber == PhoneNumber)
         {
-            throw new ArgumentException($"New {nameof(PhoneNumber).ToLower()} must differ from the old one.");
+            throw new ArgumentException($"New {nameof(PhoneNumber)} must differ from the old one.");
         }
 
         PhoneNumber = newValidPhoneNumber;

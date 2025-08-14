@@ -7,6 +7,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.Login;
 using AudioEngineersPlatformBackend.Contracts.Auth.Register;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
+using AudioEngineersPlatformBackend.Contracts.Auth.ResetPhoneNumber;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
@@ -55,7 +56,7 @@ public class AuthService : IAuthService
 
         string validPhoneNumber = new PhoneNumberVo(registerRequest.PhoneNumber).PhoneNumber;
 
-        if (await _authRepository.FindUserByPhoneNumberAsNoTrackingAsync(validPhoneNumber, cancellationToken) != null)
+        if (await _authRepository.IsPhoneNumberAlreadyTaken(validPhoneNumber, cancellationToken))
         {
             throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
         }
@@ -429,7 +430,41 @@ public class AuthService : IAuthService
 
         // Verify the token, including its expiration and user flags.
         userLog.VerifyResetPasswordData(resetPasswordTokenValidated);
-        
+
+        // Persist all changes.
+        await _unitOfWork.CompleteAsync(cancellationToken);
+    }
+
+    public async Task ResetPhoneNumber(Guid idUser, ResetPhoneNumberRequest resetPhoneNumberRequest,
+        CancellationToken cancellationToken)
+    {
+        // Ensure the provided input is correct.
+        Guid idUserValidated = new GuidVo(idUser).Guid;
+
+        string phoneNumberValidated = new PhoneNumberVo(resetPhoneNumberRequest.NewPhoneNumber).PhoneNumber;
+
+        // Check if the user is authorized to change their phone number (either the user himself or an administrator).
+        if (idUserValidated != _currentUserUtil.IdUser && !_currentUserUtil.IsAdministrator)
+        {
+            throw new UnauthorizedAccessException("Specified data does not belong to you.");
+        }
+
+        // Check if the number is already taken.
+        if (await _authRepository.IsPhoneNumberAlreadyTaken(phoneNumberValidated, cancellationToken))
+        {
+            throw new ArgumentException($"Provided {nameof(resetPhoneNumberRequest.NewPhoneNumber)} is already taken.");
+        }
+
+        User? userByIdUser = await _userRepository.FindUserByIdUserAsync(idUser, cancellationToken);
+
+        if (userByIdUser == null)
+        {
+            throw new ArgumentException($"{nameof(User)} with the provided ${nameof(idUser)} was not found.");
+        }
+
+        // Change the number.
+        userByIdUser.ChangePhoneNumber(phoneNumberValidated);
+
         // Persist all changes.
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
