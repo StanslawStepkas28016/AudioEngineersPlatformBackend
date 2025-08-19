@@ -144,14 +144,16 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     /// <summary>
     ///     Endpoint used for adding a review to a specified advert.
     /// </summary>
+    /// <param name="idAdvert"></param>
     /// <param name="addReviewRequest"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "Admin, Client")]
-    [HttpPost("review")]
-    public async Task<IActionResult> AddReview(AddReviewRequest addReviewRequest, CancellationToken cancellationToken)
+    [HttpPost("{idAdvert:guid}/review")]
+    public async Task<IActionResult> AddReview(Guid idAdvert, AddReviewRequest addReviewRequest,
+        CancellationToken cancellationToken)
     {
-        Guid addReview = await advertService.AddReview(addReviewRequest, cancellationToken);
+        Guid addReview = await advertService.AddReview(idAdvert, addReviewRequest, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, addReview);
     }
 
@@ -168,7 +170,8 @@ public class AdvertController(IAdvertService advertService) : ControllerBase
     public async Task<IActionResult> GetReviewsForAdvertPaginated(Guid idAdvert, int page, int pageSize,
         CancellationToken cancellationToken)
     {
-        PagedListDto<ReviewDto> reviewsForAdvertPaginated = await advertService.GetReviewsForAdvertPaginated(idAdvert, page, pageSize, cancellationToken);
+        PagedListDto<ReviewDto> reviewsForAdvertPaginated = await advertService.GetReviewsForAdvertPaginated
+            (idAdvert, page, pageSize, cancellationToken);
         return StatusCode(StatusCodes.Status200OK, reviewsForAdvertPaginated);
     }
 }
