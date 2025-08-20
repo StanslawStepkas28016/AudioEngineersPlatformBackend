@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthRepository, AuthRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAdvertRepository, AdvertRepository>();
+        services.AddScoped<IMessagesRepository, MessagesRepository>();
 
         // Add AWS SES
         services.Configure<SESSettings>(configuration.GetSection(nameof(SESSettings)));

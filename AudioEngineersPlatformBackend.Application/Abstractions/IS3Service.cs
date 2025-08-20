@@ -8,5 +8,5 @@ public interface IS3Service
         CancellationToken cancellationToken);
 
     public Task<string> GetPreSignedUrlAsync(Guid key,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
 }

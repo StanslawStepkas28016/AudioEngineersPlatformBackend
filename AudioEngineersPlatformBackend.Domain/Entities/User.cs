@@ -147,6 +147,9 @@ public class User
         private set => _socialMediaLinks = value;
     }
 
+    public ICollection<UserMessage> UserMessagesSender { get; set; }
+    public ICollection<UserMessage> UserMessagesRecipient { get; set; }
+
     // Private constructor used for EF Core
     private User()
     {

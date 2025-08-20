@@ -130,8 +130,6 @@ public class Review
         set => _user = value;
     }
     
-    // Methods
-
     // Private constructor for EF Core
     private Review()
     {

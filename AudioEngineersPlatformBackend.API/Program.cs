@@ -1,4 +1,5 @@
 using API.Extensions;
+using API.Hubs;
 using API.Middlewares.ExceptionMiddleware;
 using AudioEngineersPlatformBackend.Application;
 using AudioEngineersPlatformBackend.Infrastructure;
@@ -9,7 +10,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
     // Add logging via Serilog
     builder.Host.AddSerilogLogging();
-    
+
     // Add Swagger fore development
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -20,7 +21,10 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     // Add "Clean Architecture layers"
     builder.Services.AddApplicationLayer(builder.Configuration);
     builder.Services.AddInfrastructureLayer(builder.Configuration);
-
+    
+    // Add SignalR
+    builder.Services.AddSignalR();
+    
     // Add controllers
     builder.Services
         .AddControllers()
@@ -36,8 +40,6 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 WebApplication app = builder.Build();
 {
-    // Logging first, what if exception happens, how do I know
-
     // Use custom middlewares
     app.UseMiddleware<ExceptionMiddleware>();
 
@@ -69,6 +71,9 @@ WebApplication app = builder.Build();
 
     // Map controllers to endpoints
     app.MapControllers();
+
+    // Map the chat-hub
+    app.MapHub<ChatHub>("chat-hub");
 
     app.Run();
 }

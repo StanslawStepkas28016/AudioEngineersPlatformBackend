@@ -302,6 +302,27 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.Message", b =>
+                {
+                    b.Property<Guid>("IdMessage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateSent")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FileKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TextContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdMessage")
+                        .HasName("PK_Message");
+
+                    b.ToTable("Message", (string)null);
+                });
+
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.Review", b =>
                 {
                     b.Property<Guid>("IdReview")
@@ -664,7 +685,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("2254933a-66ac-4ab8-a923-25d508d8b5c0"),
-                            Email = "piotr.nowak@example.com",
+                            Email = "piotr.nowak@gmail.com",
                             FirstName = "Piotr",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"),
@@ -675,7 +696,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("731c7617-9342-415d-8e06-f77ec2d56786"),
-                            Email = "ewa.maj@example.com",
+                            Email = "ewa.maj@gmail.com",
                             FirstName = "Ewa",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"),
@@ -686,7 +707,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("29d1d9bd-87d9-4125-99a5-0f15c9df3a30"),
-                            Email = "tomasz.zielinski@example.com",
+                            Email = "tomasz.zielinski@gmail.com",
                             FirstName = "Tomasz",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"),
@@ -697,7 +718,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("3fb9e066-38b7-42ae-900c-d7ab5ae280f0"),
-                            Email = "michal.wojcik@example.com",
+                            Email = "michal.wojcik@gmail.com",
                             FirstName = "Michał",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("df0a8813-0938-42a6-ac84-26298701f456"),
@@ -708,7 +729,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("ac89f1a4-6988-4211-8136-fbf9b45e4cf2"),
-                            Email = "katarzyna.wisniewska@example.com",
+                            Email = "katarzyna.wisniewska@gmail.com",
                             FirstName = "Katarzyna",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"),
@@ -719,7 +740,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("07434fd4-3450-4a01-a8c4-c371ed011e48"),
-                            Email = "krzysztof.lewandowski@example.com",
+                            Email = "krzysztof.lewandowski@gmail.com",
                             FirstName = "Krzysztof",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"),
@@ -730,7 +751,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("e07bc534-3324-4af4-8d97-faee7242e896"),
-                            Email = "agnieszka.wrobel@example.com",
+                            Email = "agnieszka.wrobel@gmail.com",
                             FirstName = "Agnieszka",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"),
@@ -741,7 +762,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("1d31a511-8d38-4223-96a0-f2b15cc90794"),
-                            Email = "pawel.kaminski@example.com",
+                            Email = "pawel.kaminski@gmail.com",
                             FirstName = "Paweł",
                             IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
                             IdUserLog = new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"),
@@ -752,7 +773,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("655887cb-b3cd-40da-b2bb-48b5e84239f9"),
-                            Email = "mar.radw@example.com",
+                            Email = "mar.radw@gmail.com",
                             FirstName = "Marcin",
                             IdRole = new Guid("d92d29b8-f462-46df-8efb-de6b9aa5109a"),
                             IdUserLog = new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"),
@@ -763,7 +784,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("fdf7bda4-f40f-484f-bc40-adbf8aa98985"),
-                            Email = "marian@gmail.pl",
+                            Email = "marian@gmail.com",
                             FirstName = "Marian",
                             IdRole = new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"),
                             IdUserLog = new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"),
@@ -774,7 +795,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         new
                         {
                             IdUser = new Guid("156765b0-84a0-4389-af75-78f2f36dea04"),
-                            Email = "dab@gmail.pl",
+                            Email = "dab@gmail.com",
                             FirstName = "Maria",
                             IdRole = new Guid("004865e2-177f-4c54-bb4c-69799f0bf315"),
                             IdUserLog = new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"),
@@ -969,6 +990,33 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserMessage", b =>
+                {
+                    b.Property<Guid>("IdUserMessage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdMessage")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdUserRecipient")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdUserSender")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IdUserMessage")
+                        .HasName("PK_UserMessage");
+
+                    b.HasIndex("IdMessage");
+
+                    b.HasIndex("IdUserRecipient");
+
+                    b.HasIndex("IdUserSender");
+
+                    b.ToTable("UserMessage", (string)null);
+                });
+
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.Advert", b =>
                 {
                     b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.AdvertCategory", "AdvertCategory")
@@ -1071,6 +1119,36 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Navigation("UserLog");
                 });
 
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserMessage", b =>
+                {
+                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.Message", "Message")
+                        .WithMany("UserMessages")
+                        .HasForeignKey("IdMessage")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserMessage_Message");
+
+                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.User", "UserRecipient")
+                        .WithMany("UserMessagesRecipient")
+                        .HasForeignKey("IdUserRecipient")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserMessage_UserRecipient");
+
+                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.User", "UserSender")
+                        .WithMany("UserMessagesSender")
+                        .HasForeignKey("IdUserSender")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserMessage_UserSender");
+
+                    b.Navigation("Message");
+
+                    b.Navigation("UserRecipient");
+
+                    b.Navigation("UserSender");
+                });
+
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.Advert", b =>
                 {
                     b.Navigation("Reviews");
@@ -1084,6 +1162,11 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.AdvertLog", b =>
                 {
                     b.Navigation("Adverts");
+                });
+
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.Message", b =>
+                {
+                    b.Navigation("UserMessages");
                 });
 
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.ReviewLog", b =>
@@ -1108,6 +1191,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("SocialMediaLinks");
+
+                    b.Navigation("UserMessagesRecipient");
+
+                    b.Navigation("UserMessagesSender");
                 });
 
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserLog", b =>

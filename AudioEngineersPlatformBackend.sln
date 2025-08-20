@@ -1,9 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E8AC7D5B-238A-4BBA-AE3A-DDDB56190671}"
-	ProjectSection(SolutionItems) = preProject
-		Commands.txt = Commands.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioEngineersPlatformBackend.API", "AudioEngineersPlatformBackend.API\AudioEngineersPlatformBackend.API.csproj", "{6DBE958A-0E89-4AF1-9CA6-E5EC46202D3E}"
 EndProject
@@ -20,7 +17,7 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Release|A ny CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6DBE958A-0E89-4AF1-9CA6-E5EC46202D3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

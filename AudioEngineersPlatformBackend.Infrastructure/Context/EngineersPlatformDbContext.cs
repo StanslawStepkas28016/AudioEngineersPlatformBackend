@@ -19,6 +19,8 @@ public class EngineersPlatformDbContext : DbContext
     public virtual DbSet<AdvertLog> AdvertLogs { get; set; }
     public virtual DbSet<Review> Reviews { get; set; }
     public virtual DbSet<ReviewLog> ReviewLogs { get; set; }
+    public virtual DbSet<UserMessage> UserMessages { get; set; }
+    public virtual DbSet<Message> Messages { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -95,7 +97,7 @@ public class EngineersPlatformDbContext : DbContext
             User u4 = User.CreateWithId
             (
                 Guid.Parse("2254933A-66AC-4AB8-A923-25D508D8B5C0"), "Piotr", "Nowak",
-                "piotr.nowak@example.com", "+48111222333", "test",
+                "piotr.nowak@gmail.com", "+48111222333", "test",
                 audioEngineerRole.IdRole, ul4.IdUserLog
             );
             u4.SetHashedPassword(precomputedPasswordHash);
@@ -108,7 +110,7 @@ public class EngineersPlatformDbContext : DbContext
             User u5 = User.CreateWithId
             (
                 Guid.Parse("731C7617-9342-415D-8E06-F77EC2D56786"), "Ewa", "Maj",
-                "ewa.maj@example.com", "+48111333444", "test", audioEngineerRole.IdRole,
+                "ewa.maj@gmail.com", "+48111333444", "test", audioEngineerRole.IdRole,
                 ul5.IdUserLog
             );
             u5.SetHashedPassword(precomputedPasswordHash);
@@ -121,7 +123,7 @@ public class EngineersPlatformDbContext : DbContext
             User u6 = User.CreateWithId
             (
                 Guid.Parse("29D1D9BD-87D9-4125-99A5-0F15C9DF3A30"), "Tomasz", "Zieliński",
-                "tomasz.zielinski@example.com", "+48111444555", "test",
+                "tomasz.zielinski@gmail.com", "+48111444555", "test",
                 audioEngineerRole.IdRole, ul6.IdUserLog
             );
             u6.SetHashedPassword(precomputedPasswordHash);
@@ -134,7 +136,7 @@ public class EngineersPlatformDbContext : DbContext
             User u7 = User.CreateWithId
             (
                 Guid.Parse("3FB9E066-38B7-42AE-900C-D7AB5AE280F0"), "Michał", "Wójcik",
-                "michal.wojcik@example.com", "+48111555666", "test",
+                "michal.wojcik@gmail.com", "+48111555666", "test",
                 audioEngineerRole.IdRole, ul7.IdUserLog
             );
             u7.SetHashedPassword(precomputedPasswordHash);
@@ -147,7 +149,7 @@ public class EngineersPlatformDbContext : DbContext
             User u8 = User.CreateWithId
             (
                 Guid.Parse("AC89F1A4-6988-4211-8136-FBF9B45E4CF2"), "Katarzyna", "Wiśniewska",
-                "katarzyna.wisniewska@example.com", "+48111666777",
+                "katarzyna.wisniewska@gmail.com", "+48111666777",
                 "test",
                 audioEngineerRole.IdRole, ul8.IdUserLog
             );
@@ -161,7 +163,7 @@ public class EngineersPlatformDbContext : DbContext
             User u9 = User.CreateWithId
             (
                 Guid.Parse("07434FD4-3450-4A01-A8C4-C371ED011E48"), "Krzysztof", "Lewandowski",
-                "krzysztof.lewandowski@example.com", "+48111777888",
+                "krzysztof.lewandowski@gmail.com", "+48111777888",
                 "test",
                 audioEngineerRole.IdRole, ul9.IdUserLog
             );
@@ -175,7 +177,7 @@ public class EngineersPlatformDbContext : DbContext
             User u10 = User.CreateWithId
             (
                 Guid.Parse("E07BC534-3324-4AF4-8D97-FAEE7242E896"), "Agnieszka", "Wróbel",
-                "agnieszka.wrobel@example.com", "+48111888999", "test",
+                "agnieszka.wrobel@gmail.com", "+48111888999", "test",
                 audioEngineerRole.IdRole, ul10.IdUserLog
             );
             u10.SetHashedPassword(precomputedPasswordHash);
@@ -189,7 +191,7 @@ public class EngineersPlatformDbContext : DbContext
             User u11 = User.CreateWithId
             (
                 Guid.Parse("1D31A511-8D38-4223-96A0-F2B15CC90794"), "Paweł", "Kamiński",
-                "pawel.kaminski@example.com", "+48111999000", "test",
+                "pawel.kaminski@gmail.com", "+48111999000", "test",
                 audioEngineerRole.IdRole, ul11.IdUserLog
             );
             u11.SetHashedPassword(precomputedPasswordHash);
@@ -203,7 +205,7 @@ public class EngineersPlatformDbContext : DbContext
             User u12 = User.CreateWithId
             (
                 Guid.Parse("655887CB-B3CD-40DA-B2BB-48B5E84239F9"), "Marcin", "Radwański",
-                "mar.radw@example.com", "+48431234765", "test",
+                "mar.radw@gmail.com", "+48431234765", "test",
                 adminRole.IdRole, ul12.IdUserLog
             );
             u12.SetHashedPassword(precomputedPasswordHash);
@@ -216,7 +218,7 @@ public class EngineersPlatformDbContext : DbContext
             User u13 = User.CreateWithId
             (
                 Guid.Parse("FDF7BDA4-F40F-484F-BC40-ADBF8AA98985"), "Marian", "Niewiadomski",
-                "marian@gmail.pl", "+48654123432", "test", clientRole.IdRole, ul13.IdUserLog
+                "marian@gmail.com", "+48654123432", "test", clientRole.IdRole, ul13.IdUserLog
             );
             u13.SetHashedPassword(precomputedPasswordHash);
 
@@ -228,7 +230,7 @@ public class EngineersPlatformDbContext : DbContext
             User u14 = User.CreateWithId
             (
                 Guid.Parse("156765B0-84A0-4389-AF75-78F2F36DEA04"), "Maria", "Dąbrowska",
-                "dab@gmail.pl", "+48231443225", "test", clientRole.IdRole, ul14.IdUserLog
+                "dab@gmail.com", "+48231443225", "test", clientRole.IdRole, ul14.IdUserLog
             );
             u14.SetHashedPassword(precomputedPasswordHash);
 
