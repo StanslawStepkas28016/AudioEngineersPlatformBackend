@@ -1,6 +1,7 @@
 namespace AudioEngineersPlatformBackend.Contracts.Auth.CheckAuth;
 
-public record CheckAuthResponse(
+public record CheckAuthResponse
+(
     Guid IdUser,
     string Email,
     string FirstName,

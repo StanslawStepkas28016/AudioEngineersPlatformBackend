@@ -6,39 +6,27 @@ namespace API.Hubs;
 [Authorize(Roles = "Admin, Client, Audio engineer")]
 public class ChatHub : Hub
 {
-    // Methods on your hub are for clients to call.
-    // Think of them the same way you do subscribe calls on the client.
-    // Those are your hooks for the server, just like the methods on your hub are your hooks for the client.
-
-    public static Dictionary<string, List<string>> ConnectedUsers = new();
-    
     public override async Task OnConnectedAsync()
     {
-        var connectionId = Context.ConnectionId;
-        var idUser = Context.UserIdentifier;
-
-        lock (ConnectedUsers)
-        {
-            if (!ConnectedUsers.ContainsKey(idUser))
-                ConnectedUsers[idUser] = new();
-            ConnectedUsers[idUser].Add(connectionId);
-        }
+        // Add current client to its own connection group.
+        // await Groups.AddToGroupAsync(Context.ConnectionId, Context.UserIdentifier!);
+        
+        // Send information to other online client that the user has connected.
+        await Clients.Others.SendAsync
+        (
+            "ReceiveAvailabilityStatusMessage", "Online"
+        );
     }
-
-
+    
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var connectionId = Context.ConnectionId;
-        var idUser = Context.UserIdentifier;
+        // Remove current client to its own connection group.
+        // await Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.UserIdentifier!);
 
-        lock (ConnectedUsers)
-        {
-            if (ConnectedUsers.ContainsKey(idUser))
-            {
-                ConnectedUsers[idUser].Remove(connectionId);
-                if (ConnectedUsers[idUser].Count == 0)
-                    ConnectedUsers.Remove(idUser);
-            }
-        }
+        // Send information to other online client that the user has disconnected.
+        await Clients.Others.SendAsync
+        (
+            "ReceiveAvailabilityStatusMessage", "Offline"
+        );
     }
 }

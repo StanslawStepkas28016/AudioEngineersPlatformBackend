@@ -1,5 +1,7 @@
 using API.Hubs;
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Contracts.Message.GetMessagedUsers;
+using AudioEngineersPlatformBackend.Contracts.Message.GetUserData;
 using AudioEngineersPlatformBackend.Contracts.Message.GetUserMessages;
 using AudioEngineersPlatformBackend.Contracts.Message.SaveAndSendTextMessage;
 using Microsoft.AspNetCore.Authorization;
@@ -23,22 +25,25 @@ public class MessageController : ControllerBase
 
     [Authorize(Roles = "Admin, Client, Audio engineer")]
     [HttpPost]
-    public async Task<IActionResult> SendAndSaveTextMessage([FromBody] TextMessageRequest textMessageRequest,
+    public async Task<IActionResult> SaveAndSendTextMessage([FromBody] TextMessageRequest textMessageRequest,
         CancellationToken cancellationToken)
     {
         // Persist the message data.
-        await _messageService.SaveTextMessage(textMessageRequest, cancellationToken);
+        TextMessageResponse textMessageResponse = await _messageService.SaveTextMessage
+            (textMessageRequest, cancellationToken);
 
-        // Send the message using signalR. 
+        // Send the message using signalR if the user is online. 
         string idUserRecipient = textMessageRequest.IdUserRecipient.ToString();
 
-        await _chatHubContext.Clients.User(ChatHub.ConnectedUsers[idUserRecipient].First())
-            .SendAsync
-            (
-                "ReceiveMessageFromSender", textMessageRequest.TextContent, cancellationToken: cancellationToken
-            );
-
-        return StatusCode(StatusCodes.Status204NoContent);
+        // Send a message to recipient.
+        await _chatHubContext.Clients.User(idUserRecipient).SendAsync
+        (
+            "ReceiveMessageFromSender",
+            textMessageResponse,
+            cancellationToken: cancellationToken
+        );
+        
+        return StatusCode(StatusCodes.Status200OK, textMessageResponse);
     }
 
     [Authorize(Roles = "Admin, Client, Audio engineer")]
@@ -51,6 +56,25 @@ public class MessageController : ControllerBase
 
         return StatusCode(StatusCodes.Status200OK, messages);
     }
-    
-    // TODO: Add saving file messages, Fetching conversations list (not conversations).
+
+    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [HttpGet("{idUser:guid}/interacted")]
+    public async Task<IActionResult> GetInteractedUsers(Guid idUser, CancellationToken cancellationToken)
+    {
+        List<InteractedUsersResponse> messagedUsers = await _messageService.GetInteractedUsers
+            (idUser, cancellationToken);
+
+        return StatusCode(StatusCodes.Status200OK, messagedUsers);
+    }
+
+    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [HttpGet("{idUser:guid}/user-data")]
+    public async Task<IActionResult> GetUserData(Guid idUser, CancellationToken cancellationToken)
+    {
+        GetUserDataResponse userData = await _messageService.GetUserData(idUser, cancellationToken);
+        return StatusCode(StatusCodes.Status200OK, userData);
+    }
+
+
+    // TODO: Add saving file messages.
 }

@@ -13,4 +13,6 @@ public interface IUserRepository
     Task<bool> IsPhoneNumberAlreadyTakenAsync(string phoneNumber, CancellationToken cancellationToken);
 
     Task<UserLog?> FindUserLogByIdUserAsync(Guid idUser, CancellationToken cancellationToken);
+
+    Task<bool> AreInTheSameRole(Guid idFirstUser, Guid idSecondUser, CancellationToken cancellationToken);
 }

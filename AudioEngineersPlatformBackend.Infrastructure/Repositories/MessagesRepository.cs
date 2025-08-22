@@ -1,4 +1,6 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Contracts.Message.GetMessagedUsers;
+using AudioEngineersPlatformBackend.Contracts.Message.GetUserData;
 using AudioEngineersPlatformBackend.Contracts.Message.GetUserMessages;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
@@ -57,5 +59,44 @@ public class MessagesRepository : IMessagesRepository
             .OrderBy(um => um.DateSent)
             // .AsSplitQuery()
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<InteractedUsersResponse>> GetInteractedUsers(Guid idUser,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .UserMessages
+            .Where
+            (um => um.IdUserSender == idUser
+                   || um.IdUserRecipient == idUser
+            )
+            .Select
+            (um =>
+                new InteractedUsersResponse
+                {
+                    IdUser = (idUser == um.IdUserRecipient) ? um.IdUserSender : um.IdUserRecipient,
+                    FirstName = (idUser == um.IdUserRecipient) ? um.UserSender.FirstName : um.UserRecipient.FirstName,
+                    LastName = (idUser == um.IdUserRecipient) ? um.UserSender.LastName : um.UserRecipient.LastName,
+                }
+            )
+            .GroupBy(x => x.IdUser)             
+            .Select(g => g.First())
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<GetUserDataResponse?> GetUserData(Guid idUser, CancellationToken cancellationToken)
+    {
+        return await _context
+            .Users
+            .Where(u => u.IdUser == idUser)
+            .Select
+            (u => new GetUserDataResponse
+                {
+                    IdUser = idUser,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName
+                }
+            )
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

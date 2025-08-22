@@ -56,4 +56,21 @@ public class UserRepository : IUserRepository
             .Select(u => u.UserLog)
             .FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<bool> AreInTheSameRole(Guid idFirstUser, Guid idSecondUser, CancellationToken cancellationToken)
+    {
+        Guid idRoleFirstUser = await _context
+            .Users
+            .Where(u => u.IdUser == idFirstUser)
+            .Select(u => u.IdRole)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        Guid idRoleSecondUser = await _context
+            .Users
+            .Where(u => u.IdUser == idSecondUser)
+            .Select(u => u.IdRole)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return idRoleFirstUser == idRoleSecondUser;
+    }
 }

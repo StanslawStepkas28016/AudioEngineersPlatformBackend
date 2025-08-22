@@ -107,6 +107,8 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         return StatusCode(StatusCodes.Status200OK, checkAuthResponse);
     }
+    
+    // TODO: Forgot password endpoint
 
     /// <summary>
     ///     Endpoint used for resetting the email address of a specified user. 
