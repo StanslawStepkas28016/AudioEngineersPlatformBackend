@@ -13,6 +13,10 @@ public class UserMessageEfConfig : IEntityTypeConfiguration<UserMessage>
             .HasName("PK_UserMessage");
 
         builder
+            .Property(um => um.IsRead)
+            .IsRequired();
+
+        builder
             .HasOne(um => um.UserSender)
             .WithMany(um => um.UserMessagesSender)
             .HasForeignKey(um => um.IdUserSender)

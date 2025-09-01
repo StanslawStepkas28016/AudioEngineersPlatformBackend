@@ -302,6 +302,27 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.HubConnection", b =>
+                {
+                    b.Property<Guid>("IdHubConnection")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IdHubConnection")
+                        .HasName("PK_Connection");
+
+                    b.HasIndex("IdUser");
+
+                    b.ToTable("HubConnection", (string)null);
+                });
+
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.Message", b =>
                 {
                     b.Property<Guid>("IdMessage")
@@ -313,6 +334,9 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 
                     b.Property<Guid>("FileKey")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TextContent")
                         .HasColumnType("nvarchar(max)");
@@ -805,9 +829,9 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserLog", b =>
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserAuthLog", b =>
                 {
-                    b.Property<Guid>("IdUserLog")
+                    b.Property<Guid>("IdUserAuthLog")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -856,15 +880,15 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Property<DateTime?>("VerificationCodeExpiration")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("IdUserLog")
-                        .HasName("PK_UserLog");
+                    b.HasKey("IdUserAuthLog")
+                        .HasName("PK_UserAuthLog");
 
-                    b.ToTable("UserLog", (string)null);
+                    b.ToTable("UserAuthLog", (string)null);
 
                     b.HasData(
                         new
                         {
-                            IdUserLog = new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"),
+                            IdUserAuthLog = new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"),
                             DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -873,7 +897,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("2f765163-6728-48bc-9767-66687efdf86e"),
+                            IdUserAuthLog = new Guid("2f765163-6728-48bc-9767-66687efdf86e"),
                             DateCreated = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -882,7 +906,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"),
+                            IdUserAuthLog = new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"),
                             DateCreated = new DateTime(2025, 3, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -891,7 +915,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"),
+                            IdUserAuthLog = new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"),
                             DateCreated = new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -900,7 +924,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"),
+                            IdUserAuthLog = new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"),
                             DateCreated = new DateTime(2023, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -909,7 +933,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"),
+                            IdUserAuthLog = new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"),
                             DateCreated = new DateTime(2025, 2, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -918,7 +942,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("df0a8813-0938-42a6-ac84-26298701f456"),
+                            IdUserAuthLog = new Guid("df0a8813-0938-42a6-ac84-26298701f456"),
                             DateCreated = new DateTime(2023, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -927,7 +951,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"),
+                            IdUserAuthLog = new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"),
                             DateCreated = new DateTime(2025, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -936,7 +960,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"),
+                            IdUserAuthLog = new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"),
                             DateCreated = new DateTime(2025, 2, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -945,7 +969,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"),
+                            IdUserAuthLog = new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"),
                             DateCreated = new DateTime(2024, 2, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -954,7 +978,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"),
+                            IdUserAuthLog = new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"),
                             DateCreated = new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -963,7 +987,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"),
+                            IdUserAuthLog = new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"),
                             DateCreated = new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -972,7 +996,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"),
+                            IdUserAuthLog = new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"),
                             DateCreated = new DateTime(2024, 4, 4, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -981,7 +1005,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         },
                         new
                         {
-                            IdUserLog = new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"),
+                            IdUserAuthLog = new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"),
                             DateCreated = new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
                             IsResettingEmail = false,
@@ -1004,6 +1028,9 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 
                     b.Property<Guid>("IdUserSender")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdUserMessage")
                         .HasName("PK_UserMessage");
@@ -1043,6 +1070,18 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Navigation("AdvertCategory");
 
                     b.Navigation("AdvertLog");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.HubConnection", b =>
+                {
+                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.User", "User")
+                        .WithMany("HubConnections")
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_HubConnection_User");
 
                     b.Navigation("User");
                 });
@@ -1107,7 +1146,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_User_Role");
 
-                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.UserLog", "UserLog")
+                    b.HasOne("AudioEngineersPlatformBackend.Domain.Entities.UserAuthLog", "UserAuthLog")
                         .WithMany("Users")
                         .HasForeignKey("IdUserLog")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1116,7 +1155,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
 
                     b.Navigation("Role");
 
-                    b.Navigation("UserLog");
+                    b.Navigation("UserAuthLog");
                 });
 
             modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserMessage", b =>
@@ -1188,6 +1227,8 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                 {
                     b.Navigation("Adverts");
 
+                    b.Navigation("HubConnections");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("SocialMediaLinks");
@@ -1197,7 +1238,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Navigation("UserMessagesSender");
                 });
 
-            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserLog", b =>
+            modelBuilder.Entity("AudioEngineersPlatformBackend.Domain.Entities.UserAuthLog", b =>
                 {
                     b.Navigation("Users");
                 });

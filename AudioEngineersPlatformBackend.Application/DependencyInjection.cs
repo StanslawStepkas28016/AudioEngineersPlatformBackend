@@ -17,7 +17,7 @@ public static class DependencyInjection
         // Add application layer services
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAdvertService, AdvertService>();
-        services.AddScoped<IMessageService, MessageService>();
+        services.AddScoped<IChatService, ChatService>();
 
         // Add settings for JWT
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));

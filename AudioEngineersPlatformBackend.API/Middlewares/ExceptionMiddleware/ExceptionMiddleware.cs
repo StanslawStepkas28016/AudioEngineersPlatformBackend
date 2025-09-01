@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net;
+using Serilog;
 
 namespace API.Middlewares.ExceptionMiddleware;
 
@@ -40,9 +41,7 @@ public class ExceptionMiddleware
             ExceptionMessage = exception.Message
         };
 
-        Console.WriteLine();
-        Console.WriteLine(exceptionDetailsDto.ToStringPretty());
-        Console.WriteLine();
+        Log.Error(exceptionDetailsDto.ToStringPretty());
 
         return context.Response.WriteAsync(exceptionDetailsDto.ToString());
     }

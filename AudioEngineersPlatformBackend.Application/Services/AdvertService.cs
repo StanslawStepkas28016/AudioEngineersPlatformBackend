@@ -78,7 +78,8 @@ public class AdvertService : IAdvertService
         AdvertLog advertLog = AdvertLog.Create();
 
         // Upload the cover image file to S3 and get the key
-        Guid imageKey = await _s3Service.UploadFileAsync(createAdvertRequest.CoverImageFile, cancellationToken);
+        Guid imageKey = await _s3Service.UploadFileAsync
+            ("images", createAdvertRequest.CoverImageFile, cancellationToken);
 
         // Create a new Advert entity
         Advert advert = Advert.Create
@@ -212,7 +213,8 @@ public class AdvertService : IAdvertService
         }
 
         // Generate a presigned URL for the cover image
-        string preSignedUrl = await _s3Service.GetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
+        string preSignedUrl = await _s3Service.GetPreSignedUrlForReadAsync
+            ("images", "", advert.CoverImageKey, cancellationToken);
 
         // Map the response to GetAdvertResponse
         return new GetAdvertDetailsResponse
@@ -251,7 +253,8 @@ public class AdvertService : IAdvertService
         }
 
         // Generate a presigned URL for the cover image
-        string preSignedUrl = await _s3Service.GetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
+        string preSignedUrl = await _s3Service.GetPreSignedUrlForReadAsync
+            ("images","cover-image.jpg" ,advert.CoverImageKey, cancellationToken);
 
         // Map the response to GetAdvertResponse
         return new GetAdvertDetailsResponse
@@ -289,7 +292,7 @@ public class AdvertService : IAdvertService
         foreach (AdvertOverviewDto advert in allAdvertsWithPagination.Items)
         {
             advert.CoverImageUrl =
-                await _s3Service.GetPreSignedUrlAsync(advert.CoverImageKey, cancellationToken);
+                await _s3Service.GetPreSignedUrlForReadAsync("images", "cover-image.jpg",advert.CoverImageKey, cancellationToken);
         }
 
         return allAdvertsWithPagination;
@@ -297,7 +300,7 @@ public class AdvertService : IAdvertService
 
     public async Task<Guid> MockImageUpload(IFormFile coverImageFile, CancellationToken cancellationToken)
     {
-        Guid key = await _s3Service.UploadFileAsync(coverImageFile, cancellationToken);
+        Guid key = await _s3Service.UploadFileAsync("images", coverImageFile, cancellationToken);
         return key;
     }
 

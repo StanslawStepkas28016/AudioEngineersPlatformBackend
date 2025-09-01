@@ -44,7 +44,7 @@ public class UserEfConfig : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
-            .HasOne(u => u.UserLog)
+            .HasOne(u => u.UserAuthLog)
             .WithMany(u => u.Users)
             .HasForeignKey(u => u.IdUserLog)
             .HasConstraintName("FK_User_UserLog")

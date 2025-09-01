@@ -45,11 +45,11 @@ public class AuthRepository : IAuthRepository
             );
     }
 
-    public async Task<UserLog> AddUserLogAsync(UserLog userLog, CancellationToken cancellationToken)
+    public async Task<UserAuthLog> AddUserLogAsync(UserAuthLog userAuthLog, CancellationToken cancellationToken)
     {
-        EntityEntry<UserLog> res = await _context
-            .UserLogs
-            .AddAsync(userLog, cancellationToken);
+        EntityEntry<UserAuthLog> res = await _context
+            .UserAuthLogs
+            .AddAsync(userAuthLog, cancellationToken);
 
         return
             res.Entity;
@@ -70,10 +70,10 @@ public class AuthRepository : IAuthRepository
     {
         return await _context
             .Users
-            .Include(u => u.UserLog)
+            .Include(u => u.UserAuthLog)
             .FirstOrDefaultAsync
             (
-                u => u.UserLog.VerificationCode == verificationCode,
+                u => u.UserAuthLog.VerificationCode == verificationCode,
                 cancellationToken
             );
     }
@@ -84,7 +84,7 @@ public class AuthRepository : IAuthRepository
         return await _context
             .Users
             .Include(u => u.Role)
-            .Include(u => u.UserLog)
+            .Include(u => u.UserAuthLog)
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
@@ -93,9 +93,9 @@ public class AuthRepository : IAuthRepository
     {
         return await _context
             .Users
-            .Include(u => u.UserLog)
+            .Include(u => u.UserAuthLog)
             .Include(u => u.Role)
-            .FirstOrDefaultAsync(u => u.UserLog.RefreshToken == refreshToken, cancellationToken);
+            .FirstOrDefaultAsync(u => u.UserAuthLog.RefreshToken == refreshToken, cancellationToken);
     }
 
     public async Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUserAsync(Guid idUser,
@@ -119,19 +119,19 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<UserLog?> FindUserLogByResetEmailTokenAsync(Guid resetEmailToken,
+    public async Task<UserAuthLog?> FindUserLogByResetEmailTokenAsync(Guid resetEmailToken,
         CancellationToken cancellationToken)
     {
         return await _context
-            .UserLogs
+            .UserAuthLogs
             .FirstOrDefaultAsync(ul => ul.ResetEmailToken == resetEmailToken, cancellationToken);
     }
 
-    public async Task<UserLog?> FindUserLogByResetPasswordTokenAsync(Guid resetPasswordToken,
+    public async Task<UserAuthLog?> FindUserLogByResetPasswordTokenAsync(Guid resetPasswordToken,
         CancellationToken cancellationToken)
     {
         return await _context
-            .UserLogs
+            .UserAuthLogs
             .FirstOrDefaultAsync(ul => ul.ResetPasswordToken == resetPasswordToken, cancellationToken);
     }
 }

@@ -14,7 +14,7 @@ public class User
     private Guid _idRole;
     private Role _role;
     private Guid _idUserLog;
-    private UserLog _userLog;
+    private UserAuthLog _userAuthLog;
     private ICollection<Advert> _adverts;
     private ICollection<Review> _reviews;
     private ICollection<SocialMediaLink> _socialMediaLinks;
@@ -123,10 +123,10 @@ public class User
         private set => _idUserLog = value;
     }
 
-    public virtual UserLog UserLog
+    public virtual UserAuthLog UserAuthLog
     {
-        get => _userLog;
-        private set => _userLog = value;
+        get => _userAuthLog;
+        private set => _userAuthLog = value;
     }
 
     public ICollection<Advert> Adverts
@@ -149,6 +149,8 @@ public class User
 
     public ICollection<UserMessage> UserMessagesSender { get; set; }
     public ICollection<UserMessage> UserMessagesRecipient { get; set; }
+
+    public ICollection<HubConnection> HubConnections { get; set; }
 
     // Private constructor used for EF Core
     private User()

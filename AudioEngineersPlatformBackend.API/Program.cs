@@ -21,10 +21,10 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     // Add "Clean Architecture layers"
     builder.Services.AddApplicationLayer(builder.Configuration);
     builder.Services.AddInfrastructureLayer(builder.Configuration);
-    
+
     // Add SignalR
     builder.Services.AddSignalR();
-    
+
     // Add controllers
     builder.Services
         .AddControllers()

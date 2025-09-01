@@ -1,4 +1,4 @@
-namespace AudioEngineersPlatformBackend.Contracts.Message.GetUserData;
+namespace AudioEngineersPlatformBackend.Contracts.Chat.GetUserData;
 
 public sealed class GetUserDataResponse
 {

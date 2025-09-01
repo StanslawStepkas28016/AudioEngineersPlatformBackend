@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AudioEngineersPlatformBackend.Infrastructure.Context.Configuration;
 
-public class UserLogEfConfig : IEntityTypeConfiguration<UserLog>
+public class UserAuthLogEfConfig : IEntityTypeConfiguration<UserAuthLog>
 {
-    public void Configure(EntityTypeBuilder<UserLog> builder)
+    public void Configure(EntityTypeBuilder<UserAuthLog> builder)
     {
         builder
-            .HasKey(ul => ul.IdUserLog)
-            .HasName("PK_UserLog");
+            .HasKey(ul => ul.IdUserAuthLog)
+            .HasName("PK_UserAuthLog");
 
         builder
-            .Property(ul => ul.IdUserLog)
+            .Property(ul => ul.IdUserAuthLog)
             .IsRequired();
 
         builder
@@ -77,6 +77,6 @@ public class UserLogEfConfig : IEntityTypeConfiguration<UserLog>
             .IsRequired();
 
         builder
-            .ToTable("UserLog");
+            .ToTable("UserAuthLog");
     }
 }

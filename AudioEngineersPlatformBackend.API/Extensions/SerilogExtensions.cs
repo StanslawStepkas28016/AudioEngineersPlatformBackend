@@ -1,5 +1,5 @@
 using Serilog;
-using Serilog.Formatting.Json;
+using Serilog.Events;
 
 namespace API.Extensions;
 
@@ -15,6 +15,9 @@ public static class SerilogExtensions
             {
                 // Configure writing to console.
                 configuration.WriteTo.Console();
+
+                // Disable logging EF.Core 
+                configuration.MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning);
 
                 // Configure writing to a separate file by specifying the rollingInterval.
                 // configuration.WriteTo.File

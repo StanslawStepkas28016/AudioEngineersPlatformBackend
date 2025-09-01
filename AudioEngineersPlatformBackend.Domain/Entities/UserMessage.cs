@@ -40,6 +40,8 @@ public class UserMessage
         }
     }
 
+    public bool IsRead { get; set; }
+
     public User UserSender
     {
         get => _userSender;
@@ -105,10 +107,20 @@ public class UserMessage
             IdUserMessage = Guid.NewGuid(),
             IdUserSender = idUserSender,
             IdUserRecipient = idUserRecipient,
+            IsRead = false,
             IdMessage = idMessage
         };
     }
 
+    /// <summary>
+    ///     Factory method to create a UserMessage entity with a specific idUserMessage,
+    ///     used for seeding purposes.
+    /// </summary>
+    /// <param name="idUserMessage"></param>
+    /// <param name="idUserSender"></param>
+    /// <param name="idUserRecipient"></param>
+    /// <param name="idMessage"></param>
+    /// <returns></returns>
     public static UserMessage CreateWithId(Guid idUserMessage, Guid idUserSender, Guid idUserRecipient, Guid idMessage)
     {
         return new UserMessage
@@ -116,6 +128,7 @@ public class UserMessage
             IdUserMessage = idUserMessage,
             IdUserSender = idUserSender,
             IdUserRecipient = idUserRecipient,
+            IsRead = false,
             IdMessage = idMessage
         };
     }

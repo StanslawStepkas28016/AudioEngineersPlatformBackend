@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 # is going to use for file related operations.
 # Any operations we do in the image are going to 
 # use this directory as its default directory.
-WORKDIR /app 
+WORKDIR /app
 
 ## Copy the output of `dotnet publish...` to the image
 COPY Published/ ./

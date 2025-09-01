@@ -5,6 +5,7 @@ public class Message
     // Backing fields
     private Guid _idMessage;
     private string _textContent;
+    private string? _fileName;
     private Guid _fileKey;
     private DateTime _dateSent;
 
@@ -51,6 +52,12 @@ public class Message
         set { _fileKey = value; }
     }
 
+    public string? FileName
+    {
+        get => _fileName;
+        set { _fileName = value; }
+    }
+
     public DateTime DateSent
     {
         get => _dateSent;
@@ -76,6 +83,7 @@ public class Message
         {
             IdMessage = Guid.NewGuid(),
             TextContent = textContent,
+            FileName = null,
             FileKey = Guid.Empty,
             DateSent = DateTime.UtcNow
         };
@@ -95,6 +103,7 @@ public class Message
         {
             IdMessage = idMessage,
             TextContent = textContent,
+            FileName = null,
             FileKey = Guid.Empty,
             DateSent = DateTime.UtcNow
         };
@@ -104,15 +113,17 @@ public class Message
     ///     Factory method to create a new file containing Message.
     ///     It contains a key used to an AWS S3 bucket, pointing towards a specific file. 
     /// </summary>
+    /// <param name="fileName"></param>
     /// <param name="fileKey"></param>
     /// <returns></returns>
-    public static Message CreateFileMessage(
+    public static Message CreateFileMessage(string fileName,
         Guid fileKey)
     {
         return new Message
         {
             IdMessage = Guid.NewGuid(),
-            TextContent = null,
+            _textContent = null, // Using this to omit the property setter not allowing null values.
+            FileName = fileName,
             FileKey = fileKey,
             DateSent = DateTime.UtcNow
         };
@@ -124,15 +135,17 @@ public class Message
     ///     Used for seeding purposes. 
     /// </summary>
     /// <param name="idMessage"></param>
+    /// <param name="fileName"></param>
     /// <param name="fileKey"></param>
     /// <returns></returns>
     public static Message CreateFileMessageWithId(
-        Guid idMessage, Guid fileKey)
+        Guid idMessage, string fileName, Guid fileKey)
     {
         return new Message
         {
             IdMessage = idMessage,
-            TextContent = null,
+            _textContent = null, // Using this to omit the property setter not allowing null values.
+            FileName = fileName,
             FileKey = fileKey,
             DateSent = DateTime.UtcNow
         };

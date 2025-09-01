@@ -11,7 +11,7 @@ public class EngineersPlatformDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Role> Roles { get; set; }
-    public virtual DbSet<UserLog> UserLogs { get; set; }
+    public virtual DbSet<UserAuthLog> UserAuthLogs { get; set; }
     public virtual DbSet<SocialMediaLink> SocialMediaLinks { get; set; }
     public virtual DbSet<SocialMediaName> SocialMediaNames { get; set; }
     public virtual DbSet<Advert> Adverts { get; set; }
@@ -21,7 +21,8 @@ public class EngineersPlatformDbContext : DbContext
     public virtual DbSet<ReviewLog> ReviewLogs { get; set; }
     public virtual DbSet<UserMessage> UserMessages { get; set; }
     public virtual DbSet<Message> Messages { get; set; }
-    
+    public virtual DbSet<HubConnection> HubConnections { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply configurations from the assembly
@@ -44,12 +45,12 @@ public class EngineersPlatformDbContext : DbContext
                 adminRole, clientRole, audioEngineerRole
             );
 
-            // Seed UserLog with User Entities (mock users)
+            // Seed UserAuthLog with User Entities (mock users)
             // A precomputed hash for "test" password
             const string precomputedPasswordHash =
                 "AQAAAAIAAYagAAAAEFIagC5C9vbbJvt0Laj4EFwEie4imyDjDa7Ug56CJY8hKm9ftbEdPRtKo/dXKkW3cQ==";
 
-            UserLog ul1 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul1 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("5CB8EFAA-2432-46D1-9984-B41A40BAB7B3"),
                 new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
@@ -59,11 +60,11 @@ public class EngineersPlatformDbContext : DbContext
                 Guid.Parse("AEBC2724-0EDF-4691-99E9-65CBD3AAB3BF"),
                 "Dominik", "Kowalski", "dominik.kow@gmail.com", "+48123456789", "test",
                 adminRole.IdRole,
-                ul1.IdUserLog
+                ul1.IdUserAuthLog
             );
             u1.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul2 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul2 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("2F765163-6728-48BC-9767-66687EFDF86E"),
                 new DateTime(2025, 3, 12, 0, 0, 0, DateTimeKind.Utc)
@@ -72,11 +73,11 @@ public class EngineersPlatformDbContext : DbContext
             (
                 Guid.Parse("5BFC9C8D-4789-4065-99D9-81EC5B58C0F5"), "Jan", "Nowak",
                 "jan.nowak@gmail.com", "+48696432123", "test", clientRole.IdRole,
-                ul2.IdUserLog
+                ul2.IdUserAuthLog
             );
             u2.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul3 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul3 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("8312D4FD-FE6D-4001-A037-CDE12000161D"),
                 new DateTime(2025, 3, 11, 0, 0, 0, DateTimeKind.Utc)
@@ -85,11 +86,11 @@ public class EngineersPlatformDbContext : DbContext
             (
                 Guid.Parse("828DAA53-9A49-40AD-97B3-31B0349BC08D"), "Anna", "Kowalska",
                 "anna.kow@gmail.com", "+48543123123", "test",
-                audioEngineerRole.IdRole, ul3.IdUserLog
+                audioEngineerRole.IdRole, ul3.IdUserAuthLog
             );
             u3.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul4 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul4 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("E7653083-1497-4AA0-A56B-DEC32A61D71F"),
                 new DateTime(2024, 1, 12, 0, 0, 0, DateTimeKind.Utc)
@@ -98,11 +99,11 @@ public class EngineersPlatformDbContext : DbContext
             (
                 Guid.Parse("2254933A-66AC-4AB8-A923-25D508D8B5C0"), "Piotr", "Nowak",
                 "piotr.nowak@gmail.com", "+48111222333", "test",
-                audioEngineerRole.IdRole, ul4.IdUserLog
+                audioEngineerRole.IdRole, ul4.IdUserAuthLog
             );
             u4.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul5 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul5 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("9AE2C2F3-4AB1-4512-9832-7649D5FF61D8"),
                 new DateTime(2023, 12, 12, 0, 0, 0, DateTimeKind.Utc)
@@ -111,11 +112,11 @@ public class EngineersPlatformDbContext : DbContext
             (
                 Guid.Parse("731C7617-9342-415D-8E06-F77EC2D56786"), "Ewa", "Maj",
                 "ewa.maj@gmail.com", "+48111333444", "test", audioEngineerRole.IdRole,
-                ul5.IdUserLog
+                ul5.IdUserAuthLog
             );
             u5.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul6 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul6 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("5091BF83-DF7D-4A54-A35B-31B44D1A1643"),
                 new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc)
@@ -124,11 +125,11 @@ public class EngineersPlatformDbContext : DbContext
             (
                 Guid.Parse("29D1D9BD-87D9-4125-99A5-0F15C9DF3A30"), "Tomasz", "Zieliński",
                 "tomasz.zielinski@gmail.com", "+48111444555", "test",
-                audioEngineerRole.IdRole, ul6.IdUserLog
+                audioEngineerRole.IdRole, ul6.IdUserAuthLog
             );
             u6.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul7 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul7 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("DF0A8813-0938-42A6-AC84-26298701F456"),
                 new DateTime(2023, 12, 12, 0, 0, 0, DateTimeKind.Utc)
@@ -137,11 +138,11 @@ public class EngineersPlatformDbContext : DbContext
             (
                 Guid.Parse("3FB9E066-38B7-42AE-900C-D7AB5AE280F0"), "Michał", "Wójcik",
                 "michal.wojcik@gmail.com", "+48111555666", "test",
-                audioEngineerRole.IdRole, ul7.IdUserLog
+                audioEngineerRole.IdRole, ul7.IdUserAuthLog
             );
             u7.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul8 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul8 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("2A019DC8-FE9F-4A63-B692-49E03F889F7F"),
                 new DateTime(2025, 12, 3, 0, 0, 0, DateTimeKind.Utc)
@@ -151,11 +152,11 @@ public class EngineersPlatformDbContext : DbContext
                 Guid.Parse("AC89F1A4-6988-4211-8136-FBF9B45E4CF2"), "Katarzyna", "Wiśniewska",
                 "katarzyna.wisniewska@gmail.com", "+48111666777",
                 "test",
-                audioEngineerRole.IdRole, ul8.IdUserLog
+                audioEngineerRole.IdRole, ul8.IdUserAuthLog
             );
             u8.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul9 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul9 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("C91C99CA-FFFD-42A5-9E6E-FA67D3C0F762"),
                 new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc)
@@ -165,11 +166,11 @@ public class EngineersPlatformDbContext : DbContext
                 Guid.Parse("07434FD4-3450-4A01-A8C4-C371ED011E48"), "Krzysztof", "Lewandowski",
                 "krzysztof.lewandowski@gmail.com", "+48111777888",
                 "test",
-                audioEngineerRole.IdRole, ul9.IdUserLog
+                audioEngineerRole.IdRole, ul9.IdUserAuthLog
             );
             u9.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul10 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul10 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("8DB9E713-D6F0-4F34-B348-C7DA0C1A51D6"),
                 new DateTime(2024, 2, 3, 0, 0, 0, DateTimeKind.Utc)
@@ -178,39 +179,39 @@ public class EngineersPlatformDbContext : DbContext
             (
                 Guid.Parse("E07BC534-3324-4AF4-8D97-FAEE7242E896"), "Agnieszka", "Wróbel",
                 "agnieszka.wrobel@gmail.com", "+48111888999", "test",
-                audioEngineerRole.IdRole, ul10.IdUserLog
+                audioEngineerRole.IdRole, ul10.IdUserAuthLog
             );
             u10.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul11 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul11 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("32AFFE63-9BB3-4C86-BBF8-6D5E37C7FB3F"),
                 new DateTime(2023, 12, 3, 0, 0, 0, DateTimeKind.Utc)
             );
-            
+
             User u11 = User.CreateWithId
             (
                 Guid.Parse("1D31A511-8D38-4223-96A0-F2B15CC90794"), "Paweł", "Kamiński",
                 "pawel.kaminski@gmail.com", "+48111999000", "test",
-                audioEngineerRole.IdRole, ul11.IdUserLog
+                audioEngineerRole.IdRole, ul11.IdUserAuthLog
             );
             u11.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul12 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul12 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("CD9E4F1F-8EDD-4488-B0DA-256521A720E8"),
                 new DateTime(2025, 2, 2, 0, 0, 0, DateTimeKind.Utc)
             );
-            
+
             User u12 = User.CreateWithId
             (
                 Guid.Parse("655887CB-B3CD-40DA-B2BB-48B5E84239F9"), "Marcin", "Radwański",
                 "mar.radw@gmail.com", "+48431234765", "test",
-                adminRole.IdRole, ul12.IdUserLog
+                adminRole.IdRole, ul12.IdUserAuthLog
             );
             u12.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul13 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul13 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("B0F3E786-F68B-46FE-8B18-F4A6E1150804"),
                 new DateTime(2024, 4, 4, 0, 0, 0, DateTimeKind.Utc)
@@ -218,11 +219,11 @@ public class EngineersPlatformDbContext : DbContext
             User u13 = User.CreateWithId
             (
                 Guid.Parse("FDF7BDA4-F40F-484F-BC40-ADBF8AA98985"), "Marian", "Niewiadomski",
-                "marian@gmail.com", "+48654123432", "test", clientRole.IdRole, ul13.IdUserLog
+                "marian@gmail.com", "+48654123432", "test", clientRole.IdRole, ul13.IdUserAuthLog
             );
             u13.SetHashedPassword(precomputedPasswordHash);
 
-            UserLog ul14 = UserLog.CreateWithIdAndStaticData
+            UserAuthLog ul14 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("DBF24F67-7457-47C3-A2AF-A117D8E90B00"),
                 new DateTime(2025, 3, 23, 0, 0, 0, DateTimeKind.Utc)
@@ -230,11 +231,11 @@ public class EngineersPlatformDbContext : DbContext
             User u14 = User.CreateWithId
             (
                 Guid.Parse("156765B0-84A0-4389-AF75-78F2F36DEA04"), "Maria", "Dąbrowska",
-                "dab@gmail.com", "+48231443225", "test", clientRole.IdRole, ul14.IdUserLog
+                "dab@gmail.com", "+48231443225", "test", clientRole.IdRole, ul14.IdUserAuthLog
             );
             u14.SetHashedPassword(precomputedPasswordHash);
 
-            modelBuilder.Entity<UserLog>().HasData
+            modelBuilder.Entity<UserAuthLog>().HasData
             (
                 ul1, ul2, ul3,
                 ul4, ul5, ul6, ul7, ul8, ul9, ul10, ul11, ul12, ul13, ul14

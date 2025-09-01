@@ -17,6 +17,10 @@ public class MessageEfConfig : IEntityTypeConfiguration<Message>
             .IsRequired(false);
 
         builder
+            .Property(m => m.FileName)
+            .IsRequired(false);
+
+        builder
             .Property(m => m.FileKey)
             .IsRequired();
 

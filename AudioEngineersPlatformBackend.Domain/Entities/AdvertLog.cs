@@ -90,7 +90,7 @@ public class AdvertLog
 
     /// <summary>
     ///     Factory method for creating a new AdvertLog instance.
-    ///     As in the case of UserLog, this method initializes the AdvertLog with default values.
+    ///     As in the case of UserAuthLog, this method initializes the AdvertLog with default values.
     ///     It is there because EF.Core requires a parameterless constructor for entity classes,
     ///     thus it is not possible to utilize a parameterless constructor for AdvertLog creation.
     /// </summary>

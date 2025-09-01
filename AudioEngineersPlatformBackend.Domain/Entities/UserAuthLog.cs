@@ -8,10 +8,10 @@ public enum VerificationOutcome
     VerificationCodeExpired,
 }
 
-public class UserLog
+public class UserAuthLog
 {
     // Backing fields
-    private Guid _idUserLog;
+    private Guid _idUserAuthLog;
     private DateTime? _dateCreated;
     private DateTime? _dateDeleted;
     private bool _isDeleted;
@@ -30,17 +30,17 @@ public class UserLog
     private ICollection<User> _users;
 
     // Properties
-    public Guid IdUserLog
+    public Guid IdUserAuthLog
     {
-        get => _idUserLog;
+        get => _idUserAuthLog;
         private set
         {
             if (value == Guid.Empty)
             {
-                throw new ArgumentException($"{nameof(IdUserLog)} cannot be empty.");
+                throw new ArgumentException($"{nameof(IdUserAuthLog)} cannot be empty.");
             }
 
-            _idUserLog = value;
+            _idUserAuthLog = value;
         }
     }
 
@@ -150,22 +150,22 @@ public class UserLog
     }
 
     // Private constructor used for EF Core
-    private UserLog()
+    private UserAuthLog()
     {
     }
 
     /// <summary>
-    ///     Factory method for creating a new UserLog instance.
-    ///     This method initializes the UserLog with default values.
+    ///     Factory method for creating a new UserAuthLog instance.
+    ///     This method initializes the UserAuthLog with default values.
     ///     It is there because EF.Core requires a parameterless constructor for entity classes,
-    ///     thus it is not possible to utilize a parameterless constructor for UserLog creation.
+    ///     thus it is not possible to utilize a parameterless constructor for UserAuthLog creation.
     /// </summary>
     /// <returns></returns>
-    public static UserLog Create()
+    public static UserAuthLog Create()
     {
-        return new UserLog
+        return new UserAuthLog
         {
-            IdUserLog = Guid.NewGuid(),
+            IdUserAuthLog = Guid.NewGuid(),
             DateCreated = DateTime.UtcNow,
             DateDeleted = null,
             IsDeleted = false,
@@ -185,17 +185,17 @@ public class UserLog
     }
 
     /// <summary>
-    ///     Factory method for creating a new UserLog with a provided idUserLog.
+    ///     Factory method for creating a new UserAuthLog with a provided idUserLog.
     ///     Used for seeding.
     /// </summary>
     /// <param name="idUserLog"></param>
     /// <param name="dateCreated"></param>
     /// <returns></returns>
-    public static UserLog CreateWithIdAndStaticData(Guid idUserLog, DateTime dateCreated)
+    public static UserAuthLog CreateWithIdAndStaticData(Guid idUserLog, DateTime dateCreated)
     {
-        return new UserLog
+        return new UserAuthLog
         {
-            IdUserLog = idUserLog,
+            IdUserAuthLog = idUserLog,
             DateCreated = dateCreated,
             DateDeleted = null,
             IsDeleted = false,

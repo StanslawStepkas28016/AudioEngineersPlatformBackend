@@ -48,12 +48,12 @@ public class UserRepository : IUserRepository
             .AnyAsync(cancellationToken);
     }
 
-    public async Task<UserLog?> FindUserLogByIdUserAsync(Guid idUser, CancellationToken cancellationToken)
+    public async Task<UserAuthLog?> FindUserLogByIdUserAsync(Guid idUser, CancellationToken cancellationToken)
     {
         return await _context
             .Users
             .Where(u => u.IdUser == idUser)
-            .Select(u => u.UserLog)
+            .Select(u => u.UserAuthLog)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -72,5 +72,19 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         return idRoleFirstUser == idRoleSecondUser;
+    }
+
+    public async Task<Tuple<string, string>> FindUserInfoByIdUserAsync(Guid idUserSenderValidated, CancellationToken cancellationToken)
+    {
+        return (await _context
+            .Users
+            .Where(u => u.IdUser == idUserSenderValidated)
+            .Select
+            (u => Tuple.Create
+                (
+                    u.FirstName,
+                    u.LastName
+                )
+            ).FirstOrDefaultAsync(cancellationToken))!;
     }
 }

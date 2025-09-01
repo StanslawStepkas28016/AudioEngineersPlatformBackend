@@ -61,8 +61,8 @@ public class AuthService : IAuthService
             throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
         }
 
-        // Create a UserLog.
-        UserLog userLog = UserLog.Create();
+        // Create a UserAuthLog.
+        UserAuthLog userAuthLog = UserAuthLog.Create();
 
         // Check if the provided role exists.
         Role? role = await _authRepository.FindRoleByNameAsNoTrackingAsync(registerRequest.RoleName, cancellationToken);
@@ -81,18 +81,18 @@ public class AuthService : IAuthService
             registerRequest.PhoneNumber,
             registerRequest.Password,
             role.IdRole,
-            userLog.IdUserLog
+            userAuthLog.IdUserAuthLog
         );
 
         // Hash and set the password
         user.SetHashedPassword(new PasswordHasher<User>().HashPassword(user, registerRequest.Password));
 
-        // Add UserLog and User
-        await _authRepository.AddUserLogAsync(userLog, cancellationToken);
+        // Add UserAuthLog and User
+        await _authRepository.AddUserLogAsync(userAuthLog, cancellationToken);
         await _authRepository.AddUserAsync(user, cancellationToken);
 
         // Send a verification email
-        await _sesService.SendRegisterVerificationEmailAsync(user.Email, user.FirstName, userLog.VerificationCode);
+        await _sesService.SendRegisterVerificationEmailAsync(user.Email, user.FirstName, userAuthLog.VerificationCode);
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -120,7 +120,7 @@ public class AuthService : IAuthService
         }
 
         // Verify the users account
-        VerificationOutcome verificationOutcome = user.UserLog.VerifyUserAccount();
+        VerificationOutcome verificationOutcome = user.UserAuthLog.VerifyUserAccount();
 
         // Save all changes
         await _unitOfWork.CompleteAsync(cancellationToken);
@@ -149,10 +149,10 @@ public class AuthService : IAuthService
         }
 
         // Ensure that the user is neither deleted nor unverified.
-        user.UserLog.EnsureCorrectUserStatus();
+        user.UserAuthLog.EnsureCorrectUserStatus();
 
         // Set login associated data.
-        user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
+        user.UserAuthLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
 
         // Verify the input password against the database.
         PasswordVerificationResult passwordVerificationResult =
@@ -175,8 +175,8 @@ public class AuthService : IAuthService
         );
         await _cookieUtil.WriteAsCookie
         (
-            CookieNames.refreshToken, user.UserLog.RefreshToken!,
-            user.UserLog.RefreshTokenExpiration
+            CookieNames.refreshToken, user.UserAuthLog.RefreshToken!,
+            user.UserAuthLog.RefreshTokenExpiration
         );
 
         // Persist the changes in the database.
@@ -217,13 +217,13 @@ public class AuthService : IAuthService
 
         // Check if the refresh token is expired - this should never happen, because the token is stored in the cookie
         // and the cookies are being deleted after their expiration date from the browser.
-        if (user.UserLog.RefreshTokenExpiration < DateTime.UtcNow)
+        if (user.UserAuthLog.RefreshTokenExpiration < DateTime.UtcNow)
         {
             throw new UnauthorizedAccessException($"{nameof(refreshToken)} expired, please login again.");
         }
 
         // Set new login associated data (token and expiration date).
-        user.UserLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
+        user.UserAuthLog.SetLoginData(_tokenUtil.CreateNonJwtRefreshToken(), DateTime.UtcNow.AddDays(7));
 
         // Generate a new access token.
         JwtSecurityToken accessToken = _tokenUtil.CreateJwtAccessToken(user);
@@ -236,8 +236,8 @@ public class AuthService : IAuthService
         );
         await _cookieUtil.WriteAsCookie
         (
-            CookieNames.refreshToken, user.UserLog.RefreshToken!,
-            user.UserLog.RefreshTokenExpiration
+            CookieNames.refreshToken, user.UserAuthLog.RefreshToken!,
+            user.UserAuthLog.RefreshTokenExpiration
         );
 
         // Persist the changes in the database.
@@ -304,7 +304,7 @@ public class AuthService : IAuthService
             throw new Exception($"{nameof(resetEmailRequest.NewEmail)} is already taken.");
         }
 
-        // Fetch the UserLog data.
+        // Fetch the UserAuthLog data.
         var userLog = (await _userRepository.FindUserLogByIdUserAsync(idUserValidated, cancellationToken))!;
 
         // Generate a token and generate a reset email url.
@@ -336,7 +336,7 @@ public class AuthService : IAuthService
         // Use a VO to extract the guid and ensure that it is not empty.
         var resetEmailTokenValidated = new GuidVo(resetEmailToken).Guid;
 
-        // Find the user associated UserLog.
+        // Find the user associated UserAuthLog.
         var userLog =
             await _authRepository.FindUserLogByResetEmailTokenAsync(resetEmailTokenValidated, cancellationToken);
 
@@ -374,7 +374,7 @@ public class AuthService : IAuthService
 
         // Change the password, ensuring the logic is correct inside the used method and set the reset password data,
         // so that the user is unable to login until they verify their new password. 
-        UserLog? userLog = await _userRepository.FindUserLogByIdUserAsync(idUserValidated, cancellationToken);
+        UserAuthLog? userLog = await _userRepository.FindUserLogByIdUserAsync(idUserValidated, cancellationToken);
 
         if (userLog == null)
         {
@@ -420,7 +420,7 @@ public class AuthService : IAuthService
         // Use a VO to extract the guid and ensure that it is not empty.
         Guid resetPasswordTokenValidated = new GuidVo(resetPasswordToken).Guid;
 
-        UserLog? userLog = await _authRepository.FindUserLogByResetPasswordTokenAsync
+        UserAuthLog? userLog = await _authRepository.FindUserLogByResetPasswordTokenAsync
             (resetPasswordTokenValidated, cancellationToken);
 
         if (userLog == null)

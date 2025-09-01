@@ -35,10 +35,7 @@
       <Compile Remove="Migrations\20250724002307_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724091428_Initial.Designer.cs" />
       <Compile Remove="Migrations\20250724091428_Initial.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Migrations\" />
+      <Compile Remove="Migrations\20250826104936_AddHubConnection.cs" />
     </ItemGroup>
 
     <ItemGroup>
