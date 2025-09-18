@@ -149,7 +149,6 @@ public class SESService : ISESService
         var preparedBodyTemplate = bodyTemplate.Replace("{firstName}", firstName)
             .Replace("{uniqueUrl}", uniqueUrl);
 
-
         // Prepare a request    
         var sendRequest = new SendEmailRequest
         {
@@ -162,6 +161,51 @@ public class SESService : ISESService
             Message = new Message
             {
                 Subject = new Content(_localizer[EmailMessages.ResetPasswordEmailSubject]),
+                Body = new Body
+                {
+                    Html = new Content
+                    {
+                        Charset = "UTF-8",
+                        Data = preparedBodyTemplate
+                    },
+                }
+            }
+        };
+
+        await SendEmailAsync(sendRequest);
+    }
+
+    public async Task SendForgotPasswordResetEmailAsync(string toEmail, string firstName, string uniqueUrl)
+    {
+        // Validate the parameters - this should never happen but just in case, checking
+        if (
+            string.IsNullOrWhiteSpace(toEmail)
+            || string.IsNullOrWhiteSpace(firstName)
+            || string.IsNullOrWhiteSpace(uniqueUrl)
+        )
+        {
+            throw new ArgumentException("You must provide all arguments to send email messages.");
+        }
+
+        // Read the template
+        string bodyTemplate = _localizer[EmailMessages.ForgotPasswordEmailBody];
+        
+        // Prepare the template
+        var preparedBodyTemplate = bodyTemplate.Replace("{firstName}", firstName)
+            .Replace("{uniqueUrl}", uniqueUrl);
+
+        // Prepare a request    
+        var sendRequest = new SendEmailRequest
+        {
+            Source = _settings.SenderEmail,
+            Destination = new Destination
+            {
+                ToAddresses =
+                    new List<string> { toEmail }
+            },
+            Message = new Message
+            {
+                Subject = new Content(_localizer[EmailMessages.ForgotPasswordEmailSubject]),
                 Body = new Body
                 {
                     Html = new Content

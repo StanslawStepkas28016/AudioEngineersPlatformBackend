@@ -134,4 +134,14 @@ public class AuthRepository : IAuthRepository
             .UserAuthLogs
             .FirstOrDefaultAsync(ul => ul.ResetPasswordToken == resetPasswordToken, cancellationToken);
     }
+
+    public async Task<User?> FindUserAndUserLogByForgotPasswordToken(Guid forgotPasswordToken,
+        CancellationToken cancellationToken)
+    {
+        return await _context
+            .Users
+            .Include(u => u.UserAuthLog)
+            .Where(u => u.UserAuthLog.ForgotPasswordToken == forgotPasswordToken)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }
