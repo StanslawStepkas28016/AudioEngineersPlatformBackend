@@ -5,6 +5,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetPhoneNumber;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyForgotPassword;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
@@ -30,4 +31,6 @@ public interface IAuthService
     Task ResetPassword(Guid idUser, ResetPasswordRequest resetPasswordRequest, CancellationToken cancellationToken);
     Task VerifyResetPassword(Guid resetPasswordToken, CancellationToken cancellationToken);
     Task ResetPhoneNumber(Guid idUser, ResetPhoneNumberRequest resetPhoneNumberRequest, CancellationToken cancellationToken);
+    Task<Guid> ForgotPassword(string email, CancellationToken cancellationToken);
+    Task VerifyForgotPassword(Guid forgotPasswordToken, VerifyForgotPasswordRequest verifyForgotPasswordRequest, CancellationToken cancellationToken);
 }

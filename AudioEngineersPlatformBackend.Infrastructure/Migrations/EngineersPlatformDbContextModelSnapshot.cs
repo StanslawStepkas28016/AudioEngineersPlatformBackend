@@ -675,6 +675,17 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
+                            IdUser = new Guid("fca13465-f8e6-4fbd-8ed4-2644294ed215"),
+                            Email = "s28016@pjwstk.edu.pl",
+                            FirstName = "Stanisław",
+                            IdRole = new Guid("522c6700-165e-4189-b234-9fb533266e07"),
+                            IdUserLog = new Guid("464433c3-7796-49ee-9eb1-c0818f98a329"),
+                            LastName = "Stepka",
+                            Password = "AQAAAAIAAYagAAAAEFIagC5C9vbbJvt0Laj4EFwEie4imyDjDa7Ug56CJY8hKm9ftbEdPRtKo/dXKkW3cQ==",
+                            PhoneNumber = "+48696784867"
+                        },
+                        new
+                        {
                             IdUser = new Guid("aebc2724-0edf-4691-99e9-65cbd3aab3bf"),
                             Email = "dominik.kow@gmail.com",
                             FirstName = "Dominik",
@@ -844,7 +855,16 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.Property<DateTime?>("DateLastLogin")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("ForgotPasswordToken")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ForgotPasswordTokenExpiration")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemindingPassword")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsResettingEmail")
@@ -888,9 +908,24 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
+                            IdUserAuthLog = new Guid("464433c3-7796-49ee-9eb1-c0818f98a329"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            IsRemindingPassword = false,
+                            IsResettingEmail = false,
+                            IsResettingPassword = false,
+                            IsVerified = true
+                        },
+                        new
+                        {
                             IdUserAuthLog = new Guid("5cb8efaa-2432-46d1-9984-b41a40bab7b3"),
                             DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -899,7 +934,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("2f765163-6728-48bc-9767-66687efdf86e"),
                             DateCreated = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -908,7 +946,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("8312d4fd-fe6d-4001-a037-cde12000161d"),
                             DateCreated = new DateTime(2025, 3, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -917,7 +958,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("e7653083-1497-4aa0-a56b-dec32a61d71f"),
                             DateCreated = new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -926,7 +970,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("9ae2c2f3-4ab1-4512-9832-7649d5ff61d8"),
                             DateCreated = new DateTime(2023, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -935,7 +982,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("5091bf83-df7d-4a54-a35b-31b44d1a1643"),
                             DateCreated = new DateTime(2025, 2, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -944,7 +994,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("df0a8813-0938-42a6-ac84-26298701f456"),
                             DateCreated = new DateTime(2023, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -953,7 +1006,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("2a019dc8-fe9f-4a63-b692-49e03f889f7f"),
                             DateCreated = new DateTime(2025, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -962,7 +1018,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("c91c99ca-fffd-42a5-9e6e-fa67d3c0f762"),
                             DateCreated = new DateTime(2025, 2, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -971,7 +1030,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("8db9e713-d6f0-4f34-b348-c7da0c1a51d6"),
                             DateCreated = new DateTime(2024, 2, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -980,7 +1042,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("32affe63-9bb3-4c86-bbf8-6d5e37c7fb3f"),
                             DateCreated = new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -989,7 +1054,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("cd9e4f1f-8edd-4488-b0da-256521a720e8"),
                             DateCreated = new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -998,7 +1066,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("b0f3e786-f68b-46fe-8b18-f4a6e1150804"),
                             DateCreated = new DateTime(2024, 4, 4, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true
@@ -1007,7 +1078,10 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Migrations
                         {
                             IdUserAuthLog = new Guid("dbf24f67-7457-47c3-a2af-a117d8e90b00"),
                             DateCreated = new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ForgotPasswordToken = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ForgotPasswordTokenExpiration = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
+                            IsRemindingPassword = false,
                             IsResettingEmail = false,
                             IsResettingPassword = false,
                             IsVerified = true

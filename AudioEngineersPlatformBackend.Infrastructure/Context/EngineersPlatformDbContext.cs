@@ -50,6 +50,20 @@ public class EngineersPlatformDbContext : DbContext
             const string precomputedPasswordHash =
                 "AQAAAAIAAYagAAAAEFIagC5C9vbbJvt0Laj4EFwEie4imyDjDa7Ug56CJY8hKm9ftbEdPRtKo/dXKkW3cQ==";
 
+            UserAuthLog ul0 = UserAuthLog.CreateWithIdAndStaticData
+            (
+                Guid.Parse("464433C3-7796-49EE-9EB1-C0818F98A329"),
+                new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            );
+            User u0 = User.CreateWithId
+            (
+                Guid.Parse("FCA13465-F8E6-4FBD-8ED4-2644294ED215"),
+                "Stanisław", "Stepka", "s28016@pjwstk.edu.pl", "+48696784867", "test",
+                audioEngineerRole.IdRole,
+                ul0.IdUserAuthLog
+            );
+            u0.SetHashedPassword(precomputedPasswordHash);
+
             UserAuthLog ul1 = UserAuthLog.CreateWithIdAndStaticData
             (
                 Guid.Parse("5CB8EFAA-2432-46D1-9984-B41A40BAB7B3"),
@@ -237,13 +251,13 @@ public class EngineersPlatformDbContext : DbContext
 
             modelBuilder.Entity<UserAuthLog>().HasData
             (
-                ul1, ul2, ul3,
+                ul0, ul1, ul2, ul3,
                 ul4, ul5, ul6, ul7, ul8, ul9, ul10, ul11, ul12, ul13, ul14
             );
 
             modelBuilder.Entity<User>().HasData
             (
-                u1, u2, u3,
+                u0, u1, u2, u3,
                 u4, u5, u6, u7, u8, u9, u10, u11, u12, u13, u14
             );
 

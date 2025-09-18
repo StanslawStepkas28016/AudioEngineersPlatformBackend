@@ -11,10 +11,12 @@ namespace API.Hubs;
 public class ChatHub : Hub
 {
     private readonly IChatService _chatService;
+    private readonly ILogger<ChatHub> _logger;
 
-    public ChatHub(IChatService chatService)
+    public ChatHub(IChatService chatService, ILogger<ChatHub> logger)
     {
         _chatService = chatService;
+        _logger = logger;
     }
 
     public override async Task OnConnectedAsync()
@@ -33,9 +35,13 @@ public class ChatHub : Hub
             },
             CancellationToken.None
         );
-        
-        Log.Information($"Connected as {Context.UserIdentifier} with {Context.ConnectionId}");
-        
+
+        _logger.LogInformation
+        (
+            "Connected as {ContextUserIdentifier} with {ContextConnectionId}.", Context.UserIdentifier,
+            Context.ConnectionId
+        );
+
 
         // Send information to other online client that the user has connected.
         await Clients.Others.SendAsync
@@ -62,7 +68,11 @@ public class ChatHub : Hub
             CancellationToken.None
         );
 
-        Log.Information($"Disconnected as {Context.UserIdentifier} with {Context.ConnectionId}");
+        _logger.LogInformation
+        (
+            "Disconnected as {ContextUserIdentifier} with {ContextConnectionId}.", Context.UserIdentifier,
+            Context.ConnectionId
+        );
 
         // Send information to other online client that the user has disconnected.
         await Clients.Others.SendAsync

@@ -9,6 +9,7 @@ using AudioEngineersPlatformBackend.Contracts.Auth.ResetEmail;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetPassword;
 using AudioEngineersPlatformBackend.Contracts.Auth.ResetPhoneNumber;
 using AudioEngineersPlatformBackend.Contracts.Auth.VerifyAccount;
+using AudioEngineersPlatformBackend.Contracts.Auth.VerifyForgotPassword;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
@@ -17,19 +18,25 @@ namespace AudioEngineersPlatformBackend.Application.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly ISESService _sesService;
     private readonly IAuthRepository _authRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ITokenUtil _tokenUtil;
     private readonly ICookieUtil _cookieUtil;
     private readonly ICurrentUserUtil _currentUserUtil;
-    private readonly IUserRepository _userRepository;
+    private readonly ISESService _sesService;
+    private readonly ITokenUtil _tokenUtil;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IUrlGeneratorUtil _urlGeneratorUtil;
+    private readonly IUserRepository _userRepository;
 
-    public AuthService(ISESService sesService, IAuthRepository authRepository,
-        IUnitOfWork unitOfWork, ITokenUtil tokenUtil, ICookieUtil cookieUtil, ICurrentUserUtil currentUserUtil,
+    public AuthService(
+        ISESService sesService,
+        IAuthRepository authRepository,
+        IUnitOfWork unitOfWork,
+        ITokenUtil tokenUtil,
+        ICookieUtil cookieUtil,
+        ICurrentUserUtil currentUserUtil,
         IUserRepository userRepository,
-        IUrlGeneratorUtil urlGeneratorUtil)
+        IUrlGeneratorUtil urlGeneratorUtil
+    )
     {
         _sesService = sesService;
         _authRepository = authRepository;
@@ -41,24 +48,35 @@ public class AuthService : IAuthService
         _urlGeneratorUtil = urlGeneratorUtil;
     }
 
-    public async Task<RegisterResponse> Register(RegisterRequest registerRequest,
-        CancellationToken cancellationToken)
+    public async Task<RegisterResponse> Register(
+        RegisterRequest registerRequest,
+        CancellationToken cancellationToken
+    )
     {
         // Check if the provided email or phone number is already used.
         if (await _authRepository.FindUserByEmailAsNoTrackingAsync
             (
-                new EmailVo(registerRequest.Email).Email, cancellationToken
+                new EmailVo(registerRequest.Email).Email,
+                cancellationToken
             ) != null
            )
         {
-            throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
+            throw new ArgumentException
+            (
+                $"Provided {nameof(registerRequest.Email)
+                    .ToLower()} is already taken."
+            );
         }
 
         string validPhoneNumber = new PhoneNumberVo(registerRequest.PhoneNumber).PhoneNumber;
 
         if (await _authRepository.IsPhoneNumberAlreadyTaken(validPhoneNumber, cancellationToken))
         {
-            throw new ArgumentException($"Provided {nameof(registerRequest.Email).ToLower()} is already taken.");
+            throw new ArgumentException
+            (
+                $"Provided {nameof(registerRequest.Email)
+                    .ToLower()} is already taken."
+            );
         }
 
         // Create a UserAuthLog.
@@ -100,8 +118,10 @@ public class AuthService : IAuthService
         return new RegisterResponse(user.IdUser, user.Email);
     }
 
-    public async Task<VerifyAccountResponse> VerifyAccount(VerifyAccountRequest verifyAccountRequest,
-        CancellationToken cancellationToken = default)
+    public async Task<VerifyAccountResponse> VerifyAccount(
+        VerifyAccountRequest verifyAccountRequest,
+        CancellationToken cancellationToken = default
+    )
     {
         // Check database invariants - find if user with given id exits, find if verification code is valid
         string validAccountVerificationCode =
@@ -134,7 +154,10 @@ public class AuthService : IAuthService
         return new VerifyAccountResponse(user.IdUser);
     }
 
-    public async Task<LoginResponse> Login(LoginRequest loginRequest, CancellationToken cancellationToken = default)
+    public async Task<LoginResponse> Login(
+        LoginRequest loginRequest,
+        CancellationToken cancellationToken = default
+    )
     {
         // Check database invariants - find if user exists.
         User? user = await _authRepository.FindUserAndUserLogAndRoleByEmailAsync
@@ -175,7 +198,8 @@ public class AuthService : IAuthService
         );
         await _cookieUtil.WriteAsCookie
         (
-            CookieNames.refreshToken, user.UserAuthLog.RefreshToken!,
+            CookieNames.refreshToken,
+            user.UserAuthLog.RefreshToken!,
             user.UserAuthLog.RefreshTokenExpiration
         );
 
@@ -202,7 +226,9 @@ public class AuthService : IAuthService
         await _cookieUtil.DeleteCookie(CookieNames.refreshToken);
     }
 
-    public async Task RefreshToken(CancellationToken cancellationToken = default)
+    public async Task RefreshToken(
+        CancellationToken cancellationToken = default
+    )
     {
         // Get the token from requests cookies.
         string refreshToken = await _cookieUtil.GetCookie(CookieNames.refreshToken);
@@ -231,12 +257,14 @@ public class AuthService : IAuthService
         // Write new access token and refresh token as cookies.
         await _cookieUtil.WriteAsCookie
         (
-            CookieNames.accessToken, new JwtSecurityTokenHandler().WriteToken(accessToken),
+            CookieNames.accessToken,
+            new JwtSecurityTokenHandler().WriteToken(accessToken),
             accessToken.ValidTo
         );
         await _cookieUtil.WriteAsCookie
         (
-            CookieNames.refreshToken, user.UserAuthLog.RefreshToken!,
+            CookieNames.refreshToken,
+            user.UserAuthLog.RefreshToken!,
             user.UserAuthLog.RefreshTokenExpiration
         );
 
@@ -244,7 +272,10 @@ public class AuthService : IAuthService
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
 
-    public async Task<CheckAuthResponse> CheckAuth(Guid idUser, CancellationToken cancellationToken = default)
+    public async Task<CheckAuthResponse> CheckAuth(
+        Guid idUser,
+        CancellationToken cancellationToken = default
+    )
     {
         // Validate the idUser
         if (idUser == Guid.Empty)
@@ -274,8 +305,11 @@ public class AuthService : IAuthService
         );
     }
 
-    public async Task<ResetEmailResponse> ResetEmail(Guid idUser, ResetEmailRequest resetEmailRequest,
-        CancellationToken cancellationToken)
+    public async Task<ResetEmailResponse> ResetEmail(
+        Guid idUser,
+        ResetEmailRequest resetEmailRequest,
+        CancellationToken cancellationToken
+    )
     {
         // Ensure the right format of the provided email (will throw an exception if invalid).
         string newValidEmail = new EmailVo(resetEmailRequest.NewEmail).Email;
@@ -330,8 +364,10 @@ public class AuthService : IAuthService
         return new ResetEmailResponse(resetEmailUrl);
     }
 
-    public async Task VerifyResetEmail(Guid resetEmailToken,
-        CancellationToken cancellationToken)
+    public async Task VerifyResetEmail(
+        Guid resetEmailToken,
+        CancellationToken cancellationToken
+    )
     {
         // Use a VO to extract the guid and ensure that it is not empty.
         var resetEmailTokenValidated = new GuidVo(resetEmailToken).Guid;
@@ -352,8 +388,11 @@ public class AuthService : IAuthService
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
 
-    public async Task ResetPassword(Guid idUser, ResetPasswordRequest resetPasswordRequest,
-        CancellationToken cancellationToken)
+    public async Task ResetPassword(
+        Guid idUser,
+        ResetPasswordRequest resetPasswordRequest,
+        CancellationToken cancellationToken
+    )
     {
         // Ensure the provided id is correct.
         Guid idUserValidated = new GuidVo(idUser).Guid;
@@ -398,7 +437,8 @@ public class AuthService : IAuthService
         {
             throw new Exception
             (
-                $"{nameof(resetPasswordRequest.NewPassword)} and {nameof(resetPasswordRequest.NewPasswordRepeated)} do not match."
+                $"{nameof(resetPasswordRequest.NewPassword)} and {nameof(resetPasswordRequest.NewPasswordRepeated)
+                } do not match."
             );
         }
 
@@ -415,7 +455,10 @@ public class AuthService : IAuthService
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
 
-    public async Task VerifyResetPassword(Guid resetPasswordToken, CancellationToken cancellationToken)
+    public async Task VerifyResetPassword(
+        Guid resetPasswordToken,
+        CancellationToken cancellationToken
+    )
     {
         // Use a VO to extract the guid and ensure that it is not empty.
         Guid resetPasswordTokenValidated = new GuidVo(resetPasswordToken).Guid;
@@ -435,8 +478,11 @@ public class AuthService : IAuthService
         await _unitOfWork.CompleteAsync(cancellationToken);
     }
 
-    public async Task ResetPhoneNumber(Guid idUser, ResetPhoneNumberRequest resetPhoneNumberRequest,
-        CancellationToken cancellationToken)
+    public async Task ResetPhoneNumber(
+        Guid idUser,
+        ResetPhoneNumberRequest resetPhoneNumberRequest,
+        CancellationToken cancellationToken
+    )
     {
         // Ensure the provided input is correct.
         Guid idUserValidated = new GuidVo(idUser).Guid;
@@ -467,5 +513,55 @@ public class AuthService : IAuthService
 
         // Persist all changes.
         await _unitOfWork.CompleteAsync(cancellationToken);
+    }
+
+    public async Task<Guid> ForgotPassword(
+        string email,
+        CancellationToken cancellationToken
+    )
+    {
+        // Validate the input.
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            throw new ArgumentException("All arguments must be provided.");
+        }
+
+        // Find the user and its auth log by email.
+        User? userAndUserLogByEmail = await _authRepository.FindUserAndUserLogAndRoleByEmailAsync
+            (email, cancellationToken);
+
+        if (userAndUserLogByEmail == null)
+        {
+            throw new ArgumentException($"User with specified {nameof(email)} not found");
+        }
+
+        // Set forgot password data.
+        Guid forgotPasswordToken = Guid.NewGuid();
+        userAndUserLogByEmail.UserAuthLog.SetForgotPasswordData(forgotPasswordToken);
+
+        // Generate a verification url.
+        string url = await _urlGeneratorUtil.GenerateResetVerificationUrl
+            (forgotPasswordToken, "verify-forgot-password");
+
+        // Email the user.
+        await _sesService.SendForgotPasswordResetEmailAsync
+            (userAndUserLogByEmail.Email, userAndUserLogByEmail.FirstName, url);
+
+        // Persist all changes.
+        await _unitOfWork.CompleteAsync(cancellationToken);
+
+        return forgotPasswordToken;
+    }
+
+    public async Task VerifyForgotPassword(
+        Guid forgotPasswordToken,
+        VerifyForgotPasswordRequest verifyForgotPasswordRequest,
+        CancellationToken cancellationToken
+    )
+    {
+        User? userAndUserLog = await _authRepository.FindUserAndUserLogByForgotPasswordToken
+            (forgotPasswordToken, cancellationToken);
+
+        throw new NotImplementedException();
     }
 }
