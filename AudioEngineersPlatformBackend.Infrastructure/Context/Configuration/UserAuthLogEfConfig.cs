@@ -77,6 +77,18 @@ public class UserAuthLogEfConfig : IEntityTypeConfiguration<UserAuthLog>
             .IsRequired();
 
         builder
+            .Property(ul => ul.ForgotPasswordToken)
+            .IsRequired();
+
+        builder
+            .Property(ul => ul.ForgotPasswordTokenExpiration)
+            .IsRequired();
+
+        builder
+            .Property(ul => ul.IsRemindingPassword)
+            .IsRequired();
+
+        builder
             .ToTable("UserAuthLog");
     }
 }
