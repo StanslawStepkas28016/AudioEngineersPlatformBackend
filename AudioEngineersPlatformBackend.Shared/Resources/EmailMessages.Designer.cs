@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace Shared.Resources {
+    using System;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -75,6 +78,18 @@ namespace Shared.Resources {
         public static string ResetPasswordEmailSubject {
             get {
                 return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
+            }
+        }
+        
+        public static string ForgotPasswordEmailSubject {
+            get {
+                return ResourceManager.GetString("ForgotPasswordEmailSubject", resourceCulture);
+            }
+        }
+        
+        public static string ForgotPasswordEmailBody {
+            get {
+                return ResourceManager.GetString("ForgotPasswordEmailBody", resourceCulture);
             }
         }
     }
