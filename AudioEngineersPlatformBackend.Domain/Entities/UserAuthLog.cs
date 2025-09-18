@@ -8,27 +8,8 @@ public enum VerificationOutcome
     VerificationCodeExpired,
 }
 
-public class UserAuthLog
+public partial class UserAuthLog
 {
-    // Backing fields
-    private Guid _idUserAuthLog;
-    private DateTime? _dateCreated;
-    private DateTime? _dateDeleted;
-    private bool _isDeleted;
-    private string? _refreshToken;
-    private DateTime? _refreshTokenExpiration;
-    private DateTime? _dateLastLogin;
-    private string? _verificationCode;
-    private DateTime? _verificationCodeExpiration;
-    private bool _isVerified;
-    private Guid? _resetPasswordToken;
-    private DateTime? _resetPasswordTokenExpiration;
-    private bool _isResettingPassword;
-    private Guid? _resetEmailToken;
-    private DateTime? _resetEmailTokenExpiration;
-    private bool _isResettingEmail;
-    private ICollection<User> _users;
-
     // Properties
     public Guid IdUserAuthLog
     {
@@ -140,6 +121,40 @@ public class UserAuthLog
     {
         get { return _isResettingPassword; }
         set { _isResettingPassword = value; }
+    }
+
+    public Guid ForgotPasswordToken
+    {
+        get => _forgotPasswordToken;
+        set
+        {
+            if (value == Guid.Empty)
+            {
+                throw new ArgumentException($"{nameof(ForgotPasswordToken)} cannot be empty.");
+            }
+
+            _forgotPasswordToken = value;
+        }
+    }
+
+    public DateTime ForgotPasswordTokenExpiration
+    {
+        get => _forgotPasswordTokenExpiration;
+        set
+        {
+            if (value < DateTime.UtcNow)
+            {
+                throw new ArgumentException($"{nameof(ForgotPasswordTokenExpiration)} cannot be in past.");
+            }
+            
+            _forgotPasswordTokenExpiration = value;
+        }
+    }
+
+    public bool IsRemindingPassword
+    {
+        get => _isRemindingPassword;
+        set => _isRemindingPassword = value;
     }
 
     // References
@@ -392,4 +407,46 @@ public class UserAuthLog
         ResetPasswordTokenExpiration = null;
         IsResettingPassword = false;
     }
+
+    public void SetForgotPasswordData(Guid forgotPasswordToken)
+    {
+        if (forgotPasswordToken == Guid.Empty)
+        {
+            throw new ArgumentException($"{nameof(forgotPasswordToken)} cannot be empty.");
+        }
+
+        ForgotPasswordToken = forgotPasswordToken;
+        ForgotPasswordTokenExpiration = DateTime.UtcNow.AddHours(1);
+        IsRemindingPassword = true;
+    }
+
+    public void VerifyForgotPasswordData(Guid forgotPasswordTokenValidated)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public partial class UserAuthLog
+{
+    // Backing fields
+    private Guid _idUserAuthLog;
+    private DateTime? _dateCreated;
+    private DateTime? _dateDeleted;
+    private bool _isDeleted;
+    private string? _refreshToken;
+    private DateTime? _refreshTokenExpiration;
+    private DateTime? _dateLastLogin;
+    private string? _verificationCode;
+    private DateTime? _verificationCodeExpiration;
+    private bool _isVerified;
+    private Guid? _resetPasswordToken;
+    private DateTime? _resetPasswordTokenExpiration;
+    private bool _isResettingPassword;
+    private Guid? _resetEmailToken;
+    private DateTime? _resetEmailTokenExpiration;
+    private bool _isResettingEmail;
+    private Guid _forgotPasswordToken;
+    private DateTime _forgotPasswordTokenExpiration;
+    private bool _isRemindingPassword;
+    private ICollection<User> _users;
 }
