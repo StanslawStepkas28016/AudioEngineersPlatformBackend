@@ -9,17 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.17" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Serilog" Version="4.3.0" />
-        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Serilog"/>
+        <PackageReference Include="Serilog.AspNetCore"/>
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -30,22 +30,21 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Filters\" />
-      <Folder Include="Logs\" />
+        <Folder Include="Logs\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Published\web.config" />
-      <_ContentIncludedByDefault Remove="Published\appsettings.Development.json" />
-      <_ContentIncludedByDefault Remove="Published\appsettings.json" />
-      <_ContentIncludedByDefault Remove="Published\AudioEngineersPlatformBackend.API.deps.json" />
-      <_ContentIncludedByDefault Remove="Published\AudioEngineersPlatformBackend.API.runtimeconfig.json" />
+        <_ContentIncludedByDefault Remove="Published\web.config"/>
+        <_ContentIncludedByDefault Remove="Published\appsettings.Development.json"/>
+        <_ContentIncludedByDefault Remove="Published\appsettings.json"/>
+        <_ContentIncludedByDefault Remove="Published\AudioEngineersPlatformBackend.API.deps.json"/>
+        <_ContentIncludedByDefault Remove="Published\AudioEngineersPlatformBackend.API.runtimeconfig.json"/>
     </ItemGroup>
-
+    
 </Project>

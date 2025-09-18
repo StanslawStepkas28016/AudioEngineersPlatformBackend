@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="libphonenumber-csharp" Version="9.0.5"/>
-        <PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
+        <PackageReference Include="libphonenumber-csharp" />
+        <PackageReference Include="Microsoft.Extensions.Primitives" />
     </ItemGroup>
     
 </Project>
