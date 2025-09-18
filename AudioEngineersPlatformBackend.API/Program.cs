@@ -5,48 +5,53 @@ using AudioEngineersPlatformBackend.Application;
 using AudioEngineersPlatformBackend.Infrastructure;
 using AudioEngineersPlatformBackend.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
-    // Add logging via Serilog
+    // Add logging via Serilog.
     builder.Host.AddSerilogLogging();
 
-    // Add Swagger fore development
+    // Add Swagger fore development.
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    // Add localization
+    // Add localization.
     builder.Services.AddLocalizationExtension(builder.Configuration);
 
-    // Add "Clean Architecture layers"
+    // Add "Clean Architecture layers".
     builder.Services.AddApplicationLayer(builder.Configuration);
     builder.Services.AddInfrastructureLayer(builder.Configuration);
 
-    // Add SignalR
+    // Add SignalR.
     builder.Services.AddSignalR();
 
-    // Add controllers
-    builder.Services
+    // Add controllers.
+    builder
+        .Services
         .AddControllers()
         .AddNewtonsoftJson();
 
-    // Add authentication and authorization
+    // Add authentication and authorization.
     builder.Services.AddJwtAuthentication(builder.Configuration);
     builder.Services.AddRoleAuthorization();
 
-    // Add support for CORS
+    // Add support for CORS.
     builder.Services.AddCorsPolicy(builder.Configuration);
 }
 
 WebApplication app = builder.Build();
 {
-    // Use custom middlewares
+    // Use request logging middleware.
+    app.UseSerilogRequestLogging();
+
+    // Use custom middlewares.
     app.UseMiddleware<ExceptionMiddleware>();
 
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // Use swagger for development
+    // Use swagger for development.
     if (app.Environment.IsDevelopment())
     {
         // Run migrations
@@ -55,24 +60,24 @@ WebApplication app = builder.Build();
         await dbContext.Database.MigrateAsync();
     }
 
-    // Use redirections from HTTP to HTTPS
+    // Use redirections from HTTP to HTTPS.
     app.UseHttpsRedirection();
 
-    // User routing an CORS 
+    // User routing an CORS .
     app.UseRouting();
     app.UseCors();
 
-    // Use authentication and authorization
+    // Use authentication and authorization.
     app.UseAuthentication();
     app.UseAuthorization();
 
-    // Use request localization
+    // Use request localization.
     app.UseRequestLocalization();
 
-    // Map controllers to endpoints
+    // Map controllers to endpoints.
     app.MapControllers();
 
-    // Map the chat-hub
+    // Map the chat-hub.
     app.MapHub<ChatHub>("chat-hub");
 
     app.Run();

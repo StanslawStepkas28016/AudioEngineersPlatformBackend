@@ -8,8 +8,10 @@ namespace API.Extensions;
 
 public static class JwtExtensions
 {
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddJwtAuthentication(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services
             .AddAuthentication
@@ -38,6 +40,7 @@ public static class JwtExtensions
                             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
                     };
 
+                    // TODO: Pull this up and check.
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
@@ -53,17 +56,22 @@ public static class JwtExtensions
         return services;
     }
 
-    public static IServiceCollection AddRoleAuthorization(this IServiceCollection services)
+    public static IServiceCollection AddRoleAuthorization(
+        this IServiceCollection services
+    )
     {
-        services.AddAuthorizationBuilder()
+        services
+            .AddAuthorizationBuilder()
             .AddPolicy
             (
-                "AdministratorOnly", p =>
+                "AdministratorOnly",
+                p =>
                     p.RequireRole("Administrator")
             )
             .AddPolicy
             (
-                "Everyone", p =>
+                "Everyone",
+                p =>
                     p.RequireRole("Administrator", "Client", "Audio Engineer")
             );
 

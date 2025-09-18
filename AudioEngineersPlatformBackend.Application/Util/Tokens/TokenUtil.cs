@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AudioEngineersPlatformBackend.Application.Util.Tokens;
 
-public class   TokenUtil : ITokenUtil
+public class TokenUtil : ITokenUtil
 {
     private readonly JwtSettings _jwtSettings;
 
@@ -30,7 +30,8 @@ public class   TokenUtil : ITokenUtil
         SymmetricSecurityKey secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
         SigningCredentials credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
 
-        JwtSecurityToken token = new JwtSecurityToken(
+        JwtSecurityToken token = new JwtSecurityToken
+        (
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
