@@ -1,22 +1,50 @@
-using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Contracts.Chat.PersistSessionData;
-using AudioEngineersPlatformBackend.Contracts.Chat.ReceiveMessage;
+using API.Contracts.Chat.Commands.PersistConnectionData;
+using API.Dtos;
+using AudioEngineersPlatformBackend.Application.CQRS.Chat.Commands.PersistConnectionData;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Serilog;
 
 namespace API.Hubs;
 
 [Authorize(Roles = "Admin, Client, Audio engineer")]
 public class ChatHub : Hub
 {
-    private readonly IChatService _chatService;
     private readonly ILogger<ChatHub> _logger;
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
-    public ChatHub(IChatService chatService, ILogger<ChatHub> logger)
+    private const int CancellationTokenDelay = 1500;
+
+    public ChatHub(
+        ILogger<ChatHub> logger,
+        IMapper mapper,
+        ISender sender
+    )
     {
-        _chatService = chatService;
         _logger = logger;
+        _mapper = mapper;
+        _sender = sender;
+    }
+
+    private async Task<PersistConnectionDataResponse> PersistConnectionDataToDatabaseAsync(
+        PersistConnectionDataRequest persistConnectionDataRequest,
+        CancellationToken cancellationToken
+    )
+    {
+        // Map to command.
+        PersistConnectionDataCommand command = _mapper.Map<PersistConnectionDataRequest, PersistConnectionDataCommand>
+            (persistConnectionDataRequest);
+
+        // Send to mediator.
+        PersistConnectionDataCommandResult result = await _sender.Send(command, cancellationToken);
+
+        // Map to response.
+        PersistConnectionDataResponse response =
+            _mapper.Map<PersistConnectionDataCommandResult, PersistConnectionDataResponse>(result);
+
+        return response;
     }
 
     public override async Task OnConnectedAsync()
@@ -24,53 +52,58 @@ public class ChatHub : Hub
         // Add current client to its own connection group.
         await Groups.AddToGroupAsync(Context.ConnectionId, Context.UserIdentifier!);
 
-        // Save connection data to the DB.
-        await _chatService.PersistConnectionData
+        // Persist connection data to the DB.
+        await PersistConnectionDataToDatabaseAsync
         (
-            Guid.Parse(Context.UserIdentifier!),
             new PersistConnectionDataRequest
             {
-                ConnectionId = Context.ConnectionId,
-                IsConnecting = true
+                IdUser = Guid.Parse(Context.UserIdentifier!), ConnectionId = Context.ConnectionId, IsConnecting = true
             },
-            CancellationToken.None
+            new CancellationTokenSource(CancellationTokenDelay).Token
         );
 
+        // Log information.
         _logger.LogInformation
         (
-            "Connected as {ContextUserIdentifier} with {ContextConnectionId}.", Context.UserIdentifier,
+            "Info from Class {ClassName}, Method {MethodName}: Connected as {ContextUserIdentifier} with {ContextConnectionId}.",
+            nameof(ChatHub),
+            nameof(OnConnectedAsync),
+            Context.UserIdentifier,
             Context.ConnectionId
         );
-
 
         // Send information to other online client that the user has connected.
         await Clients.Others.SendAsync
         (
             "ReceiveIsOnlineMessage",
-            new ReceiveIsOnlineMessage { IdUser = Guid.Parse(Context.UserIdentifier!), IsOnline = true }
+            new IsOnlineMessageDto { IdUser = Guid.Parse(Context.UserIdentifier!), IsOnline = true }
         );
     }
 
-    public override async Task OnDisconnectedAsync(Exception? exception)
+    public override async Task OnDisconnectedAsync(
+        Exception? exception
+    )
     {
-        // Not removing the user from its group on disconnected as the MS Docs suggest
-        // https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections#groups
+        // Not removing the user from its group on disconnected as the MS Docs suggest.
+        // Source: https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections#groups
 
-        // Save connection data to the DB.
-        await _chatService.PersistConnectionData
+        // Persist connection data to the DB.
+        await PersistConnectionDataToDatabaseAsync
         (
-            Guid.Parse(Context.UserIdentifier!),
             new PersistConnectionDataRequest
             {
-                ConnectionId = Context.ConnectionId,
-                IsConnecting = false
+                IdUser = Guid.Parse(Context.UserIdentifier!), ConnectionId = Context.ConnectionId, IsConnecting = false
             },
-            CancellationToken.None
+            new CancellationTokenSource(CancellationTokenDelay).Token
         );
 
+        // Log information.
         _logger.LogInformation
         (
-            "Disconnected as {ContextUserIdentifier} with {ContextConnectionId}.", Context.UserIdentifier,
+            "Info from Class {ClassName}, Method {MethodName}: Disconnected as {ContextUserIdentifier} with {ContextConnectionId}.",
+            nameof(ChatHub),
+            nameof(OnDisconnectedAsync),
+            Context.UserIdentifier,
             Context.ConnectionId
         );
 
@@ -78,7 +111,7 @@ public class ChatHub : Hub
         await Clients.Others.SendAsync
         (
             "ReceiveIsOnlineMessage",
-            new ReceiveIsOnlineMessage { IdUser = Guid.Parse(Context.UserIdentifier!), IsOnline = false }
+            new IsOnlineMessageDto { IdUser = Guid.Parse(Context.UserIdentifier!), IsOnline = false }
         );
     }
 }

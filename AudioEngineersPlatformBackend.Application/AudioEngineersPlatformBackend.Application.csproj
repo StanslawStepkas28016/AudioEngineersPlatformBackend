@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" />
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
         <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="MediatR" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
@@ -18,8 +22,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AudioEngineersPlatformBackend.Contracts\AudioEngineersPlatformBackend.Contracts.csproj" />
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Domain\AudioEngineersPlatformBackend.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Util\" />
+    </ItemGroup>
+
     
 </Project>

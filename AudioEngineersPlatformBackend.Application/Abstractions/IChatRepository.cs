@@ -1,37 +1,57 @@
-using AudioEngineersPlatformBackend.Contracts.Chat.GetChat;
-using AudioEngineersPlatformBackend.Contracts.Chat.GetMessagedUsers;
-using AudioEngineersPlatformBackend.Contracts.Chat.GetUserData;
+using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Domain.Entities;
 
 namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface IChatRepository
 {
-    Task SaveMessageAsync(Message message,
-        CancellationToken cancellationToken);
+    Task SaveMessageAsync(
+        Message message,
+        CancellationToken cancellationToken
+    );
 
-    Task SaveUserMessageAsync(UserMessage userMessage, CancellationToken cancellationToken);
+    Task SaveUserMessageAsync(
+        UserMessage userMessage,
+        CancellationToken cancellationToken
+    );
 
-    Task<List<GetChatResponse>> GetChat(Guid idUserSenderValidated, Guid idUserRecipientValidated,
-        CancellationToken cancellationToken);
+    Task<bool> IsUserOnlineAsync(
+        Guid idUserValidated,
+        CancellationToken cancellationToken
+    );
 
-    Task<List<InteractedUsersResponse>> GetInteractedUsers(Guid idUser, CancellationToken cancellationToken);
+    Task<PagedListDto<ChatMessageDto>> FindChatAsync(
+        Guid idUserSender,
+        Guid idUserRecipient,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken
+    );
 
-    Task<GetUserDataResponse?> GetUserData
-        (Guid idUser, CancellationToken cancellationToken);
+    Task ExecuteMarkUserMessagesAsReadAsync(
+        Guid idUserSender,
+        Guid idUserRecipient,
+        CancellationToken cancellationToken
+    );
 
-    Task SaveConnectionData
-        (HubConnection hubConnection, CancellationToken cancellationToken);
+    Task<UserDataDto?> FindUserDataAsync(
+        Guid idUser,
+        CancellationToken cancellationToken
+    );
 
-    Task<HubConnection?> FindHubConnectionByConnectionIdAndIdUser(Guid idUserValidated, string connectionId,
-        CancellationToken cancellationToken);
+    Task<List<InteractedUserDto>> FindInteractedUsersAsync(
+        Guid idUser,
+        CancellationToken cancellationToken
+    );
 
-    Task<bool> IsUserOnline(Guid idUserValidated, CancellationToken cancellationToken);
-    Task DeleteConnectionData(Guid idUserValidated, string connectionId, CancellationToken cancellationToken);
+    Task AddConnectionDataAsync(
+        HubConnection hubConnection,
+        CancellationToken cancellationToken
+    );
 
-    Task ExecuteMarkUserMessagesAsRead(Guid idUserSenderValidated, Guid idUserRecipientValidated,
-        CancellationToken cancellationToken);
-
-    Task<List<InteractedUsersResponse>> GetUnreadCountsForInteractedUsers(Guid idUser,
-        List<InteractedUsersResponse> messagedUsers, CancellationToken cancellationToken);
+    Task ExecuteDeleteConnectionDataAsync(
+        Guid idUserValidated,
+        string connectionId,
+        CancellationToken cancellationToken
+    );
 }

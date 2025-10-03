@@ -4,7 +4,7 @@ public class Review
 {
     // Backing fields
     private Guid _idReview;
-    private string _content = string.Empty;
+    private string _content;
     private byte _satisfactionLevel;
     private Guid _idAdvert;
     private Guid _idReviewLog;
@@ -14,10 +14,10 @@ public class Review
     private User _user;
 
     // Constants
-    private const byte MinSatisfactionLevel = 1;
-    private const byte MaxSatisfactionLevel = 5;
-    private const int MinContentLength = 35;
-    private const int MaxContentLength = 1500;
+    public const byte MinSatisfactionLevel = 1;
+    public const byte MaxSatisfactionLevel = 5;
+    public const int MinContentLength = 35;
+    public const int MaxContentLength = 1500;
 
     // Properties
     public Guid IdReview

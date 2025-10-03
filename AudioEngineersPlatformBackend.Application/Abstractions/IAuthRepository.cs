@@ -7,11 +7,16 @@ public interface IAuthRepository
 {
     Task<User?> FindUserByEmailAsNoTrackingAsync(
         string email,
+        CancellationToken cancellationToken = default
+    );
+
+    Task<bool> IsPhoneNumberAlreadyTakenAsync(
+        string phoneNumber,
         CancellationToken cancellationToken
     );
 
-    Task<bool> IsPhoneNumberAlreadyTaken(
-        string phoneNumber,
+    Task<bool> IsEmailAlreadyTakenAsync(
+        string email,
         CancellationToken cancellationToken
     );
 
@@ -25,13 +30,18 @@ public interface IAuthRepository
         CancellationToken cancellationToken
     );
 
-    Task<User> AddUserAsync(
+    Task AddTokenAsync(
+        Token token,
+        CancellationToken cancellationToken
+    );
+
+    Task AddUserAsync(
         User user,
         CancellationToken cancellationToken
     );
 
-    Task<User?> FindUserAndUserLogByVerificationCodeAsync(
-        string verificationCode,
+    Task<User?> FindUserAndUserLogAndTokenByTokenAsync(
+        string tokenValue,
         CancellationToken cancellationToken
     );
 
@@ -40,28 +50,24 @@ public interface IAuthRepository
         CancellationToken cancellationToken = default
     );
 
-    Task<User?> FindUserAndUserLogByRefreshTokenAsync(
-        string refreshToken,
-        CancellationToken cancellationToken = default
-    );
-
-    Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUserAsync(
+    Task<User?> FindUserAndUserLogByIdUserAsync(
         Guid idUser,
         CancellationToken cancellationToken
     );
 
-    Task<UserAuthLog?> FindUserLogByResetEmailTokenAsync(
-        Guid resetEmailToken,
+    Task<CheckAuthDto?> GetCheckAuthDataAsync(
+        Guid idUser,
         CancellationToken cancellationToken
     );
 
-    Task<UserAuthLog?> FindUserLogByResetPasswordTokenAsync(
-        Guid resetPasswordToken,
+    Task DeleteTokenByValueAsync(
+        string value,
         CancellationToken cancellationToken
     );
 
-    Task<User?> FindUserAndUserLogByForgotPasswordToken(
-        Guid forgotPasswordToken,
+    Task DeleteAllTokensWithSpecificNameByIdUserAsync(
+        Guid idUser,
+        string tokenName,
         CancellationToken cancellationToken
     );
 }

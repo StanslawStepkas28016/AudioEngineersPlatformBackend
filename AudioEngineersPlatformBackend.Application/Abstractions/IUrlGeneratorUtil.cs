@@ -2,5 +2,8 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface IUrlGeneratorUtil
 {
-    Task<string> GenerateResetVerificationUrl(Guid token, string path);
+    public Task<string> GenerateResetVerificationUrl(
+        string tokenValue,
+        string path
+    );
 }

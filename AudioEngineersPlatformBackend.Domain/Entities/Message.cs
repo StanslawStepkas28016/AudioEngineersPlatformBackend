@@ -5,12 +5,9 @@ public class Message
     // Backing fields
     private Guid _idMessage;
     private string _textContent;
-    private string? _fileName;
-    private Guid _fileKey;
-    private DateTime _dateSent;
 
     // Constants
-    private const short MaxLength = 500;
+    public const short MaxLength = 1000;
 
     // Properties
     public Guid IdMessage
@@ -46,23 +43,11 @@ public class Message
         }
     }
 
-    public Guid FileKey
-    {
-        get => _fileKey;
-        set { _fileKey = value; }
-    }
+    public Guid FileKey { get; set; }
 
-    public string? FileName
-    {
-        get => _fileName;
-        set { _fileName = value; }
-    }
+    public string? FileName { get; set; }
 
-    public DateTime DateSent
-    {
-        get => _dateSent;
-        set => _dateSent = value;
-    }
+    public DateTime DateSent { get; set; }
 
     public ICollection<UserMessage> UserMessages { get; set; }
 
@@ -71,13 +56,9 @@ public class Message
     {
     }
 
-    /// <summary>
-    ///     Factory method used for creating a text message.
-    /// </summary>
-    /// <param name="textContent"></param>
-    /// <returns></returns>
     public static Message CreateTextMessage(
-        string textContent)
+        string textContent
+    )
     {
         return new Message
         {
@@ -89,15 +70,10 @@ public class Message
         };
     }
 
-    /// <summary>
-    ///     Factory method to create a new Message with a specific IdMessage.
-    ///     Used for seeding purposes.
-    /// </summary>
-    /// <param name="idMessage"></param>
-    /// <param name="textContent"></param>
-    /// <returns></returns>
     public static Message CreateTextMessageWithId(
-        Guid idMessage, string textContent)
+        Guid idMessage,
+        string textContent
+    )
     {
         return new Message
         {
@@ -109,15 +85,10 @@ public class Message
         };
     }
 
-    /// <summary>
-    ///     Factory method to create a new file containing Message.
-    ///     It contains a key used to an AWS S3 bucket, pointing towards a specific file. 
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="fileKey"></param>
-    /// <returns></returns>
-    public static Message CreateFileMessage(string fileName,
-        Guid fileKey)
+    public static Message CreateFileMessage(
+        string fileName,
+        Guid fileKey
+    )
     {
         return new Message
         {
@@ -129,17 +100,11 @@ public class Message
         };
     }
 
-    /// <summary>
-    ///     Factory method to create a new file containing Message with a specific idMessage.
-    ///     It contains a key used to an AWS S3 bucket, pointing towards a specific file.
-    ///     Used for seeding purposes. 
-    /// </summary>
-    /// <param name="idMessage"></param>
-    /// <param name="fileName"></param>
-    /// <param name="fileKey"></param>
-    /// <returns></returns>
     public static Message CreateFileMessageWithId(
-        Guid idMessage, string fileName, Guid fileKey)
+        Guid idMessage,
+        string fileName,
+        Guid fileKey
+    )
     {
         return new Message
         {

@@ -3,10 +3,12 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.SimpleEmail;
 using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Infrastructure.Context;
-using AudioEngineersPlatformBackend.Infrastructure.ExternalServices.S3Service;
-using AudioEngineersPlatformBackend.Infrastructure.ExternalServices.SESService;
+using AudioEngineersPlatformBackend.Infrastructure.Config.Settings;
+using AudioEngineersPlatformBackend.Infrastructure.External.S3Service;
+using AudioEngineersPlatformBackend.Infrastructure.External.SesService;
+using AudioEngineersPlatformBackend.Infrastructure.Persistence.Context;
 using AudioEngineersPlatformBackend.Infrastructure.Repositories;
+using AudioEngineersPlatformBackend.Infrastructure.UoW;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,32 +18,34 @@ namespace AudioEngineersPlatformBackend.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureLayer(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
-        // Add DbContexts
-        services.AddDbContext<EngineersPlatformDbContext>
-        (options => options
-            .UseSqlServer(configuration.GetConnectionString("DevDB"))
+        // Add DbContext.
+        services.AddDbContext<AudioEngineersPlatformDbContext>
+        (builder => builder
+            .UseNpgsql(configuration.GetConnectionString("DevDB"))
         );
 
-        // Add Repositories
+        // Add Repositories.
         services.AddScoped<IAuthRepository, AuthRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAdvertRepository, AdvertRepository>();
         services.AddScoped<IChatRepository, ChatRepository>();
 
-        // Add AWS SES
-        services.Configure<SESSettings>(configuration.GetSection(nameof(SESSettings)));
-        services.AddScoped<ISESService, SESService>();
+        // Add AWS SES.
+        services.Configure<SesSettings>(configuration.GetSection(nameof(SesSettings)));
         services.AddSingleton<IAmazonSimpleEmailService>
         (sp =>
             {
-                SESSettings sesSettings = sp.GetRequiredService<IOptions<SESSettings>>().Value;
+                SesSettings sesSettings = sp.GetRequiredService<IOptions<SesSettings>>()
+                    .Value;
 
                 BasicAWSCredentials credentials = new BasicAWSCredentials(sesSettings.AccessKey, sesSettings.SecretKey);
 
-                AmazonSimpleEmailServiceConfig config = new AmazonSimpleEmailServiceConfig()
+                AmazonSimpleEmailServiceConfig config = new AmazonSimpleEmailServiceConfig
                 {
                     RegionEndpoint = RegionEndpoint.GetBySystemName(sesSettings.Region)
                 };
@@ -49,14 +53,15 @@ public static class DependencyInjection
                 return new AmazonSimpleEmailServiceClient(credentials, config);
             }
         );
+        services.AddScoped<ISesService, SesService>();
 
-        // Add AWS S3
+        // Add AWS S3.
         services.Configure<S3Settings>(configuration.GetSection(nameof(S3Settings)));
-        services.AddScoped<IS3Service, S3Service>();
         services.AddSingleton<IAmazonS3>
         (sp =>
             {
-                S3Settings s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
+                S3Settings s3Settings = sp.GetRequiredService<IOptions<S3Settings>>()
+                    .Value;
 
                 BasicAWSCredentials credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
 
@@ -68,9 +73,10 @@ public static class DependencyInjection
                 return new AmazonS3Client(credentials, config);
             }
         );
+        services.AddScoped<IS3Service, S3Service>();
 
-        // Add a unit of work
-        services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+        // Add a UoW.
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
