@@ -1,3 +1,4 @@
+using AudioEngineersPlatformBackend.Domain.Exceptions;
 using AudioEngineersPlatformBackend.Domain.ValueObjects;
 
 namespace AudioEngineersPlatformBackend.Domain.Entities;
@@ -11,13 +12,6 @@ public class User
     private string _email;
     private string _phoneNumber;
     private string _password;
-    private Guid _idRole;
-    private Role _role;
-    private Guid _idUserLog;
-    private UserAuthLog _userAuthLog;
-    private ICollection<Advert> _adverts;
-    private ICollection<Review> _reviews;
-    private ICollection<SocialMediaLink> _socialMediaLinks;
 
     // Properties
     public Guid IdUser
@@ -105,49 +99,24 @@ public class User
     }
 
     // References
-    public Guid IdRole
-    {
-        get => _idRole;
-        private set => _idRole = value;
-    }
+    public Guid IdRole { get; private set; }
 
-    public virtual Role Role
-    {
-        get => _role;
-        private set => _role = value;
-    }
+    public Role Role { get; private set; }
 
-    public Guid IdUserLog
-    {
-        get => _idUserLog;
-        private set => _idUserLog = value;
-    }
+    public Guid IdUserAuthLog { get; private set; }
 
-    public virtual UserAuthLog UserAuthLog
-    {
-        get => _userAuthLog;
-        private set => _userAuthLog = value;
-    }
+    public UserAuthLog UserAuthLog { get; set; }
 
-    public ICollection<Advert> Adverts
-    {
-        get => _adverts;
-        private set => _adverts = value;
-    }
+    public ICollection<Token> Tokens { get; set; }
 
-    public ICollection<Review> Reviews
-    {
-        get => _reviews;
-        private set => _reviews = value;
-    }
+    public ICollection<Advert> Adverts { get; private set; }
 
-    public ICollection<SocialMediaLink> SocialMediaLinks
-    {
-        get => _socialMediaLinks;
-        private set => _socialMediaLinks = value;
-    }
+    public ICollection<Review> Reviews { get; private set; }
+
+    public ICollection<SocialMediaLink> SocialMediaLinks { get; private set; }
 
     public ICollection<UserMessage> UserMessagesSender { get; set; }
+
     public ICollection<UserMessage> UserMessagesRecipient { get; set; }
 
     public ICollection<HubConnection> HubConnections { get; set; }
@@ -157,19 +126,15 @@ public class User
     {
     }
 
-    /// <summary>
-    ///     Factory method to create a new User.
-    /// </summary>
-    /// <param name="firstName"></param>
-    /// <param name="lastName"></param>
-    /// <param name="email"></param>
-    /// <param name="phoneNumber"></param>
-    /// <param name="password"></param>
-    /// <param name="idRole"></param>
-    /// <param name="idUserLog"></param>
-    /// <returns></returns>
-    public static User Create(string firstName, string lastName, string email, string phoneNumber,
-        string password, Guid idRole, Guid idUserLog)
+    public static User Create(
+        string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        string password,
+        Guid idRole,
+        Guid idUserLog
+    )
     {
         return new User
         {
@@ -180,25 +145,20 @@ public class User
             PhoneNumber = phoneNumber,
             Password = password,
             IdRole = idRole,
-            IdUserLog = idUserLog,
+            IdUserAuthLog = idUserLog
         };
     }
 
-    /// <summary>
-    ///     Factory method to create a new User with a specific IdUser.
-    ///     Used for seeding purposes.
-    /// </summary>
-    /// <param name="idUser"></param>
-    /// <param name="firstName"></param>
-    /// <param name="lastName"></param>
-    /// <param name="email"></param>
-    /// <param name="phoneNumber"></param>
-    /// <param name="password"></param>
-    /// <param name="idRole"></param>
-    /// <param name="idUserLog"></param>
-    /// <returns></returns>
-    public static User CreateWithId(Guid idUser, string firstName, string lastName, string email, string phoneNumber,
-        string password, Guid idRole, Guid idUserLog)
+    public static User CreateWithId(
+        Guid idUser,
+        string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        string password,
+        Guid idRole,
+        Guid idUserLog
+    )
     {
         return new User
         {
@@ -209,39 +169,54 @@ public class User
             PhoneNumber = phoneNumber,
             Password = password,
             IdRole = idRole,
-            IdUserLog = idUserLog,
+            IdUserAuthLog = idUserLog
         };
     }
 
-    /// <summary>
-    ///     Method used for setting the hashed password for the user, as hashing a password is not a
-    ///     domain responsibility but rather the application layer's responsibility. This method is provided
-    ///     since the Password has a private setter, and it is not possible to set it directly.
-    /// </summary>
-    /// <param name="password"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void SetHashedPassword(string password)
+    public void SetHashedPassword(
+        string hashedPassword
+    )
     {
-        if (string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(hashedPassword))
         {
             throw new ArgumentException($"{nameof(Password)} cannot be empty.");
         }
 
-        Password = password;
+        Password = hashedPassword;
     }
 
-    public void ResetEmail(string newEmail)
+    public void ResetHashedPassword(
+        string newHashedPassword
+    )
+    {
+        if (string.IsNullOrWhiteSpace(newHashedPassword))
+        {
+            throw new ArgumentException("New password cannot be empty.");
+        }
+
+        Password = newHashedPassword;
+    }
+
+    public void ResetEmail(
+        string newEmail
+    )
     {
         // Check if the emails differ 
         if (Email == newEmail)
         {
-            throw new ArgumentException($"New {nameof(Email).ToLower()} can't be the same as previous.");
+            throw new BusinessRelatedException
+            (
+                $"New {nameof(Email)
+                    .ToLower()} can't be the same as previous."
+            );
         }
 
         Email = newEmail;
     }
 
-    public void ChangePhoneNumber(string newValidPhoneNumber)
+    public void ResetPhoneNumber(
+        string newValidPhoneNumber
+    )
     {
         if (string.IsNullOrWhiteSpace(newValidPhoneNumber))
         {
@@ -251,7 +226,7 @@ public class User
         // Check if the numbers differ
         if (newValidPhoneNumber == PhoneNumber)
         {
-            throw new ArgumentException($"New {nameof(PhoneNumber)} must differ from the old one.");
+            throw new BusinessRelatedException("New phone number must differ from the old one.");
         }
 
         PhoneNumber = newValidPhoneNumber;

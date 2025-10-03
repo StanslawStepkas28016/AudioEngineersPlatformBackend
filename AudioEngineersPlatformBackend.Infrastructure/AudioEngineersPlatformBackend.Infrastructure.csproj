@@ -14,34 +14,19 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Options" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="RestSharp" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Domain\AudioEngineersPlatformBackend.Domain.csproj" />
         <ProjectReference Include="..\AudioEngineersPlatformBackend.Application\AudioEngineersPlatformBackend.Application.csproj" />
-        <ProjectReference Include="..\AudioEngineersPlatformBackend.Shared\AudioEngineersPlatformBackend.Shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Migrations\20250723200916_AddReviewLogAndReviewAndAddSocialMediaLinkAndSocialMediaName.Designer.cs" />
-      <Compile Remove="Migrations\20250723234039_Initial.Designer.cs" />
-      <Compile Remove="Migrations\20250724002307_Initial.Designer.cs" />
-      <Compile Remove="Migrations\20250724091428_Initial.Designer.cs" />
-      <Compile Remove="Migrations\20250724091428_Initial.cs" />
-      <Compile Remove="Migrations\20250826104936_AddHubConnection.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Localization.Abstractions">
-        <HintPath>..\..\..\..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\8.0.11\Microsoft.Extensions.Localization.Abstractions.dll</HintPath>
-      </Reference>
+        <ProjectReference Include="..\AudioEngineersPlatformBackend.Resources\AudioEngineersPlatformBackend.Resources.csproj" />
     </ItemGroup>
 
 </Project>

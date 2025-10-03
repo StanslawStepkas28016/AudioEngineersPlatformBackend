@@ -2,16 +2,17 @@ namespace AudioEngineersPlatformBackend.Application.Dtos;
 
 public class AdvertDetailsDto
 {
-    public Guid IdAdvert { get; set; }
-    public Guid IdUser { get; set; }
-    public string? UserFirstName { get; set; }
-    public string? UserLastName { get; set; }
-    public string? Title { get; set; }
-    public string? Description { get; set; }
-    public double Price { get; set; }
-    public string? CategoryName { get; set; }
-    public Guid CoverImageKey { get; set; }
-    public string? PortfolioUrl { get; set; }
-    public DateTime DateCreated { get; set; }
-    public DateTime? DateModified { get; set; }
+    public required Guid IdAdvert { get; set; }
+    public required Guid IdUser { get; set; }
+    public required string UserFirstName { get; set; }
+    public required string UserLastName { get; set; }
+    public required string Title { get; set; }
+    public required string Description { get; set; }
+    public required double Price { get; set; }
+    public required string CategoryName { get; set; }
+    public required Guid CoverImageKey { get; set; }
+    public string CoverImageUrl { get; set; } // Will be generated based on the CoverImageKey property.
+    public required string PortfolioUrl { get; set; }
+    public required DateTime DateCreated { get; set; }
+    public required DateTime? DateModified { get; set; }
 }
