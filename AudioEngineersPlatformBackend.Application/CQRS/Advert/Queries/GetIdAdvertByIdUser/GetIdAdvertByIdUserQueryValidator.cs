@@ -8,6 +8,6 @@ public class GetIdAdvertByIdUserQueryValidator : AbstractValidator<GetIdAdvertBy
     {
         RuleFor(exp => exp.IdUser)
             .NotEmpty()
-            .WithMessage("IdUser must be provied.");
+            .WithMessage("IdUser must be provided.");
     }
 }

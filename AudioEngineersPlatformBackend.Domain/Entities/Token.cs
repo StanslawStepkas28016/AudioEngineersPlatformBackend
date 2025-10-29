@@ -17,11 +17,11 @@ public class Token
     private string _value;
 
     // Constants
-    public static readonly DateTime RefreshTokenExpirationDate = DateTime.UtcNow.AddHours(24);
-    public static readonly DateTime VerifyAccountTokenExpirationDate = DateTime.UtcNow.AddHours(1);
-    public static readonly DateTime ForgotPasswordTokenExpirationDate = DateTime.UtcNow.AddHours(1);
-    public static readonly DateTime ResetEmailTokenExpirationDate = DateTime.UtcNow.AddHours(1);
-    public static readonly DateTime ResetPasswordTokenExpirationDate = DateTime.UtcNow.AddHours(1);
+    public static DateTime RefreshTokenExpirationDate => DateTime.UtcNow.AddHours(24);
+    public static DateTime VerifyAccountTokenExpirationDate => DateTime.UtcNow.AddHours(1);
+    public static DateTime ForgotPasswordTokenExpirationDate => DateTime.UtcNow.AddHours(1);
+    public static DateTime ResetEmailTokenExpirationDate => DateTime.UtcNow.AddHours(1);
+    public static DateTime ResetPasswordTokenExpirationDate => DateTime.UtcNow.AddHours(1);
 
     // Properties
     public Guid IdToken

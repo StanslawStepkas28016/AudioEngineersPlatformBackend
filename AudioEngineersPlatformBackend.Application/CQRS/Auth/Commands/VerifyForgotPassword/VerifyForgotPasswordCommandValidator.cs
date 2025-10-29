@@ -14,7 +14,7 @@ public class VerifyForgotPasswordCommandValidator : AbstractValidator<VerifyForg
             .NotEmpty()
             .WithMessage($"{nameof(VerifyForgotPasswordCommand.NewPassword)} must be provided.");
 
-        RuleFor(exp => exp.NewPassword)
+        RuleFor(exp => exp.NewPasswordRepeated)
             .NotEmpty()
             .WithMessage($"{nameof(VerifyForgotPasswordCommand.NewPasswordRepeated)} must be provided.");
 
