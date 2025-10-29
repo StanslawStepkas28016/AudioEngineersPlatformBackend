@@ -69,7 +69,7 @@ public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordComman
         {
             _logger.LogError
             (
-                "Error from Class {ClassName}, Method {MethodName}: User provided and email address {EmailAddress} which des not point to any user.",
+                "Error from Class {ClassName}, Method {MethodName}: User provided and email address {EmailAddress} which does not point to any user.",
                 nameof(ForgotPasswordCommandHandler),
                 nameof(Handle),
                 forgotPasswordCommand.Email

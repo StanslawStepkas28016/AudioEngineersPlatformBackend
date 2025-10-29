@@ -20,7 +20,7 @@ public class AddReviewCommandValidator : AbstractValidator<AddReviewCommand>
             .WithMessage("Content must be provided.");
 
         RuleFor(exp => exp.SatisfactionLevel)
-            .ExclusiveBetween(Review.MinSatisfactionLevel, Review.MaxSatisfactionLevel)
+            .InclusiveBetween(Review.MinSatisfactionLevel, Review.MaxSatisfactionLevel)
             .WithMessage
                 ($"SatisfactionLevel must be between {Review.MinSatisfactionLevel} and {Review.MaxSatisfactionLevel}.");
     }
