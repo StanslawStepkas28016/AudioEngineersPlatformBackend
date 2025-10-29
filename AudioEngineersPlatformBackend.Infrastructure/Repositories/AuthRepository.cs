@@ -1,7 +1,7 @@
 using AudioEngineersPlatformBackend.Application.Abstractions;
 using AudioEngineersPlatformBackend.Application.Dtos;
 using AudioEngineersPlatformBackend.Domain.Entities;
-using AudioEngineersPlatformBackend.Infrastructure.Context;
+using AudioEngineersPlatformBackend.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -9,15 +9,19 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Repositories;
 
 public class AuthRepository : IAuthRepository
 {
-    private readonly EngineersPlatformDbContext _context;
+    private readonly AudioEngineersPlatformDbContext _context;
 
-    public AuthRepository(EngineersPlatformDbContext context)
+    public AuthRepository(
+        AudioEngineersPlatformDbContext context
+    )
     {
         _context = context;
     }
 
-    public async Task<User?> FindUserByEmailAsNoTrackingAsync(string email,
-        CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserByEmailAsNoTrackingAsync(
+        string email,
+        CancellationToken cancellationToken = default
+    )
     {
         return await _context
             .Users
@@ -25,15 +29,32 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<bool> IsPhoneNumberAlreadyTaken(string phoneNumber, CancellationToken cancellationToken)
+    public async Task<bool> IsPhoneNumberAlreadyTakenAsync(
+        string phoneNumber,
+        CancellationToken cancellationToken
+    )
     {
         return await _context
             .Users
             .AnyAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
     }
 
+    public async Task<bool> IsEmailAlreadyTakenAsync(
+        string email,
+        CancellationToken cancellationToken
+    )
+    {
+        return
+            await _context
+                .Users
+                .Where(u => u.Email == email)
+                .AnyAsync(cancellationToken);
+    }
 
-    public async Task<Role?> FindRoleByNameAsNoTrackingAsync(string roleName, CancellationToken cancellationToken)
+    public async Task<Role?> FindRoleByNameAsNoTrackingAsync(
+        string roleName,
+        CancellationToken cancellationToken
+    )
     {
         return await _context
             .Roles
@@ -45,7 +66,10 @@ public class AuthRepository : IAuthRepository
             );
     }
 
-    public async Task<UserAuthLog> AddUserLogAsync(UserAuthLog userAuthLog, CancellationToken cancellationToken)
+    public async Task<UserAuthLog> AddUserLogAsync(
+        UserAuthLog userAuthLog,
+        CancellationToken cancellationToken
+    )
     {
         EntityEntry<UserAuthLog> res = await _context
             .UserAuthLogs
@@ -55,31 +79,51 @@ public class AuthRepository : IAuthRepository
             res.Entity;
     }
 
-    public async Task<User> AddUserAsync(User user, CancellationToken cancellationToken)
+    public async Task AddTokenAsync(
+        Token token,
+        CancellationToken cancellationToken
+    )
     {
-        EntityEntry<User> res = await _context
-            .Users
-            .AddAsync(user, cancellationToken);
-
-        return
-            res.Entity;
+        await _context
+            .Tokens
+            .AddAsync(token, cancellationToken);
     }
 
-    public async Task<User?> FindUserAndUserLogByVerificationCodeAsync(string verificationCode,
-        CancellationToken cancellationToken)
+    public async Task AddUserAsync(
+        User user,
+        CancellationToken cancellationToken
+    )
+    {
+        await _context
+            .Users
+            .AddAsync(user, cancellationToken);
+    }
+
+    public async Task<User?> FindUserAndUserLogAndTokenByTokenAsync(
+        string tokenValue,
+        CancellationToken cancellationToken
+    )
     {
         return await _context
             .Users
+            .Include(u => u.Role)
             .Include(u => u.UserAuthLog)
+            .Include
+            (u => u.Tokens
+                .Where(t => t.Value == tokenValue)
+            )
             .FirstOrDefaultAsync
             (
-                u => u.UserAuthLog.VerificationCode == verificationCode,
+                // TODO: Check this
+                u => u.Tokens.Any(t => t.Value == tokenValue),
                 cancellationToken
             );
     }
 
-    public async Task<User?> FindUserAndUserLogAndRoleByEmailAsync(string email,
-        CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserAndUserLogAndRoleByEmailAsync(
+        string email,
+        CancellationToken cancellationToken = default
+    )
     {
         return await _context
             .Users
@@ -88,24 +132,28 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User?> FindUserAndUserLogByRefreshTokenAsync(string refreshToken,
-        CancellationToken cancellationToken = default)
+    public async Task<User?> FindUserAndUserLogByIdUserAsync(
+        Guid idUser,
+        CancellationToken cancellationToken
+    )
     {
         return await _context
             .Users
-            .Include(u => u.UserAuthLog)
             .Include(u => u.Role)
-            .FirstOrDefaultAsync(u => u.UserAuthLog.RefreshToken == refreshToken, cancellationToken);
+            .Include(u => u.UserAuthLog)
+            .FirstOrDefaultAsync(u => u.IdUser == idUser, cancellationToken);
     }
 
-    public async Task<UserAssociatedDataDto?> GetUserAssociatedDataByIdUserAsync(Guid idUser,
-        CancellationToken cancellationToken)
+    public async Task<CheckAuthDto?> GetCheckAuthDataAsync(
+        Guid idUser,
+        CancellationToken cancellationToken
+    )
     {
         return await _context
             .Users
             .Where(u => u.IdUser == idUser)
             .Select
-            (u => new UserAssociatedDataDto
+            (u => new CheckAuthDto
                 {
                     IdUser = u.IdUser!,
                     Email = u.Email,
@@ -119,19 +167,26 @@ public class AuthRepository : IAuthRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<UserAuthLog?> FindUserLogByResetEmailTokenAsync(Guid resetEmailToken,
-        CancellationToken cancellationToken)
+    public async Task DeleteTokenByValueAsync(
+        string value,
+        CancellationToken cancellationToken
+    )
     {
-        return await _context
-            .UserAuthLogs
-            .FirstOrDefaultAsync(ul => ul.ResetEmailToken == resetEmailToken, cancellationToken);
+        await _context
+            .Tokens
+            .Where(t => t.Value == value)
+            .ExecuteDeleteAsync(cancellationToken);
     }
 
-    public async Task<UserAuthLog?> FindUserLogByResetPasswordTokenAsync(Guid resetPasswordToken,
-        CancellationToken cancellationToken)
+    public async Task DeleteAllTokensWithSpecificNameByIdUserAsync(
+        Guid idUser,
+        string tokenName,
+        CancellationToken cancellationToken
+    )
     {
-        return await _context
-            .UserAuthLogs
-            .FirstOrDefaultAsync(ul => ul.ResetPasswordToken == resetPasswordToken, cancellationToken);
+        await _context
+            .Tokens
+            .Where(t => t.IdUser == idUser && t.Name == tokenName)
+            .ExecuteDeleteAsync(cancellationToken);
     }
 }

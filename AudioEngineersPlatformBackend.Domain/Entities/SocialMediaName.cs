@@ -4,8 +4,7 @@ public class SocialMediaName
 {
     // Backing fields
     private Guid _idSocialMediaName;
-    private string _name = string.Empty;
-    private ICollection<SocialMediaLink> _socialMediaLinks;
+    private string _name;
 
     // Properties
     public Guid IdSocialMediaName
@@ -37,18 +36,16 @@ public class SocialMediaName
     }
 
     // References
-    public ICollection<SocialMediaLink> SocialMediaLinks
-    {
-        get => _socialMediaLinks;
-        set => _socialMediaLinks = value;
-    }
+    public ICollection<SocialMediaLink> SocialMediaLinks { get; set; }
 
     /// <summary>
     ///     Factory method for creating a SocialMediaName entity.
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static SocialMediaName Create(string name)
+    public static SocialMediaName Create(
+        string name
+    )
     {
         return new SocialMediaName
         {
@@ -64,7 +61,10 @@ public class SocialMediaName
     /// <param name="idSocialMediaName"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static SocialMediaName CreateWithId(Guid idSocialMediaName, string name)
+    public static SocialMediaName CreateWithId(
+        Guid idSocialMediaName,
+        string name
+    )
     {
         return new SocialMediaName
         {

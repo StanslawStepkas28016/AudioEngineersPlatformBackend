@@ -1,38 +1,63 @@
-﻿using AudioEngineersPlatformBackend.Application.Abstractions;
-using AudioEngineersPlatformBackend.Application.Services;
-using AudioEngineersPlatformBackend.Application.Util.Cookies;
-using AudioEngineersPlatformBackend.Application.Util.CurrentUser;
-using AudioEngineersPlatformBackend.Application.Util.Tokens;
-using AudioEngineersPlatformBackend.Application.Util.UrlGenerator;
-using Microsoft.AspNetCore.Http;
+﻿using System.Reflection;
+using AudioEngineersPlatformBackend.Application.Abstractions;
+using AudioEngineersPlatformBackend.Application.Config.Settings;
+using AudioEngineersPlatformBackend.Application.Util.UrlGeneratorUtil;
+using AudioEngineersPlatformBackend.Domain.Entities;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace AudioEngineersPlatformBackend.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplicationLayer(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
-        // Add application layer services
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IAdvertService, AdvertService>();
-        services.AddScoped<IChatService, ChatService>();
+        // Add FluentValidation.
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-        // Add settings for JWT
-        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
-        services.AddScoped<ITokenUtil, TokenUtil>();
+        // Add Automapper.
+        services.Configure<LuckyPennySoftwareSettings>(configuration.GetSection(nameof(LuckyPennySoftwareSettings)));
+        services.AddAutoMapper
+        (
+            (
+                provider,
+                cfg
+            ) =>
+            {
+                cfg.LicenseKey = provider
+                    .GetRequiredService<IOptions<LuckyPennySoftwareSettings>>()
+                    .Value
+                    .LicenseKey;
+            },
+            AppDomain.CurrentDomain.GetAssemblies()
+        );
 
-        // Add HttpContextAccessor and CookieUtil for accessing cookies sent in the requests
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddScoped<ICookieUtil, CookieUtil>();
+        // Add Mediator.
+        services.AddMediatR
+        (cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 
-        // Add frontend settings for generating an email reset Url
+                cfg.LicenseKey = services
+                    .BuildServiceProvider()
+                    .GetRequiredService<IOptions<LuckyPennySoftwareSettings>>()
+                    .Value
+                    .LicenseKey;
+            }
+        );
+
+        // Add password hasher for DI.
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+        // Add url generator util.
         services.Configure<FrontendSettings>(configuration.GetSection(nameof(FrontendSettings)));
         services.AddScoped<IUrlGeneratorUtil, UrlGeneratorUtil>();
-
-        // Add services for current user
-        services.AddScoped<ICurrentUserUtil, CurrentUserUtil>();
 
         return services;
     }

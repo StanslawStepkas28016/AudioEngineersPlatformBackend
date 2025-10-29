@@ -1,0 +1,9 @@
+<Project>
+    <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+        <PackageReference Include="Moq"/>
+        <PackageReference Include="xunit"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="coverlet.collector"/>
+        <PackageReference Include="FluentAssertions"/>
+    </ItemGroup>
+</Project>

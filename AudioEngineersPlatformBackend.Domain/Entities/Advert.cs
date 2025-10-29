@@ -12,9 +12,6 @@ public class Advert
     private Guid _idUser;
     private Guid _idAdvertCategory;
     private Guid _idAdvertLog;
-    private User _user;
-    private AdvertCategory _advertCategory;
-    private AdvertLog _advertLog;
 
     // Constants
     private const double MaxPrice = 1500.0;
@@ -46,7 +43,6 @@ public class Advert
                 throw new ArgumentException($"{nameof(Title)} cannot be empty.");
             }
 
-
             if (value.Length > MaxTitleLength)
             {
                 throw new ArgumentException($"{nameof(Title)} cannot exceed {MaxTitleLength} characters.");
@@ -68,8 +64,11 @@ public class Advert
 
             if (value.Length > MaxDescriptionLength)
             {
-                throw new ArgumentException($"{nameof(Description)} cannot exceed {MaxDescriptionLength} characters.",
-                    nameof(value));
+                throw new ArgumentException
+                (
+                    $"{nameof(Description)} cannot exceed {MaxDescriptionLength} characters.",
+                    nameof(value)
+                );
             }
 
             _description = value;
@@ -138,11 +137,7 @@ public class Advert
         }
     }
 
-    public User User
-    {
-        get => _user;
-        private set => _user = value;
-    }
+    public User User { get; private set; }
 
     public Guid IdAdvertCategory
     {
@@ -158,11 +153,7 @@ public class Advert
         }
     }
 
-    public AdvertCategory AdvertCategory
-    {
-        get => _advertCategory;
-        private set => _advertCategory = value;
-    }
+    public AdvertCategory AdvertCategory { get; private set; }
 
     public Guid IdAdvertLog
     {
@@ -178,31 +169,15 @@ public class Advert
         }
     }
 
-    public AdvertLog AdvertLog
-    {
-        get => _advertLog;
-        private set => _advertLog = value;
-    }
+    public AdvertLog AdvertLog { get; set; }
 
     public ICollection<Review> Reviews { get; set; }
 
-    // Private constructor used for EF Core
+    // Private constructor used for EF Core.
     private Advert()
     {
     }
 
-    /// <summary>
-    ///     Factory method used for creating a new Advert.
-    /// </summary>
-    /// <param name="title"></param>
-    /// <param name="description"></param>
-    /// <param name="coverImageKey"></param>
-    /// <param name="portfolioUrl"></param>
-    /// <param name="price"></param>
-    /// <param name="idUser"></param>
-    /// <param name="idAdvertCategory"></param>
-    /// <param name="idAdvertLog"></param>
-    /// <returns></returns>
     public static Advert Create(
         string title,
         string description,
@@ -211,7 +186,8 @@ public class Advert
         double price,
         Guid idUser,
         Guid idAdvertCategory,
-        Guid idAdvertLog)
+        Guid idAdvertLog
+    )
     {
         return new Advert
         {
@@ -223,24 +199,10 @@ public class Advert
             Price = price,
             IdUser = idUser,
             IdAdvertCategory = idAdvertCategory,
-            IdAdvertLog = idAdvertLog,
+            IdAdvertLog = idAdvertLog
         };
     }
 
-    /// <summary>
-    ///     Factory method used for creating a new Advert with a specific IdAdvert.
-    ///     Used for seeding purposes.
-    /// </summary>
-    /// <param name="idAdvert"></param>
-    /// <param name="title"></param>
-    /// <param name="description"></param>
-    /// <param name="coverImageKey"></param>
-    /// <param name="portfolioUrl"></param>
-    /// <param name="price"></param>
-    /// <param name="idUser"></param>
-    /// <param name="idAdvertCategory"></param>
-    /// <param name="idAdvertLog"></param>
-    /// <returns></returns>
     public static Advert CreateWithIdAndStaticData(
         Guid idAdvert,
         string title,
@@ -250,7 +212,8 @@ public class Advert
         double price,
         Guid idUser,
         Guid idAdvertCategory,
-        Guid idAdvertLog)
+        Guid idAdvertLog
+    )
     {
         return new Advert
         {
@@ -262,7 +225,7 @@ public class Advert
             Price = price,
             IdUser = idUser,
             IdAdvertCategory = idAdvertCategory,
-            IdAdvertLog = idAdvertLog,
+            IdAdvertLog = idAdvertLog
         };
     }
 
@@ -270,7 +233,8 @@ public class Advert
         string? title,
         string? description,
         string? portfolioUrl,
-        double? price)
+        double? price
+    )
     {
         if (!string.IsNullOrWhiteSpace(title))
         {

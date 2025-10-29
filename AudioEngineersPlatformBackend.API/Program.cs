@@ -1,79 +1,68 @@
 using API.Extensions;
 using API.Hubs;
-using API.Middlewares.ExceptionMiddleware;
 using AudioEngineersPlatformBackend.Application;
 using AudioEngineersPlatformBackend.Infrastructure;
-using AudioEngineersPlatformBackend.Infrastructure.Context;
+using AudioEngineersPlatformBackend.Infrastructure.Persistence.Context;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-{
-    // Add logging via Serilog
-    builder.Host.AddSerilogLogging();
 
-    // Add Swagger fore development
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+// Add logging via Serilog.
+builder.Host.AddSerilogLogging();
 
-    // Add localization
-    builder.Services.AddLocalizationExtension(builder.Configuration);
+// Add Swagger fore development.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-    // Add "Clean Architecture layers"
-    builder.Services.AddApplicationLayer(builder.Configuration);
-    builder.Services.AddInfrastructureLayer(builder.Configuration);
+// Add localization.
+builder.Services.AddLocalizationExtension(builder.Configuration);
 
-    // Add SignalR
-    builder.Services.AddSignalR();
+// Add "Clean Architecture layers".
+builder.Services.AddApplicationLayer(builder.Configuration);
+builder.Services.AddInfrastructureLayer(builder.Configuration);
 
-    // Add controllers
-    builder.Services
-        .AddControllers()
-        .AddNewtonsoftJson();
+// Add SignalR.
+builder.Services.AddSignalR();
 
-    // Add authentication and authorization
-    builder.Services.AddJwtAuthentication(builder.Configuration);
-    builder.Services.AddRoleAuthorization();
+// Add controllers.
+builder.Services.AddControllers();
 
-    // Add support for CORS
-    builder.Services.AddCorsPolicy(builder.Configuration);
-}
+// Add authentication and authorization.
+builder.Services.AddSymmetricAuth(builder.Configuration);
+
+// Add support for CORS.
+builder.Services.AddCorsPolicy(builder.Configuration);
+
+// Add utility services.
+builder.Services.AddUtilityServices(builder.Configuration);
+
+// Add open telemetry.
+builder.Services.AddOpenTelemetryForAspire(builder.Configuration);
 
 WebApplication app = builder.Build();
+
+app.ConfigurePipeline(app.Environment);
+
+// Ensure running migrations.
+if (app.Environment.IsDevelopment())
 {
-    // Use custom middlewares
-    app.UseMiddleware<ExceptionMiddleware>();
+    using IServiceScope scope = app.Services.CreateScope();
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    AudioEngineersPlatformDbContext dbContext =
+        scope.ServiceProvider.GetRequiredService<AudioEngineersPlatformDbContext>();
 
-    // Use swagger for development
-    if (app.Environment.IsDevelopment())
-    {
-        // Run migrations
-        using var scope = app.Services.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetRequiredService<EngineersPlatformDbContext>();
-        await dbContext.Database.MigrateAsync();
-    }
-
-    // Use redirections from HTTP to HTTPS
-    app.UseHttpsRedirection();
-
-    // User routing an CORS 
-    app.UseRouting();
-    app.UseCors();
-
-    // Use authentication and authorization
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    // Use request localization
-    app.UseRequestLocalization();
-
-    // Map controllers to endpoints
-    app.MapControllers();
-
-    // Map the chat-hub
-    app.MapHub<ChatHub>("chat-hub");
-
-    app.Run();
+    await dbContext.Database.MigrateAsync();
 }
+
+// Ensure valid configurations.
+IMapper mapper = app.Services.GetRequiredService<IMapper>();
+mapper.ConfigurationProvider.AssertConfigurationIsValid();
+
+// Map controllers to endpoints.
+app.MapControllers();
+
+// Map the chat-hub.
+app.MapHub<ChatHub>("chat-hub");
+
+app.Run();
