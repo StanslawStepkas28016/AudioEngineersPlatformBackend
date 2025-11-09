@@ -227,7 +227,8 @@ public class AdvertController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != addReviewRequest.IdUserReviewer && roleNameFromClaims != AuthExtension.AdministratorRole)
+        if (idUserFromClaims != addReviewRequest.IdUserReviewer &&
+            roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot create this resource.");
         }

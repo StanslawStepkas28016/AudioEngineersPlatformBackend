@@ -91,7 +91,7 @@ public class ChatController : ControllerBase
 
     [Authorize
         (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
-    [HttpGet("presigned-url-for-file-upload")]
+    [HttpGet("presigned-url-for-upload")]
     public async Task<IActionResult> GetPresignedUrlForUpload(
         [FromQuery] GetPreSignedUrlForUploadRequest getPreSignedUrlForUploadRequest,
         CancellationToken cancellationToken

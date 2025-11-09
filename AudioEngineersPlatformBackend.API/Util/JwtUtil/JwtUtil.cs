@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using API.Abstractions;
+using API.Config.Settings;
 using AudioEngineersPlatformBackend.Application.Config.Settings;
 using AudioEngineersPlatformBackend.Domain.Entities;
 using Microsoft.Extensions.Options;

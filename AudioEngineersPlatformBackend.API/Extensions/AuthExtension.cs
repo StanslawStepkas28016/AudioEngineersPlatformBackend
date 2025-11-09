@@ -1,4 +1,5 @@
 using System.Text;
+using API.Config.Settings;
 using API.Util.CookieUtil;
 using AudioEngineersPlatformBackend.Application.Config.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
