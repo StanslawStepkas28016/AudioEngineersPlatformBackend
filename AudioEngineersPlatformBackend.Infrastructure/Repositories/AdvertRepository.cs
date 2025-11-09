@@ -18,7 +18,7 @@ public class AdvertRepository : IAdvertRepository
         _context = context;
     }
 
-    public async Task<bool> DoesUserHaveAnyAdvertByIdUserAsync(
+    public async Task<bool> DoesUserHaveAnyActiveAdvertByIdUserAsync(
         Guid idUser,
         CancellationToken cancellationToken
     )
@@ -26,7 +26,11 @@ public class AdvertRepository : IAdvertRepository
         return await
             _context
                 .Adverts
-                .AnyAsync(exp => exp.IdUser == idUser, cancellationToken);
+                .AnyAsync
+                (
+                    exp => exp.IdUser == idUser && exp.AdvertLog.IsActive && !exp.AdvertLog.IsDeleted,
+                    cancellationToken
+                );
     }
 
     public async Task<AdvertCategory?> FindAdvertCategoryByNameAsync(
@@ -220,8 +224,8 @@ public class AdvertRepository : IAdvertRepository
     {
         return await _context
             .Adverts
-            .Where(exp => exp.IdUser == idUser)
-            .Select(exp => exp.IdUser)
+            .Where(exp => exp.IdUser == idUser && exp.AdvertLog.IsActive && !exp.AdvertLog.IsDeleted)
+            .Select(exp => exp.IdAdvert)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

@@ -41,7 +41,7 @@ public class AdvertController : ControllerBase
         _claimsUtil = claimsUtil;
     }
 
-    [Authorize(Roles = "Admin, Audio engineer")]
+    [Authorize(Roles = "Administrator, Audio engineer")]
     [HttpPost]
     public async Task<IActionResult> CreateAdvert(
         [FromForm] CreateAdvertRequest createAdvertRequest,
@@ -69,7 +69,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Audio engineer")]
+    [Authorize(Roles = "Administrator, Audio engineer")]
     [HttpPatch("{idAdvert:guid}")]
     public async Task<IActionResult> ChangeAdvertData(
         [FromRoute] Guid idAdvert,
@@ -108,7 +108,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Audio engineer")]
+    [Authorize(Roles = "Administrator, Audio engineer")]
     [HttpDelete("{idAdvert:guid}")]
     public async Task<IActionResult> DeleteAdvert(
         [FromRoute] Guid idAdvert,
@@ -146,7 +146,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Audio engineer")]
+    [Authorize(Roles = "Administrator, Audio engineer")]
     [HttpGet("{idUser:guid}/id-advert")]
     public async Task<IActionResult> GetIdAdvertByIdUser(
         [FromRoute] Guid idUser,
@@ -214,7 +214,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client")]
+    [Authorize(Roles = "Administrator, Client")]
     [HttpPost("{idAdvert:guid}/review")]
     public async Task<IActionResult> AddReview(
         [FromRoute] Guid idAdvert,

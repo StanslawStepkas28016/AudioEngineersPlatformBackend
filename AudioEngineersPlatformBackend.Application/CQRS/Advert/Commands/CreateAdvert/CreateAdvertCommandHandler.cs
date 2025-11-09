@@ -76,7 +76,7 @@ public class CreateAdvertCommandHandler : IRequestHandler<CreateAdvertCommand, C
         }
 
         // Check if the user has any adverts (limit is one).
-        if (await _advertRepository.DoesUserHaveAnyAdvertByIdUserAsync(createAdvertCommand.IdUser, cancellationToken))
+        if (await _advertRepository.DoesUserHaveAnyActiveAdvertByIdUserAsync(createAdvertCommand.IdUser, cancellationToken))
         {
             _logger.LogError
             (

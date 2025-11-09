@@ -124,7 +124,7 @@ public class CreateAdvertCommandHandlerTests
 
         _advertRepositoryMock
             .Setup
-                (exp => exp.DoesUserHaveAnyAdvertByIdUserAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                (exp => exp.DoesUserHaveAnyActiveAdvertByIdUserAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         AdvertCategory category = await GenerateAdvertCategory();
@@ -195,7 +195,7 @@ public class CreateAdvertCommandHandlerTests
 
         _advertRepositoryMock
             .Setup
-                (exp => exp.DoesUserHaveAnyAdvertByIdUserAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                (exp => exp.DoesUserHaveAnyActiveAdvertByIdUserAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
@@ -245,7 +245,7 @@ public class CreateAdvertCommandHandlerTests
 
         _advertRepositoryMock
             .Setup
-                (exp => exp.DoesUserHaveAnyAdvertByIdUserAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                (exp => exp.DoesUserHaveAnyActiveAdvertByIdUserAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         _advertRepositoryMock

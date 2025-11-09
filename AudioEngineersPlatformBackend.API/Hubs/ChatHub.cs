@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace API.Hubs;
 
-[Authorize(Roles = "Admin, Client, Audio engineer")]
+[Authorize(Roles = "Administrator, Client, Audio engineer")]
 public class ChatHub : Hub
 {
     private readonly ILogger<ChatHub> _logger;

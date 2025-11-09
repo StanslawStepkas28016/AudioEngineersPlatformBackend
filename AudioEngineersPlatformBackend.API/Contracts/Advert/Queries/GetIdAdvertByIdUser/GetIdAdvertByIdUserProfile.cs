@@ -7,6 +7,18 @@ public class GetIdAdvertByIdUserProfile : Profile
 {
     public GetIdAdvertByIdUserProfile()
     {
+        CreateMap<Guid, GetIdAdvertByIdUserRequest>()
+            .ForMember
+            (
+                dest => dest.IdUser,
+                opt => opt.MapFrom
+                ((
+                        src,
+                        dest
+                    ) => dest.IdUser = src
+                )
+            );
+        
         CreateMap<GetIdAdvertByIdUserRequest, GetIdAdvertByIdUserQuery>();
 
         CreateMap<Guid, GetIdAdvertByIdUserQueryResult>()

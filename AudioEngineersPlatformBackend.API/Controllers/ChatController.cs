@@ -44,7 +44,7 @@ public class ChatController : ControllerBase
         _chatHubContext = chatHubContext;
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpPost("text-message")]
     public async Task<IActionResult> SendTextMessage(
         [FromBody] SendTextMessageRequest sendTextMessageRequest,
@@ -86,7 +86,7 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpGet("presigned-url-for-file-upload")]
     public async Task<IActionResult> GetPresignedUrlForUpload(
         [FromQuery] GetPreSignedUrlForUploadRequest getPreSignedUrlForUploadRequest,
@@ -108,7 +108,7 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpPost("file-message")]
     public async Task<IActionResult> SendFileMessage(
         [FromBody] SendFileMessageRequest sendFileMessageRequest,
@@ -150,7 +150,7 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpGet("{idUser:guid}/status")]
     public async Task<IActionResult> GetUserOnlineStatus(
         [FromRoute] Guid idUser,
@@ -171,7 +171,7 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpGet("{idUserSender:guid}/{idUserRecipient:guid}")]
     public async Task<IActionResult> GetChat(
         [FromRoute] Guid idUserSender,
@@ -213,7 +213,7 @@ public class ChatController : ControllerBase
         return Ok(response.PagedChatMessages);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpGet("{idUser:guid}/user-data")]
     public async Task<IActionResult> GetUserData(
         [FromRoute] Guid idUser,
@@ -232,7 +232,7 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpGet("{idUser:guid}/interacted")]
     public async Task<IActionResult> GetInteractedUsers(
         [FromRoute] Guid idUser,

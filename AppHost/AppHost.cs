@@ -19,7 +19,7 @@ var postgresDb = builder
     .WithImage("postgres", "14-alpine")
     .WithBindMount
     (
-        "../AudioEngineersPlatformBackend.API/Config/Scripts/",
+        "../AudioEngineersPlatformBackend.Infrastructure/Config/Scripts/",
         "/docker-entrypoint-initdb.d/",
         true
     );

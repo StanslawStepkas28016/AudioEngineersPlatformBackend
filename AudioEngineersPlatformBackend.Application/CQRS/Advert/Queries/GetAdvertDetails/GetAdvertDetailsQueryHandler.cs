@@ -72,7 +72,7 @@ public class GetAdvertDetailsQueryHandler : IRequestHandler<GetAdvertDetailsQuer
         // Fetch the advert data.
         AdvertDetailsDto? advertDetailsDto =
             await _advertRepository.FindAdvertDetailsByIdAdvertAsync(getAdvertDetailsQuery.IdAdvert, cancellationToken);
-
+        
         // Generate a presigned URL for the cover image.
         advertDetailsDto!.CoverImageUrl = await _s3Service.GetPreSignedUrlForReadAsync
             ("images", "", advertDetailsDto!.CoverImageKey, cancellationToken);

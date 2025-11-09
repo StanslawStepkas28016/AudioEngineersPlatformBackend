@@ -13,6 +13,7 @@ public static class PagedListDtoExtension
     )
     {
         int totalCount = await query.CountAsync(cancellationToken);
+
         List<T> items = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

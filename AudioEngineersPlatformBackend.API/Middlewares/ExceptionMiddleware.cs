@@ -67,7 +67,7 @@ public class ExceptionMiddleware
 
         // Write the response details.
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
         ExceptionDetailsDto exceptionDetailsDto = new ExceptionDetailsDto
         {
@@ -117,7 +117,7 @@ public class ExceptionMiddleware
 
         // Write the response details.
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
         ExceptionDetailsDto exceptionDetailsDto = new ExceptionDetailsDto
         {

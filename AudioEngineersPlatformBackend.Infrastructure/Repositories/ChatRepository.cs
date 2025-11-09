@@ -78,7 +78,7 @@ public class ChatRepository : IChatRepository
                     DateSent = um.Message.DateSent
                 }
             )
-            .OrderBy(um => um.DateSent)
+            .OrderByDescending(um => um.DateSent)
             .AsQueryable();
 
         return await PagedListDtoExtension.ToPagedListAsync(chatMessagesQuery, page, pageSize, cancellationToken);

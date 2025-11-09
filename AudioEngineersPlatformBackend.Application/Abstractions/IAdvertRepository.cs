@@ -5,7 +5,7 @@ namespace AudioEngineersPlatformBackend.Application.Abstractions;
 
 public interface IAdvertRepository
 {
-    Task<bool> DoesUserHaveAnyAdvertByIdUserAsync(
+    Task<bool> DoesUserHaveAnyActiveAdvertByIdUserAsync(
         Guid idUser,
         CancellationToken cancellationToken
     );
