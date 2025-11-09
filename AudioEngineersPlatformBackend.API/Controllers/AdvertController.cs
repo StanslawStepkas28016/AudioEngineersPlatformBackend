@@ -7,6 +7,7 @@ using API.Contracts.Advert.Queries.GetAdvertDetails;
 using API.Contracts.Advert.Queries.GetAdvertReviews;
 using API.Contracts.Advert.Queries.GetAllAdvertsSummaries;
 using API.Contracts.Advert.Queries.GetIdAdvertByIdUser;
+using API.Extensions;
 using AudioEngineersPlatformBackend.Application.CQRS.Advert.Commands.AddReview;
 using AudioEngineersPlatformBackend.Application.CQRS.Advert.Commands.ChangeAdvertData;
 using AudioEngineersPlatformBackend.Application.CQRS.Advert.Commands.CreateAdvert;
@@ -41,7 +42,7 @@ public class AdvertController : ControllerBase
         _claimsUtil = claimsUtil;
     }
 
-    [Authorize(Roles = "Administrator, Audio engineer")]
+    [Authorize(Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}")]
     [HttpPost]
     public async Task<IActionResult> CreateAdvert(
         [FromForm] CreateAdvertRequest createAdvertRequest,
@@ -52,7 +53,7 @@ public class AdvertController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != createAdvertRequest.IdUser && roleNameFromClaims != "Administrator")
+        if (idUserFromClaims != createAdvertRequest.IdUser && roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot create this resource.");
         }
@@ -69,7 +70,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Audio engineer")]
+    [Authorize(Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}")]
     [HttpPatch("{idAdvert:guid}")]
     public async Task<IActionResult> ChangeAdvertData(
         [FromRoute] Guid idAdvert,
@@ -81,7 +82,7 @@ public class AdvertController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != changeAdvertDataRequest.IdUser && roleNameFromClaims != "Administrator")
+        if (idUserFromClaims != changeAdvertDataRequest.IdUser && roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot edit this resource.");
         }
@@ -108,7 +109,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Audio engineer")]
+    [Authorize(Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}")]
     [HttpDelete("{idAdvert:guid}")]
     public async Task<IActionResult> DeleteAdvert(
         [FromRoute] Guid idAdvert,
@@ -120,7 +121,7 @@ public class AdvertController : ControllerBase
         Guid idUser = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUser != deleteAdvertRequest.IdUser && roleNameFromClaims != "Administrator")
+        if (idUser != deleteAdvertRequest.IdUser && roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot delete this resource.");
         }
@@ -146,7 +147,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Audio engineer")]
+    [Authorize(Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}")]
     [HttpGet("{idUser:guid}/id-advert")]
     public async Task<IActionResult> GetIdAdvertByIdUser(
         [FromRoute] Guid idUser,
@@ -214,7 +215,7 @@ public class AdvertController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client")]
+    [Authorize(Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.ClientRole}")]
     [HttpPost("{idAdvert:guid}/review")]
     public async Task<IActionResult> AddReview(
         [FromRoute] Guid idAdvert,
@@ -226,7 +227,7 @@ public class AdvertController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != addReviewRequest.IdUserReviewer && roleNameFromClaims != "Administrator")
+        if (idUserFromClaims != addReviewRequest.IdUserReviewer && roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot create this resource.");
         }

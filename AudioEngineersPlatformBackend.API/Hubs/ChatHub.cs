@@ -1,5 +1,6 @@
 using API.Contracts.Chat.Commands.PersistConnectionData;
 using API.Dtos;
+using API.Extensions;
 using AudioEngineersPlatformBackend.Application.CQRS.Chat.Commands.PersistConnectionData;
 using AutoMapper;
 using MediatR;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace API.Hubs;
 
-[Authorize(Roles = "Administrator, Client, Audio engineer")]
+[Authorize(Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
 public class ChatHub : Hub
 {
     private readonly ILogger<ChatHub> _logger;

@@ -9,6 +9,10 @@ namespace API.Extensions;
 
 public static class AuthExtension
 {
+    public const string AdministratorRole = "Administrator";
+    public const string ClientRole = "Client";
+    public const string AudioEngineerRole = "Audio engineer";
+
     public static IServiceCollection AddSymmetricAuth(
         this IServiceCollection services,
         IConfiguration configuration
@@ -61,13 +65,13 @@ public static class AuthExtension
             (
                 "AdministratorOnly",
                 p =>
-                    p.RequireRole("Administrator")
+                    p.RequireRole(AdministratorRole)
             )
             .AddPolicy
             (
                 "Everyone",
                 p =>
-                    p.RequireRole("Administrator", "Client", "Audio engineer")
+                    p.RequireRole(AdministratorRole, ClientRole, AudioEngineerRole)
             );
 
         return services;

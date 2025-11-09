@@ -12,6 +12,7 @@ using API.Contracts.Auth.Commands.VerifyForgotPassword;
 using API.Contracts.Auth.Commands.VerifyResetEmail;
 using API.Contracts.Auth.Commands.VerifyResetPassword;
 using API.Contracts.Auth.Queries.CheckAuth;
+using API.Extensions;
 using API.Util.CookieUtil;
 using AudioEngineersPlatformBackend.Application.CQRS.Auth.Commands.ForgotPassword;
 using AudioEngineersPlatformBackend.Application.CQRS.Auth.Commands.Login;
@@ -176,7 +177,8 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(
         CancellationToken cancellationToken
@@ -205,7 +207,8 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpGet("check-auth")]
     public async Task<IActionResult> CheckAuth(
         CancellationToken cancellationToken
@@ -277,7 +280,8 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpPatch("reset-email")]
     public async Task<IActionResult> ResetEmail(
         [FromBody] ResetEmailRequest resetEmailRequest,
@@ -340,7 +344,8 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpPatch("reset-password")]
     public async Task<IActionResult> ResetPassword(
         [FromBody] ResetPasswordRequest resetPasswordRequest,
@@ -394,7 +399,8 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpPatch("reset-phone-number")]
     public async Task<IActionResult> ResetAndVerifyPhoneNumber(
         [FromBody] ResetAndVerifyPhoneNumberRequest resetAndVerifyPhoneNumberRequest,
