@@ -20,6 +20,6 @@ public class VerifyForgotPasswordCommandValidator : AbstractValidator<VerifyForg
 
         RuleFor(exp => exp.NewPassword)
             .Equal(exp => exp.NewPasswordRepeated)
-            .WithMessage("Both password must be matching.");
+            .WithMessage("Both passwords must be matching.");
     }
 }
