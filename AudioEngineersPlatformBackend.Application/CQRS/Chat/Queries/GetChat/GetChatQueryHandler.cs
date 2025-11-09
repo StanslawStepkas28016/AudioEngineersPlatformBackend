@@ -87,6 +87,9 @@ public class GetChatQueryHandler : IRequestHandler<GetChatQuery, GetChatQueryRes
             cancellationToken
         );
 
+        // Reverse the order of the items for chat like pagination on the client side.
+        pagedChatMessages.Items.Reverse();
+
         // Mark fetched messages from recipient as read.
         await _chatRepository.ExecuteMarkUserMessagesAsReadAsync
             (getChatQuery.IdUserSender, getChatQuery.IdUserRecipient, cancellationToken);

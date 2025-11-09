@@ -75,6 +75,7 @@ public class DeleteAdvertCommandHandler : IRequestHandler<DeleteAdvertCommand, D
 
         // Mark the advert as deleted.
         advertAndAdvertLog.AdvertLog.SetIsDeletedStatus(true);
+        advertAndAdvertLog.AdvertLog.SetIsActiveStatus(false);
 
         // Save the changes
         await _unitOfWork.CompleteAsync(cancellationToken);

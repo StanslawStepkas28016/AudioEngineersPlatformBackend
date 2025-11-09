@@ -176,7 +176,7 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(
         CancellationToken cancellationToken
@@ -205,7 +205,7 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpGet("check-auth")]
     public async Task<IActionResult> CheckAuth(
         CancellationToken cancellationToken
@@ -249,7 +249,7 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     [HttpPost("{forgotPasswordToken:guid}/verify-forgot-password")]
     public async Task<IActionResult> VerifyForgotPassword(
-        Guid forgotPasswordToken,
+        [FromRoute] Guid forgotPasswordToken,
         [FromBody] VerifyForgotPasswordRequest verifyForgotPasswordRequest,
         CancellationToken cancellationToken
     )
@@ -277,7 +277,7 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpPatch("reset-email")]
     public async Task<IActionResult> ResetEmail(
         [FromBody] ResetEmailRequest resetEmailRequest,
@@ -314,7 +314,7 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     [HttpPost("{resetEmailToken:guid}/verify-reset-email")]
     public async Task<IActionResult> VerifyResetEmail(
-        Guid resetEmailToken,
+        [FromRoute] Guid resetEmailToken,
         CancellationToken cancellationToken
     )
     {
@@ -340,7 +340,7 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpPatch("reset-password")]
     public async Task<IActionResult> ResetPassword(
         [FromBody] ResetPasswordRequest resetPasswordRequest,
@@ -377,7 +377,7 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     [HttpPost("{resetPasswordToken:guid}/verify-reset-password")]
     public async Task<IActionResult> VerifyResetPassword(
-        Guid resetPasswordToken,
+        [FromRoute] Guid resetPasswordToken,
         CancellationToken cancellationToken
     )
     {
@@ -394,7 +394,7 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Admin, Client, Audio engineer")]
+    [Authorize(Roles = "Administrator, Client, Audio engineer")]
     [HttpPatch("reset-phone-number")]
     public async Task<IActionResult> ResetAndVerifyPhoneNumber(
         [FromBody] ResetAndVerifyPhoneNumberRequest resetAndVerifyPhoneNumberRequest,

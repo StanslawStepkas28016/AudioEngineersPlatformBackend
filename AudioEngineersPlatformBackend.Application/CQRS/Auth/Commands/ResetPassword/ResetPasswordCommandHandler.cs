@@ -123,11 +123,13 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand,
         );
 
         await _authRepository.AddTokenAsync(resetPasswordToken, cancellationToken);
-        
+
         // Set associated data.
+        userAndUserLog.SetHashedPassword
+            (_passwordHasher.HashPassword(userAndUserLog, resetPasswordCommand.NewPassword));
         userAndUserLog.UserAuthLog.SetIsResettingPassword(true);
 
-        // Send an email with a password rest confirmation link.
+        // Send an email with a password reset confirmation link.
         string resetPasswordUrl = await _urlGeneratorUtil.GenerateResetVerificationUrl
             (resetPasswordToken.Value, "verify-reset-password");
 

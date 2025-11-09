@@ -65,7 +65,7 @@ public class GetIdAdvertByIdUserQueryHandler : IRequestHandler<GetIdAdvertByIdUs
                 getIdAdvertByIdUserQuery.IdUser
             );
 
-            throw new BusinessRelatedException("IdAdvert not found.");
+            throw new BusinessRelatedException("You have not posted an advert yet.");
         }
 
         // Map to result.
