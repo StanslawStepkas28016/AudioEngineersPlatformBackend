@@ -11,7 +11,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add logging via Serilog.
 builder.Host.AddSerilogLogging();
 
-// Add Swagger fore development.
+// Add Swagger for development.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

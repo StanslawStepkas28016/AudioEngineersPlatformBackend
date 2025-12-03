@@ -6,6 +6,7 @@ using API.Contracts.Chat.Queries.GetChat;
 using API.Contracts.Chat.Queries.GetInteractedUsers;
 using API.Contracts.Chat.Queries.GetUserData;
 using API.Contracts.Chat.Queries.GetUserOnlineStatus;
+using API.Extensions;
 using API.Hubs;
 using AudioEngineersPlatformBackend.Application.CQRS.Chat.Commands.SendFileMessage;
 using AudioEngineersPlatformBackend.Application.CQRS.Chat.Commands.SendTextMessage;
@@ -44,7 +45,8 @@ public class ChatController : ControllerBase
         _chatHubContext = chatHubContext;
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpPost("text-message")]
     public async Task<IActionResult> SendTextMessage(
         [FromBody] SendTextMessageRequest sendTextMessageRequest,
@@ -55,7 +57,8 @@ public class ChatController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != sendTextMessageRequest.IdUserSender && roleNameFromClaims != "Administrator")
+        if (idUserFromClaims != sendTextMessageRequest.IdUserSender &&
+            roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot create this resource.");
         }
@@ -86,8 +89,9 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
-    [HttpGet("presigned-url-for-file-upload")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
+    [HttpGet("presigned-url-for-upload")]
     public async Task<IActionResult> GetPresignedUrlForUpload(
         [FromQuery] GetPreSignedUrlForUploadRequest getPreSignedUrlForUploadRequest,
         CancellationToken cancellationToken
@@ -108,7 +112,8 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpPost("file-message")]
     public async Task<IActionResult> SendFileMessage(
         [FromBody] SendFileMessageRequest sendFileMessageRequest,
@@ -119,7 +124,8 @@ public class ChatController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != sendFileMessageRequest.IdUserSender && roleNameFromClaims != "Administrator")
+        if (idUserFromClaims != sendFileMessageRequest.IdUserSender &&
+            roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot create this resource.");
         }
@@ -150,7 +156,8 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpGet("{idUser:guid}/status")]
     public async Task<IActionResult> GetUserOnlineStatus(
         [FromRoute] Guid idUser,
@@ -171,7 +178,8 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpGet("{idUserSender:guid}/{idUserRecipient:guid}")]
     public async Task<IActionResult> GetChat(
         [FromRoute] Guid idUserSender,
@@ -184,7 +192,7 @@ public class ChatController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != idUserSender && roleNameFromClaims != "Administrator")
+        if (idUserFromClaims != idUserSender && roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot access this resource.");
         }
@@ -213,7 +221,8 @@ public class ChatController : ControllerBase
         return Ok(response.PagedChatMessages);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpGet("{idUser:guid}/user-data")]
     public async Task<IActionResult> GetUserData(
         [FromRoute] Guid idUser,
@@ -232,7 +241,8 @@ public class ChatController : ControllerBase
         return Ok(response);
     }
 
-    [Authorize(Roles = "Administrator, Client, Audio engineer")]
+    [Authorize
+        (Roles = $"{AuthExtension.AdministratorRole}, {AuthExtension.AudioEngineerRole}, {AuthExtension.ClientRole}")]
     [HttpGet("{idUser:guid}/interacted")]
     public async Task<IActionResult> GetInteractedUsers(
         [FromRoute] Guid idUser,
@@ -243,7 +253,7 @@ public class ChatController : ControllerBase
         Guid idUserFromClaims = await _claimsUtil.ExtractIdUserFromClaims();
         string roleNameFromClaims = await _claimsUtil.ExtractRoleNameFromClaims();
 
-        if (idUserFromClaims != idUser && roleNameFromClaims != "Administrator")
+        if (idUserFromClaims != idUser && roleNameFromClaims != AuthExtension.AdministratorRole)
         {
             throw new UnauthorizedAccessException("You cannot access this resource.");
         }

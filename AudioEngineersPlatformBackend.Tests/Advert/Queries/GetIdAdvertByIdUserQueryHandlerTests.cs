@@ -88,6 +88,6 @@ public class GetIdAdvertByIdUserQueryHandlerTests
             func
                 .Should()
                 .ThrowExactlyAsync<BusinessRelatedException>()
-                .WithMessage("IdAdvert not found.");
+                .WithMessage("You have not posted an advert yet.");
     }
 }

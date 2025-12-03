@@ -1,4 +1,5 @@
 using API.Abstractions;
+using API.Config.Settings;
 using API.Util.ClaimsUtil;
 using API.Util.CookieUtil;
 using API.Util.JwtUtil;

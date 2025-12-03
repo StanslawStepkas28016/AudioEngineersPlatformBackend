@@ -99,6 +99,10 @@ public class ResetPasswordCommandHandlerTests
             .Setup(exp => exp.VerifyHashedPassword(user, user.Password, command.CurrentPassword))
             .Returns(PasswordVerificationResult.Success);
 
+        _passwordHasherMock
+            .Setup(exp => exp.HashPassword(It.IsAny<User>(), It.IsAny<string>()))
+            .Returns("HashedPassword");
+
         _urlGeneratorMock
             .Setup(exp => exp.GenerateResetVerificationUrl(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync("WhateverUrl");
@@ -112,7 +116,7 @@ public class ResetPasswordCommandHandlerTests
             .IsResettingPassword
             .Should()
             .BeTrue();
-        
+
         result
             .Instructions
             .Should()
