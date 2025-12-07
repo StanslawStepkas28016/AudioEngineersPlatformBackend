@@ -34,3 +34,6 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 .config
+
+# Docker compose for vps preview deployment.
+docker-compose-vps.yml

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using API.Abstractions;
 using API.Contracts.Auth.Commands.ForgotPassword;
@@ -59,6 +60,14 @@ public class AuthController : ControllerBase
         _claimsUtil = claimsUtil;
     }
 
+    [AllowAnonymous]
+    [HttpGet("locale")]
+    public async Task<IActionResult> Locale()
+    {
+        CultureInfo currentCulture = CultureInfo.CurrentCulture;
+        return Ok(currentCulture.ToString());
+    }
+    
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(

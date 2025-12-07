@@ -138,10 +138,11 @@ public class AdvertRepository : IAdvertRepository
     }
 
     public async Task<PagedListDto<AdvertSummaryDto>> FindAdvertSummariesAsync(
+        string? categoryFilterTerm,
         string? sortOrder,
+        string? searchTerm,
         int page,
         int pageSize,
-        string? searchTerm,
         CancellationToken cancellationToken
     )
     {
@@ -158,6 +159,7 @@ public class AdvertRepository : IAdvertRepository
                     UserLastName = a.User.LastName,
                     DateCreated = a.AdvertLog.DateCreated,
                     Price = a.Price,
+                    DescriptionShort = a.Description,
                     CategoryName = a.AdvertCategory.CategoryName,
                     CoverImageKey = a.CoverImageKey,
                     Description = a.Description
@@ -165,15 +167,24 @@ public class AdvertRepository : IAdvertRepository
             )
             .AsQueryable();
 
+        if (!string.IsNullOrWhiteSpace(categoryFilterTerm))
+        {
+            queryable = queryable.Where(a => a.CategoryName == categoryFilterTerm);
+        }
+
         if (!string.IsNullOrEmpty(searchTerm))
         {
-            queryable = queryable.Where(a => a.Description!.Contains(searchTerm.ToLower()));
+            queryable = queryable.Where
+            (a => EF
+                .Functions.ToTsVector("english", a.Title + " " + a.Description)
+                .Matches(searchTerm)
+            );
         }
 
         switch (sortOrder)
         {
-            case "date_desc":
-                queryable = queryable.OrderByDescending(a => a.DateCreated);
+            case "date_asc":
+                queryable = queryable.OrderBy(a => a.DateCreated);
                 break;
             case "price_asc":
                 queryable = queryable.OrderBy(a => a.Price);
@@ -181,9 +192,8 @@ public class AdvertRepository : IAdvertRepository
             case "price_desc":
                 queryable = queryable.OrderByDescending(a => a.Price);
                 break;
-            // "date_asc" is the default case
             default:
-                queryable = queryable.OrderBy(a => a.DateCreated);
+                queryable = queryable.OrderByDescending(a => a.DateCreated);
                 break;
         }
 

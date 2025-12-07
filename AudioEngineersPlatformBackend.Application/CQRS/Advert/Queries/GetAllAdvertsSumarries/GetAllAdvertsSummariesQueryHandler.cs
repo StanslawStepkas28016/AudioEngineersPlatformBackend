@@ -59,10 +59,11 @@ public class
         PagedListDto<AdvertSummaryDto> pagedListDto =
             await _advertRepository.FindAdvertSummariesAsync
             (
+                getAllAdvertsSummariesQuery.CategoryFilterTerm,
                 getAllAdvertsSummariesQuery.SortOrder,
+                getAllAdvertsSummariesQuery.SearchTerm,
                 getAllAdvertsSummariesQuery.Page,
                 getAllAdvertsSummariesQuery.PageSize,
-                getAllAdvertsSummariesQuery.SearchTerm,
                 cancellationToken
             );
 

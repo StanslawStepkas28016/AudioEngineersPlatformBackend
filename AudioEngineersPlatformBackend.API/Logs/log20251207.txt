@@ -1,0 +1,18 @@
+2025-12-07T15:49:40.3208470+01:00 [ERR] (//) An error occurred using the connection to database '"audio-engineers-platform-db"' on server '"tcp://localhost:5432"'.
+2025-12-07T15:53:51.2997020+01:00 [ERR] (//) Failed executing DbCommand ("24"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"MigrationId\", \"ProductVersion\"
+FROM \"__EFMigrationsHistory\"
+ORDER BY \"MigrationId\";"
+2025-12-07T15:53:51.5943580+01:00 [INF] (//) Applying migration '"20251206183202_Initial"'.
+2025-12-07T15:53:51.8000080+01:00 [FTL] (//) Error validating the Lucky Penny software license key
+System.ArgumentNullException: IDX10000: The parameter 'token' cannot be a 'null' or an empty object.  (Parameter 'token')
+2025-12-07T15:53:51.8015070+01:00 [WRN] (//) You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-12-07T15:53:51.8453940+01:00 [INF] (//) User profile is available. Using '"/Users/stanislawstepka/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2025-12-07T15:53:51.9173340+01:00 [INF] (//) Creating key {aecc5394-beb5-4b69-a4a2-5528abb8cc81} with creation date 2025-12-07 14:53:51Z, activation date 2025-12-07 14:53:51Z, and expiration date 2026-03-07 14:53:51Z.
+2025-12-07T15:53:51.9195920+01:00 [WRN] (//) No XML encryptor configured. Key {aecc5394-beb5-4b69-a4a2-5528abb8cc81} may be persisted to storage in unencrypted form.
+2025-12-07T15:53:51.9210680+01:00 [INF] (//) Writing data to file '"/Users/stanislawstepka/.aspnet/DataProtection-Keys/key-aecc5394-beb5-4b69-a4a2-5528abb8cc81.xml"'.
+2025-12-07T15:53:51.9415990+01:00 [INF] (//) Now listening on: "http://localhost:5181"
+2025-12-07T15:53:51.9417950+01:00 [INF] (//) Application started. Press Ctrl+C to shut down.
+2025-12-07T15:53:51.9419430+01:00 [INF] (//) Hosting environment: "Development"
+2025-12-07T15:53:51.9419800+01:00 [INF] (//) Content root path: "/Users/stanislawstepka/Desktop/DYSK B/UCZELNIA/INŻYNIERKA/PROJEKTY/AudioEngineersPlatformBackend/AudioEngineersPlatformBackend.API"
+2025-12-07T15:54:25.9956110+01:00 [INF] (//) Application is shutting down...

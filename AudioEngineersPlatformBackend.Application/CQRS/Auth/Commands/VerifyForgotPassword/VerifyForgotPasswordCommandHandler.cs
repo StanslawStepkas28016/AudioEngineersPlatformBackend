@@ -88,7 +88,7 @@ public class
                 nameof(VerifyForgotPasswordCommandHandler),
                 nameof(Handle)
             );
-            throw new BusinessRelatedException("New password must be differ from the old password.");
+            throw new BusinessRelatedException("New password must be different from the old password.");
         }
 
         // Hash the new password.

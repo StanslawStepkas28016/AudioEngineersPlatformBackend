@@ -421,13 +421,14 @@ public class AudioEngineersPlatformDbContext : DbContext
             Guid.Parse("1B84601E-E225-4E9D-93D2-911FB0A1569E"),
             new DateTime(2024, 2, 3, 12, 35, 0, DateTimeKind.Utc)
         );
+
         Advert a1 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("31BA89AA-F10F-40E7-B4B0-7375DA567997"),
-            "I will mix your song professionally!",
-            "With over 10 years of hands-on experience in music mixing, I meticulously balance every element of your track—from drums and bass to vocals and effects—to ensure a polished, radio-ready sound. " +
-            "I use industry-standard tools and reference mixes to match the tonal character and loudness of top-charting songs. Whether you need depth, clarity, or that modern “in-your-face” sheen, I’ll tailor my approach to your genre and artistic vision. " +
-            "Turn your rough stems into a cohesive, dynamic mix that translates across all playback systems.",
+            "Zmiksuję twój utwór za bezcen!",
+            "Mam ponad 15 lat doświadczenia z miksowaniem utworów. Pracowałam nad największymi hitami Polskich artystów oraz z największymi gwiazdami branży audio. Wyróżniam się tym, że podchodzę indywidualnie do każdego zlecenia." +
+            "Korzystam z najlepszych narzędzi oraz sprzętu analogowego. To właśnie w ten sposób mogę zapewnić Tobie świetne brzmienie w bezkonkurencyjnej cenie! Jeśli szukasz najlepszego inżyniera, to dobrze trafiłeś." +
+            "Spowoduje, że nawet najgorzej brzmiące nagrania, będą brzmiały jak ze studio za milion dolarów :)",
             Guid.Parse("df0f7b35-b8c2-4246-b7f7-ccc82d4a3a7e"),
             "https://open.spotify.com/playlist/37i9dQZF1DZ06evO4pPsgW?si=e069a7940cc7419b",
             350.00,
@@ -444,10 +445,10 @@ public class AudioEngineersPlatformDbContext : DbContext
         Advert a2 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("AFF251D8-9E58-4F5C-BA43-4C6597FC8A08"),
-            "Professional mixing services by Piotr",
-            "Piotr brings 5+ years of mixing expertise in genres ranging from indie rock to electronic dance. He begins each project by analyzing your reference tracks and customizing EQ, compression, and spatial effects to enhance clarity and impact. " +
-            "His workflow includes detailed vocal tuning, side-chain ducking for punchy rhythms, and analog emulation for warm, musical saturation. Expect thorough revision rounds and clear communication every step of the way. " +
-            "Let Piotr transform your raw sessions into a powerful, polished mix that stands out on streaming platforms and live stages alike.",
+            "Profesjonalne miksy z pod ucha specjalisty",
+            "Miksem zajmuje się na codzień, pracując przy utwórach nagrywanych w Filharmonii Warszawskiej. Uczyłem się na UMCS w Warszawie i skończyłem kierunek związany z reżyserią dźwięku. Nie ograniczam się do jednego gatunku, " +
+            "mogę pracować nad utworami pop-owymi, jak i muzyką klasyczną, a nawet hip-hop'em. Pracowałem z artystami takimi jak: Piotr Rogucki, Organek, czy Mietek Szcześniak, dzięki nim zyskałem bardzo dużo doświadczenia w " +
+            "muzyce akustycznej, którą obecnie zajmuje się najwięcej.",
             Guid.Parse("17cf17e7-cf1d-4239-ba5a-5f8484191038"),
             "https://open.spotify.com/playlist/37i9dQZF1DX0XUsuxWHRQd?si=123456abcdef",
             400.00,
@@ -464,10 +465,10 @@ public class AudioEngineersPlatformDbContext : DbContext
         Advert a3 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("7BFD7CFA-5FDE-42E2-AC56-9EE1040B708F"),
-            "Mastering expertise by Ewa",
-            "Ewa specializes in mastering both digital and analog formats, delivering loudness-optimized masters without sacrificing dynamic range. She uses high-resolution metering and custom multiband compression to sculpt frequencies, tame harshness, and add that final sheen. " +
-            "Your track will be delivered in multiple formats (WAV, MP3, DDP) with ISRC embedding and CD-ready files if needed. Ewa also provides detailed EQ and loudness reports so you know exactly how your music will perform on Spotify, Apple Music, and vinyl pressings. " +
-            "Bring your mixes to the next level with transparent, professional mastering.",
+            "Najlepszy mastering w Polsce",
+            "Specjalizuje się w masteringu utworów, głównie dla wytwórni, ale wykonuje również indywidualne zlecenia. Pracuje hybrydowo - ze sprzętem analogowym, ale też z cyfrowymi emulacjami pluginów, tak żeby każdy utwór mógł brzmieć możliwie najlepiej. " +
+            "Masteringiem zajmuje się od 10 lat i ciągle staram się udoskonalać swoje umiejętności. Pracowałam ze Szpakiem, Matą i innymi topowymi artystami z Polskiego podwórka! " +
+            "Możesz być pewien, że utwór z pod mojej ręki, będzie brzmiał najlepiej.",
             Guid.Parse("2de15e61-0ab9-49eb-b5e2-cf909809d22f"),
             "https://open.spotify.com/playlist/37i9dQZF1DWTcaP2wCKa4K?si=abcdef123456",
             300.00,
@@ -484,10 +485,10 @@ public class AudioEngineersPlatformDbContext : DbContext
         Advert a4 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("8370E2EB-2EA0-4C4E-99E5-B9E719427F03"),
-            "Full production package from Tomasz",
-            "Tomasz offers end-to-end music production: from songwriting support and beat programming to arrangement and mix-ready stems. He crafts custom drum patterns, bass lines, and melodic hooks tailored to your style. " +
-            "Using both software synths and hardware outboard gear, he delivers a modern, dynamic sound that stands out in today’s crowded market. Each package includes at least three revision rounds, MIDI files for your own tweaks, and guidance on vocals and performance recording. " +
-            "Ideal for solo artists, bands, and labels seeking a cohesive sonic identity.",
+            "Unikatowe produkcje i instrumentale",
+            "Cześć, jestem Tomek, jestem producentem muzycznym, który cały swój czas poświęca na odkrywanie nowych i niebanalnych brzmień. Produkcją zajmuje się od 10 lat, więc mam w tym już duży staż. Mogę dla Ciebie wyprodukować instrumentale hip-hop'owe i trap'owe. " +
+            "Korzystam tylko z najlepszych syntezatorów (KORG M1, Yamaha Montage M). Posiadam również szeroką gamę prawdziwych instrumentów (Banjo, Gitary akustyczne, Flety), które moge dodać do produkcji stworzonej pod twoje indywidualne potrzeby. " +
+            "Najlepiej pracuje mi się z pojedynczymi artystami, lecz mogę również podjąć się pracy z zespołem!",
             Guid.Parse("cedfe8a0-0a9f-4c4a-a50f-76f9fcac396f"),
             "https://open.spotify.com/playlist/4nZo2X8iHrwhYBYdKvysgI",
             800.00,
@@ -499,15 +500,15 @@ public class AudioEngineersPlatformDbContext : DbContext
         AdvertLog al5 = AdvertLog.CreateWithIdAndStaticData
         (
             Guid.Parse("24BA6029-F88C-4B12-9A63-BF00C2D9F3E4"),
-            new DateTime(2026, 6, 12, 9, 23, 0, DateTimeKind.Utc)
+            new DateTime(2025, 6, 12, 9, 23, 0, DateTimeKind.Utc)
         );
         Advert a5 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("8CB96D43-A8A9-4010-8613-F721ECEDB8B3"),
-            "Advanced mixing workflows by Michał",
-            "Michał combines both in-the-box precision and analog warmth to achieve a balanced, lively mix. He employs gain-riding automation, mid/side processing, and parallel compression to bring out the emotion in your performance. " +
-            "With fluency across Pro Tools, Logic Pro, and Ableton Live, he adapts to your session templates and plugin suites seamlessly. You’ll receive detailed session notes, dry/wet stems, and high-resolution WAV master ready for distribution. " +
-            "Whether it’s a cinematic score or an underground hip-hop track, Michał’s mixes translate beautifully across car stereos, club systems, and earbuds.",
+            "Miksy z pazurem",
+            "Hej, jestem Michał, jestem inżynierem dźwięku, realizatorem nagrań i reżyserem dźwięku w TVP. W wolnym czasie miksuje utwory dla klientów - robię to z pasji, a nie dla pieniędzy, bo kocham to robić! Pracuje nad różnymi utworami, ale moja specjalizacja to Rock. " +
+            "Jestem biegły w pracy na Reaperze, ale znam również Pro Tools'a i FL Studio. " +
+            "Jeśli wybierzesz mnie, możesz być pewien, że twój miks będzie brzmiał dobrze niezależnie od miejsca - w samochodzie, na słuchawkach, czy w klubie!",
             Guid.Parse("0c318716-7c49-4735-9ce2-9eb499377e8a"),
             "https://open.spotify.com/playlist/3eoncc59w7c8t1PnKtSOh6",
             450.00,
@@ -524,10 +525,10 @@ public class AudioEngineersPlatformDbContext : DbContext
         Advert a6 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("18809BE2-B063-4ADA-A7A4-81F9FA107322"),
-            "Mastering for vinyl & streaming—Katarzyna",
-            "Katarzyna offers specialized mastering for both vinyl pressings and digital platforms. She carefully sequences tracks, applies EQ to prevent low-end overmodulation, and optimizes side-chain compression for needle-friendly dynamics. " +
-            "For streaming masters, she fine-tunes loudness to meet platform standards (Spotify, Apple Music, Tidal) while preserving headroom and musicality. You’ll get final masters in DDP, WAV, and MP3 formats, plus an analytical Loudness Unit Full Scale (LUFS) report. " +
-            "Elevate your project with a mastering engineer who understands the nuances of different playback mediums.",
+            "Najgłośniejsze mastery",
+            "Cześć jestem Kasia i masteruje utwory. Miałeś kiedyś tak, że po wrzuceniu utworu na platformy streamingowe był cichy? Nie uderzał tak mocno jak inne utwory? To kwestia masteringu, albo jego braku! " +
+            "Jeśli nie wiesz co zrobić, to wystarczy, że do mnie napiszesz, prześlesz swoje pliki, a ja powiem Tobie co jest nie tak - dobry mastering to nie tylko kwestia dobrego masteringowca, ale też dobrego miksu. " +
+            "Gdyby coś było nie tak, odrazu dam Tobie znać, bo chodzi o to, żebyś miał najlepszy efekt finalny!",
             Guid.Parse("504cd9ce-5804-4f76-b6bf-706aae87a1b0"),
             "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6?si=abcd3456ef90",
             320.00,
@@ -539,15 +540,15 @@ public class AudioEngineersPlatformDbContext : DbContext
         AdvertLog al7 = AdvertLog.CreateWithIdAndStaticData
         (
             Guid.Parse("993648CA-9D51-419A-85E8-046E8FC3162B"),
-            new DateTime(2025, 6, 13, 23, 12, 0, DateTimeKind.Utc)
+            new DateTime(2025, 8, 13, 23, 12, 0, DateTimeKind.Utc)
         );
         Advert a7 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("72AC8A29-19E2-4B7B-B810-418D638B5356"),
-            "Beat production & stems by Krzysztof",
-            "Krzysztof specializes in crafting genre-blending beats—from trap and lo-fi to funk and soul. Each beat comes with full MIDI programming, drum samples, and multitrack stems so you can rearrange or remix at will. " +
-            "He also offers vocal comping and editing as an add-on, ensuring your performance sits perfectly in the groove. Expect high-quality WAVs, labeled session files, and a quick turnaround. " +
-            "Perfect for rappers, singers, and producers looking for fresh, customizable sound beds.",
+            "Trapowe bity",
+            "Hej, specjalizuje się w produkcji instrumentali, mam w tym duże doświadczenie, bo jestem w branży już od 15 lat. Możliwe, że mnie znasz chociażby z produkcji dla Pezeta, czy Żabsona. " +
+            "Lubie pracować nad trapowymi produkcjami, ale nie ograniczam się tylko do nich - potrafię również robić bity pop'owe. Jeśli szukasz czegoś ciekawego, albo chciałbyś, żebym wykonał dla Ciebie produkcję inspirowaną innym utworem, " +
+            "wystarczy, że do mnie napiszesz, a ja poprowadzę Cię za rękę!",
             Guid.Parse("ef11919d-3e86-4c08-a594-03800f613fd8"),
             "https://open.spotify.com/playlist/2UZk7JjJnbTut1w8fqs3JL",
             900.00,
@@ -559,15 +560,18 @@ public class AudioEngineersPlatformDbContext : DbContext
         AdvertLog al8 = AdvertLog.CreateWithIdAndStaticData
         (
             Guid.Parse("C8AB7E20-E7DD-4616-8862-D15DAD3C986A"),
-            new DateTime(2025, 4, 3, 12, 11, 0, DateTimeKind.Utc)
+            new DateTime(2025, 9, 3, 12, 11, 0, DateTimeKind.Utc)
         );
+
+        // TODO: Change advert photos, and add reviews for the most recent adverts.
+        // TODO: Change labels under emails to match soundbest.pl instead of AudioEngineersPlatform.
         Advert a8 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("33545021-1FFB-4F46-9DF8-6242B8F0786F"),
-            "Mix engineering—Agnieszka’s precision approach",
-            "Agnieszka takes a surgical approach to mixing: corrective EQ, transparent compression, and creative spatial effects that serve your song. She communicates clearly, providing time-stamped revision notes and A/B comparisons. " +
-            "Using analog summing and high-end outboard gear, she injects warmth and depth, then returns to the box for final automation rides. You receive both instrumental and vocal stems plus a mastered reference for quick upload. " +
-            "Ideal for artists who demand both technical accuracy and emotional impact in their mixes.",
+            "Basowe miksy :)",
+            "Cześć, jestem inżynierem audio, który dobrze wie, co zrobić, żeby twój utwór brzmiał najlepiej. Pracuje tylko z najlepszymi emulacjami sprzętu analogowego (UAD, Slate i Waves) i bardzo cenie sobie dobrą organizację pracy. " +
+            "Preferuje pracę z klientami, którzy potrafią mi trafnie wypunktować poprawki do utworów, nad którymi pracujemy, dlatego proszę też, abyś liczył się z tym, że nie będę z Tobą pracować, jeśli nie będziesz potrafił/a tego zaakceptować. " +
+            "Jeśli szukasz profesjonalisty, trafiłeś idealnie! ",
             Guid.Parse("d98dd161-cd11-4397-b6b2-48a5656c20a3"),
             "https://open.spotify.com/playlist/37i9dQZF1DWXRqgorJj26U?si=4567abcd1234",
             480.00,
@@ -584,10 +588,10 @@ public class AudioEngineersPlatformDbContext : DbContext
         Advert a9 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("A79C87D0-276B-48BD-B23C-9AF67AFD4C41"),
-            "Mastering & delivery by Paweł",
-            "Paweł provides a full delivery package: mastered WAV, high-quality MP3, and separated stems for remixers or video post-production. He focuses on dynamic control, spectral balance, and proper headroom for broadcast. " +
-            "He also embeds metadata (ISRC, artist name, album art) so you can deliver directly to digital distributors with confidence. Comprehensive test masters are supplied so you can preview on headphones, car, and club systems. " +
-            "Get radio-ready masters that truly represent your artistic vision.",
+            "Mastering na poziomie!",
+            "Cześć, jestem Paweł, masteruje piosenki już 5 lat. Wiem, że to niedużo, ale zaufaj mi, że dobrze wiem co robię. Troche o mnie - jestem absolwentem Akademii Realizacji Dźwięku w Warszawie (2020 rok ukończenia) i doskonale wiem, co to znaczy profesjonalny master. " +
+            "Przez długi czas pracowałem jak estradowiec, głównie na koncertach rock'owych, dlatego też, wiem jak ważne jest dobry mastering utworu - jeśli jest słaby, to utwór będzie brzmiał kiepsko na koncercie. " +
+            "Serdecznie zapraszam Cię do współpracy, razem zrobimy coś świetnego!",
             Guid.Parse("c2363242-295c-4435-867c-90d9b96b085a"),
             "https://open.spotify.com/playlist/37i9dQZF1DWY4xHQp97fN6?si=bcdef7890123",
             350.00,
@@ -689,8 +693,8 @@ public class AudioEngineersPlatformDbContext : DbContext
             a7.IdAdvert,
             rl1.IdReviewLog,
             u2.IdUser,
-            "I feel like the engineer could not really achieve what I have wanted, however I think they were really patient and creative ;)",
-            3
+            "Krzysiek dobrze wie co robi, zna się na rzeczy, dlatego też moja ocena to 5! Już pierwsza wersją miksu mi się podobała :)",
+            5
         );
 
         Review r2 = Review.CreateWithIdAndStaticData
@@ -699,7 +703,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             a7.IdAdvert,
             rl2.IdReviewLog,
             u13.IdUser,
-            "Excellent mixes, I have never worked with such a talented engineer in my life. I will recommend working with him all the way!",
+            "Super miks, Krzychu zna się na rzeczy, w mojej opinii nie ma nikogo lepszego od niego w branży!",
             5
         );
 
@@ -709,7 +713,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             a2.IdAdvert,
             rl3.IdReviewLog,
             u14.IdUser,
-            "They way I was treated was great. I will most definitely visit this engineer in the studio again!",
+            "Praca z Piotrem to czysta przyjemność, poinstruował mnie jak wysyłać mu pliki, a sam miks wysłał mi bardzo szybko.",
             5
         );
 
@@ -719,7 +723,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             a2.IdAdvert,
             rl4.IdReviewLog,
             u12.IdUser,
-            "Poor judgement, does not understand the music I like and hates on doing some additional revisions of a master, I can't recommend this person...",
+            "Ehh, strasznie arogancki gość, jeśli chcesz stracić czas to trafiłeś super, bez komentarza...",
             1
         );
 
@@ -729,7 +733,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             a3.IdAdvert,
             rl5.IdReviewLog,
             u13.IdUser,
-            "I feel like this person knows their craft and is capable of delivering a good mix. I can most definitely recommend working with them :)",
+            "Polecam każdemu, kto chce mieć master na szybko, w przystępnej cenie i dobrej jakości.",
             4
         );
 
@@ -739,7 +743,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             a4.IdAdvert,
             rl6.IdReviewLog,
             u2.IdUser,
-            "Great production skills, I am very happy with the final result!",
+            "Piękna produkcja! Naprawdę jestem w szoku, że tak szybko dostałem już w pełni gotowego bita, mega!",
             5
         );
 
@@ -749,7 +753,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             a1.IdAdvert,
             rl7.IdReviewLog,
             u14.IdUser,
-            "The mix was good, but I expected more attention to detail. Overall, a decent experience.",
+            "Miks był okej, ale miałem nadzieje, że Ania bardziej przyłoży się do przeczyszczenia ścieżek, na których było dużo pogłosu!",
             3
         );
 

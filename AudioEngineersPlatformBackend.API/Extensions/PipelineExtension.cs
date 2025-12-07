@@ -1,4 +1,5 @@
 using API.Middlewares;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace API.Extensions;
@@ -14,7 +15,7 @@ public static class PipelineExtension
         app.UseMiddleware<ExceptionMiddleware>();
 
         // Use swagger for development.
-        if (environment.IsDevelopment())
+        if (environment.IsDevelopment() || environment.IsProduction())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -35,7 +36,10 @@ public static class PipelineExtension
         app.UseAuthorization();
 
         // Use request localization.
-        app.UseRequestLocalization();
+        IOptions<RequestLocalizationOptions> requestLocalizationOptions =
+            app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>();
+
+        app.UseRequestLocalization(requestLocalizationOptions.Value);
 
         return app;
     }

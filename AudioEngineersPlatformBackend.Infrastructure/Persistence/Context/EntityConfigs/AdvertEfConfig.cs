@@ -6,7 +6,9 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Context.Entit
 
 public class AdvertEfConfig : IEntityTypeConfiguration<Advert>
 {
-    public void Configure(EntityTypeBuilder<Advert> builder)
+    public void Configure(
+        EntityTypeBuilder<Advert> builder
+    )
     {
         builder
             .HasKey(a => a.IdAdvert)
@@ -23,6 +25,11 @@ public class AdvertEfConfig : IEntityTypeConfiguration<Advert>
         builder
             .Property(a => a.Description)
             .IsRequired();
+
+        builder
+            .HasIndex(a => new { a.Title, a.Description })
+            .HasMethod("GIN")
+            .IsTsVectorExpressionIndex("english");
 
         builder
             .Property(a => a.CoverImageKey)
