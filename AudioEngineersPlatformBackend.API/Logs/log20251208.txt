@@ -1,0 +1,79 @@
+2025-12-08T00:16:30.4934580+01:00 [ERR] (//) An error occurred using the connection to database '"audio-engineers-platform-db"' on server '"tcp://localhost:5432"'.
+2025-12-08T00:17:06.0917150+01:00 [ERR] (//) Failed executing DbCommand ("23"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"MigrationId\", \"ProductVersion\"
+FROM \"__EFMigrationsHistory\"
+ORDER BY \"MigrationId\";"
+2025-12-08T00:17:06.3930440+01:00 [INF] (//) Applying migration '"20251206183202_Initial"'.
+2025-12-08T00:17:06.6848030+01:00 [INF] (//) You have a valid license key for the Lucky Penny software Bundle Community edition. The license expires on 09/01/2026 00:00:00 +00:00.
+2025-12-08T00:17:06.7368390+01:00 [INF] (//) User profile is available. Using '"/Users/stanislawstepka/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2025-12-08T00:17:06.8384790+01:00 [INF] (//) Now listening on: "http://localhost:5181"
+2025-12-08T00:17:06.8386500+01:00 [INF] (//) Application started. Press Ctrl+C to shut down.
+2025-12-08T00:17:06.8387060+01:00 [INF] (//) Hosting environment: "Development"
+2025-12-08T00:17:06.8387390+01:00 [INF] (//) Content root path: "/Users/stanislawstepka/Desktop/DYSK B/UCZELNIA/INŻYNIERKA/PROJEKTY/AudioEngineersPlatformBackend/AudioEngineersPlatformBackend.API"
+2025-12-08T00:17:10.9064660+01:00 [INF] (/0HNHLSQVRREDN:00000001/cf0632dbe2d0596a403c0c6656d91d6e) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/""" - null null
+2025-12-08T00:17:10.9168090+01:00 [WRN] (/0HNHLSQVRREDN:00000001/cf0632dbe2d0596a403c0c6656d91d6e) Failed to determine the https port for redirect.
+2025-12-08T00:17:10.9405720+01:00 [INF] (//cf0632dbe2d0596a403c0c6656d91d6e) HTTP "GET" "/" responded 404 in 24.3420 ms
+2025-12-08T00:17:10.9425680+01:00 [INF] (/0HNHLSQVRREDN:00000001/cf0632dbe2d0596a403c0c6656d91d6e) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/""" - 404 0 null 47.454ms
+2025-12-08T00:17:10.9435650+01:00 [INF] (/0HNHLSQVRREDN:00000001/cf0632dbe2d0596a403c0c6656d91d6e) Request reached the end of the middleware pipeline without being handled by application code. Request path: "GET" "http"://"localhost:5181""""/", Response status code: 404
+2025-12-08T00:17:13.3518970+01:00 [INF] (/0HNHLSQVRREDN:00000002/95a02cc9e5f6b1639b20c356a9131ffe) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger""" - null null
+2025-12-08T00:17:13.3535140+01:00 [INF] (/0HNHLSQVRREDN:00000002/95a02cc9e5f6b1639b20c356a9131ffe) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger""" - 301 0 null 1.8999ms
+2025-12-08T00:17:13.3557300+01:00 [INF] (/0HNHLSQVRREDN:00000003/41c4c1d247261231fba594360dfc2580) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/index.html""" - null null
+2025-12-08T00:17:13.4216930+01:00 [INF] (/0HNHLSQVRREDN:00000003/41c4c1d247261231fba594360dfc2580) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/index.html""" - 200 null "text/html;charset=utf-8" 66.02ms
+2025-12-08T00:17:13.4293480+01:00 [INF] (/0HNHLSQVRREDN:00000004/6783d89091dc9862a33c2bdae4b97cea) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui.css""" - null null
+2025-12-08T00:17:13.4313580+01:00 [INF] (/0HNHLSQVRREDO:00000001/ad8d3f559ca91d556105165acabbff75) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui-bundle.js""" - null null
+2025-12-08T00:17:13.4315780+01:00 [INF] (/0HNHLSQVRREDP:00000001/ac51a314412afe6320f3162fba547806) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui-standalone-preset.js""" - null null
+2025-12-08T00:17:13.4411330+01:00 [INF] (/0HNHLSQVRREDP:00000001/ac51a314412afe6320f3162fba547806) Sending file. Request path: '"/swagger-ui-standalone-preset.js"'. Physical path: '"N/A"'
+2025-12-08T00:17:13.4411550+01:00 [INF] (/0HNHLSQVRREDN:00000004/6783d89091dc9862a33c2bdae4b97cea) Sending file. Request path: '"/swagger-ui.css"'. Physical path: '"N/A"'
+2025-12-08T00:17:13.4421510+01:00 [INF] (/0HNHLSQVRREDP:00000001/ac51a314412afe6320f3162fba547806) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui-standalone-preset.js""" - 200 230280 "text/javascript" 10.5796ms
+2025-12-08T00:17:13.4421570+01:00 [INF] (/0HNHLSQVRREDN:00000004/6783d89091dc9862a33c2bdae4b97cea) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui.css""" - 200 152034 "text/css" 12.8757ms
+2025-12-08T00:17:13.4431050+01:00 [INF] (/0HNHLSQVRREDO:00000001/ad8d3f559ca91d556105165acabbff75) Sending file. Request path: '"/swagger-ui-bundle.js"'. Physical path: '"N/A"'
+2025-12-08T00:17:13.4432130+01:00 [INF] (/0HNHLSQVRREDO:00000001/ad8d3f559ca91d556105165acabbff75) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui-bundle.js""" - 200 1456926 "text/javascript" 11.9264ms
+2025-12-08T00:17:13.5270060+01:00 [INF] (/0HNHLSQVRREDO:00000002/3f534351ea8f623f52075b48f66ac34d) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/v1/swagger.json""" - null null
+2025-12-08T00:17:13.5345220+01:00 [INF] (/0HNHLSQVRREDP:00000002/4e5020ba26c24cac4751c7f8b2a9be8e) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/favicon-32x32.png""" - null null
+2025-12-08T00:17:13.5349040+01:00 [INF] (/0HNHLSQVRREDP:00000002/4e5020ba26c24cac4751c7f8b2a9be8e) Sending file. Request path: '"/favicon-32x32.png"'. Physical path: '"N/A"'
+2025-12-08T00:17:13.5350020+01:00 [INF] (/0HNHLSQVRREDP:00000002/4e5020ba26c24cac4751c7f8b2a9be8e) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/favicon-32x32.png""" - 200 628 "image/png" 0.561ms
+2025-12-08T00:17:13.5699860+01:00 [INF] (/0HNHLSQVRREDO:00000002/3f534351ea8f623f52075b48f66ac34d) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/v1/swagger.json""" - 200 null "application/json;charset=utf-8" 43.0602ms
+2025-12-08T00:17:18.5552020+01:00 [INF] (//) Application is shutting down...
+2025-12-08T00:57:16.4615260+01:00 [ERR] (//) Failed executing DbCommand ("22"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"MigrationId\", \"ProductVersion\"
+FROM \"__EFMigrationsHistory\"
+ORDER BY \"MigrationId\";"
+2025-12-08T00:57:16.7474990+01:00 [INF] (//) Applying migration '"20251206183202_Initial"'.
+2025-12-08T00:57:17.0410200+01:00 [INF] (//) You have a valid license key for the Lucky Penny software Bundle Community edition. The license expires on 09/01/2026 00:00:00 +00:00.
+2025-12-08T00:57:17.0886510+01:00 [INF] (//) User profile is available. Using '"/Users/stanislawstepka/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2025-12-08T00:57:17.1858680+01:00 [INF] (//) Now listening on: "http://localhost:5181"
+2025-12-08T00:57:17.1860150+01:00 [INF] (//) Application started. Press Ctrl+C to shut down.
+2025-12-08T00:57:17.1860740+01:00 [INF] (//) Hosting environment: "Development"
+2025-12-08T00:57:17.1861040+01:00 [INF] (//) Content root path: "/Users/stanislawstepka/Desktop/DYSK B/UCZELNIA/INŻYNIERKA/PROJEKTY/AudioEngineersPlatformBackend/AudioEngineersPlatformBackend.API"
+2025-12-08T01:04:39.0506190+01:00 [INF] (//) Application is shutting down...
+2025-12-08T14:53:10.7020450+01:00 [ERR] (//) Failed executing DbCommand ("24"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"MigrationId\", \"ProductVersion\"
+FROM \"__EFMigrationsHistory\"
+ORDER BY \"MigrationId\";"
+2025-12-08T14:53:10.9911550+01:00 [INF] (//) Applying migration '"20251206183202_Initial"'.
+2025-12-08T14:53:11.2900740+01:00 [INF] (//) You have a valid license key for the Lucky Penny software Bundle Community edition. The license expires on 09/01/2026 00:00:00 +00:00.
+2025-12-08T14:53:11.3415640+01:00 [INF] (//) User profile is available. Using '"/Users/stanislawstepka/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2025-12-08T14:53:11.4344000+01:00 [INF] (//) Now listening on: "http://localhost:56695"
+2025-12-08T14:53:11.4345710+01:00 [INF] (//) Application started. Press Ctrl+C to shut down.
+2025-12-08T14:53:11.4346150+01:00 [INF] (//) Hosting environment: "Development"
+2025-12-08T14:53:11.4346540+01:00 [INF] (//) Content root path: "/Users/stanislawstepka/Desktop/DYSK B/UCZELNIA/INŻYNIERKA/PROJEKTY/AudioEngineersPlatformBackend/AudioEngineersPlatformBackend.API"
+2025-12-08T14:53:42.6302610+01:00 [INF] (/0HNHMC4PCMGAD:00000001/dd4af6279efc93f5ab73eb3675237547) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/index.html""" - null null
+2025-12-08T14:53:42.6949730+01:00 [INF] (/0HNHMC4PCMGAD:00000001/dd4af6279efc93f5ab73eb3675237547) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/index.html""" - 200 null "text/html;charset=utf-8" 74.0395ms
+2025-12-08T14:53:42.7009250+01:00 [INF] (/0HNHMC4PCMGAD:00000002/14da57658095d58d6765ee8cd2ecf6d9) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui-bundle.js""" - null null
+2025-12-08T14:53:42.7133240+01:00 [INF] (/0HNHMC4PCMGAD:00000002/14da57658095d58d6765ee8cd2ecf6d9) Sending file. Request path: '"/swagger-ui-bundle.js"'. Physical path: '"N/A"'
+2025-12-08T14:53:42.7143010+01:00 [INF] (/0HNHMC4PCMGAD:00000002/14da57658095d58d6765ee8cd2ecf6d9) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/swagger-ui-bundle.js""" - 200 1456926 "text/javascript" 13.5218ms
+2025-12-08T14:53:42.7919110+01:00 [INF] (/0HNHMC4PCMGAD:00000003/a2a24a7220fa05c80c410c00a11dbcdc) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/v1/swagger.json""" - null null
+2025-12-08T14:53:42.8382630+01:00 [INF] (/0HNHMC4PCMGAD:00000003/a2a24a7220fa05c80c410c00a11dbcdc) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/swagger/v1/swagger.json""" - 200 null "application/json;charset=utf-8" 46.4372ms
+2025-12-08T14:53:54.4426940+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Request starting "HTTP/1.1" "GET" "http"://"localhost:5181""""/api/advert/summaries""?Page=1&PageSize=5" - null null
+2025-12-08T14:53:54.4496390+01:00 [WRN] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Failed to determine the https port for redirect.
+2025-12-08T14:53:54.4908630+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Executing endpoint '"API.Controllers.AdvertController.GetAllAdvertsSummaries (AudioEngineersPlatformBackend.API)"'
+2025-12-08T14:53:54.5035610+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Route matched with "{action = \"GetAllAdvertsSummaries\", controller = \"Advert\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllAdvertsSummaries(API.Contracts.Advert.Queries.GetAllAdvertsSummaries.GetAllAdvertsSummariesRequest, System.Threading.CancellationToken)" on controller "API.Controllers.AdvertController" ("AudioEngineersPlatformBackend.API").
+2025-12-08T14:53:54.5073020+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) You have a valid license key for the Lucky Penny software Bundle Community edition. The license expires on 09/01/2026 00:00:00 +00:00.
+2025-12-08T14:53:54.5155470+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Executing action method "API.Controllers.AdvertController.GetAllAdvertsSummaries (AudioEngineersPlatformBackend.API)" - Validation state: Valid
+2025-12-08T14:53:54.9102850+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Executed action method "API.Controllers.AdvertController.GetAllAdvertsSummaries (AudioEngineersPlatformBackend.API)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 392.8729ms.
+2025-12-08T14:53:54.9136890+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Executing "OkObjectResult", writing value of type '"AudioEngineersPlatformBackend.Application.Dtos.PagedListDto`1[[AudioEngineersPlatformBackend.Application.Dtos.AdvertSummaryDto, AudioEngineersPlatformBackend.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+2025-12-08T14:53:54.9723080+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Executed action "API.Controllers.AdvertController.GetAllAdvertsSummaries (AudioEngineersPlatformBackend.API)" in 466.8315ms
+2025-12-08T14:53:54.9728400+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Executed endpoint '"API.Controllers.AdvertController.GetAllAdvertsSummaries (AudioEngineersPlatformBackend.API)"'
+2025-12-08T14:53:54.9757300+01:00 [INF] (//264ef055b3520d6ad57000fa69a05f3f) HTTP "GET" "/api/advert/summaries" responded 200 in 528.2925 ms
+2025-12-08T14:53:54.9788300+01:00 [INF] (/0HNHMC4PCMGAD:00000004/264ef055b3520d6ad57000fa69a05f3f) Request finished "HTTP/1.1" "GET" "http"://"localhost:5181""""/api/advert/summaries""?Page=1&PageSize=5" - 200 null "application/json; charset=utf-8" 537.034ms
+2025-12-08T14:55:04.3345270+01:00 [INF] (//) Application is shutting down...

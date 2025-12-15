@@ -114,7 +114,6 @@ public class AuthRepository : IAuthRepository
             )
             .FirstOrDefaultAsync
             (
-                // TODO: Check this
                 u => u.Tokens.Any(t => t.Value == tokenValue),
                 cancellationToken
             );

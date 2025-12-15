@@ -75,7 +75,7 @@ public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordComman
                 forgotPasswordCommand.Email
             );
 
-            throw new BusinessRelatedException("User does not exist.");
+            throw new BusinessRelatedException("User not found.");
         }
 
         // Ensure the user has a correct status.

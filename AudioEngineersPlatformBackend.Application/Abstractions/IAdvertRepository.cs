@@ -58,10 +58,11 @@ public interface IAdvertRepository
     );
 
     Task<PagedListDto<AdvertSummaryDto>> FindAdvertSummariesAsync(
+        string? categoryFilterTerm,
         string? sortOrder,
+        string? searchTerm,
         int page,
         int pageSize,
-        string? searchTerm,
         CancellationToken cancellationToken
     );
 

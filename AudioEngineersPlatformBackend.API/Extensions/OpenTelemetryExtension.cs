@@ -46,8 +46,9 @@ public static class OpenTelemetryExtension
                 {
                     tracing
                         .AddHttpClientInstrumentation()
-                        .AddAspNetCoreInstrumentation()
-                        .AddEntityFrameworkCoreInstrumentation();
+                        .AddAspNetCoreInstrumentation();
+                        // .AddEntityFrameworkCoreInstrumentation();
+                        // TODO: Check this for prod.
 
                     tracing.AddOtlpExporter(opt => opt.Endpoint = openTelemetryUri);
                 }

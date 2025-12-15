@@ -64,6 +64,11 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("IdUser");
 
+                    b.HasIndex("Title", "Description")
+                        .HasAnnotation("Npgsql:TsVectorConfig", "english");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Title", "Description"), "GIN");
+
                     b.ToTable("Advert", (string)null);
 
                     b.HasData(
@@ -71,109 +76,109 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         {
                             IdAdvert = new Guid("31ba89aa-f10f-40e7-b4b0-7375da567997"),
                             CoverImageKey = new Guid("df0f7b35-b8c2-4246-b7f7-ccc82d4a3a7e"),
-                            Description = "With over 10 years of hands-on experience in music mixing, I meticulously balance every element of your track—from drums and bass to vocals and effects—to ensure a polished, radio-ready sound. I use industry-standard tools and reference mixes to match the tonal character and loudness of top-charting songs. Whether you need depth, clarity, or that modern “in-your-face” sheen, I’ll tailor my approach to your genre and artistic vision. Turn your rough stems into a cohesive, dynamic mix that translates across all playback systems.",
+                            Description = "Mam ponad 15 lat doświadczenia z miksowaniem utworów. Pracowałam nad największymi hitami Polskich artystów oraz z największymi gwiazdami branży audio. Wyróżniam się tym, że podchodzę indywidualnie do każdego zlecenia.Korzystam z najlepszych narzędzi oraz sprzętu analogowego. To właśnie w ten sposób mogę zapewnić Tobie świetne brzmienie w bezkonkurencyjnej cenie! Jeśli szukasz najlepszego inżyniera, to dobrze trafiłeś.Spowoduje, że nawet najgorzej brzmiące nagrania, będą brzmiały jak ze studio za milion dolarów :)",
                             IdAdvertCategory = new Guid("e6ddd487-8b56-4c8f-b289-2f04babbabda"),
                             IdAdvertLog = new Guid("1b84601e-e225-4e9d-93d2-911fb0a1569e"),
                             IdUser = new Guid("828daa53-9a49-40ad-97b3-31b0349bc08d"),
                             PortfolioUrl = "https://open.spotify.com/playlist/37i9dQZF1DZ06evO4pPsgW?si=e069a7940cc7419b",
                             Price = 350.0,
-                            Title = "I will mix your song professionally!"
+                            Title = "Zmiksuję twój utwór za bezcen!"
                         },
                         new
                         {
                             IdAdvert = new Guid("aff251d8-9e58-4f5c-ba43-4c6597fc8a08"),
                             CoverImageKey = new Guid("17cf17e7-cf1d-4239-ba5a-5f8484191038"),
-                            Description = "Piotr brings 5+ years of mixing expertise in genres ranging from indie rock to electronic dance. He begins each project by analyzing your reference tracks and customizing EQ, compression, and spatial effects to enhance clarity and impact. His workflow includes detailed vocal tuning, side-chain ducking for punchy rhythms, and analog emulation for warm, musical saturation. Expect thorough revision rounds and clear communication every step of the way. Let Piotr transform your raw sessions into a powerful, polished mix that stands out on streaming platforms and live stages alike.",
+                            Description = "Miksem zajmuje się na codzień, pracując przy utwórach nagrywanych w Filharmonii Warszawskiej. Uczyłem się na UMCS w Warszawie i skończyłem kierunek związany z reżyserią dźwięku. Nie ograniczam się do jednego gatunku, mogę pracować nad utworami pop-owymi, jak i muzyką klasyczną, a nawet hip-hop'em. Pracowałem z artystami takimi jak: Piotr Rogucki, Organek, czy Mietek Szcześniak, dzięki nim zyskałem bardzo dużo doświadczenia w muzyce akustycznej, którą obecnie zajmuje się najwięcej.",
                             IdAdvertCategory = new Guid("e6ddd487-8b56-4c8f-b289-2f04babbabda"),
                             IdAdvertLog = new Guid("a9e9762a-2a67-46f3-b371-50405a100d58"),
                             IdUser = new Guid("2254933a-66ac-4ab8-a923-25d508d8b5c0"),
                             PortfolioUrl = "https://open.spotify.com/playlist/37i9dQZF1DX0XUsuxWHRQd?si=123456abcdef",
                             Price = 400.0,
-                            Title = "Professional mixing services by Piotr"
+                            Title = "Profesjonalne miksy z pod ucha specjalisty"
                         },
                         new
                         {
                             IdAdvert = new Guid("7bfd7cfa-5fde-42e2-ac56-9ee1040b708f"),
                             CoverImageKey = new Guid("2de15e61-0ab9-49eb-b5e2-cf909809d22f"),
-                            Description = "Ewa specializes in mastering both digital and analog formats, delivering loudness-optimized masters without sacrificing dynamic range. She uses high-resolution metering and custom multiband compression to sculpt frequencies, tame harshness, and add that final sheen. Your track will be delivered in multiple formats (WAV, MP3, DDP) with ISRC embedding and CD-ready files if needed. Ewa also provides detailed EQ and loudness reports so you know exactly how your music will perform on Spotify, Apple Music, and vinyl pressings. Bring your mixes to the next level with transparent, professional mastering.",
+                            Description = "Specjalizuje się w masteringu utworów, głównie dla wytwórni, ale wykonuje również indywidualne zlecenia. Pracuje hybrydowo - ze sprzętem analogowym, ale też z cyfrowymi emulacjami pluginów, tak żeby każdy utwór mógł brzmieć możliwie najlepiej. Masteringiem zajmuje się od 10 lat i ciągle staram się udoskonalać swoje umiejętności. Pracowałam ze Szpakiem, Matą i innymi topowymi artystami z Polskiego podwórka! Możesz być pewien, że utwór z pod mojej ręki, będzie brzmiał najlepiej.",
                             IdAdvertCategory = new Guid("80c20081-c580-4aaf-a346-2587ccfdebf5"),
                             IdAdvertLog = new Guid("b3d2dce1-a858-4312-937d-c56a6e0178cf"),
                             IdUser = new Guid("731c7617-9342-415d-8e06-f77ec2d56786"),
                             PortfolioUrl = "https://open.spotify.com/playlist/37i9dQZF1DWTcaP2wCKa4K?si=abcdef123456",
                             Price = 300.0,
-                            Title = "Mastering expertise by Ewa"
+                            Title = "Najlepszy mastering w Polsce"
                         },
                         new
                         {
                             IdAdvert = new Guid("8370e2eb-2ea0-4c4e-99e5-b9e719427f03"),
                             CoverImageKey = new Guid("cedfe8a0-0a9f-4c4a-a50f-76f9fcac396f"),
-                            Description = "Tomasz offers end-to-end music production: from songwriting support and beat programming to arrangement and mix-ready stems. He crafts custom drum patterns, bass lines, and melodic hooks tailored to your style. Using both software synths and hardware outboard gear, he delivers a modern, dynamic sound that stands out in today’s crowded market. Each package includes at least three revision rounds, MIDI files for your own tweaks, and guidance on vocals and performance recording. Ideal for solo artists, bands, and labels seeking a cohesive sonic identity.",
+                            Description = "Cześć, jestem Tomek, jestem producentem muzycznym, który cały swój czas poświęca na odkrywanie nowych i niebanalnych brzmień. Produkcją zajmuje się od 10 lat, więc mam w tym już duży staż. Mogę dla Ciebie wyprodukować instrumentale hip-hop'owe i trap'owe. Korzystam tylko z najlepszych syntezatorów (KORG M1, Yamaha Montage M). Posiadam również szeroką gamę prawdziwych instrumentów (Banjo, Gitary akustyczne, Flety), które moge dodać do produkcji stworzonej pod twoje indywidualne potrzeby. Najlepiej pracuje mi się z pojedynczymi artystami, lecz mogę również podjąć się pracy z zespołem!",
                             IdAdvertCategory = new Guid("b8785564-e008-4889-b633-7f5d3558eb92"),
                             IdAdvertLog = new Guid("efe85186-52c9-4c46-b585-d4b47523db47"),
                             IdUser = new Guid("29d1d9bd-87d9-4125-99a5-0f15c9df3a30"),
                             PortfolioUrl = "https://open.spotify.com/playlist/4nZo2X8iHrwhYBYdKvysgI",
                             Price = 800.0,
-                            Title = "Full production package from Tomasz"
+                            Title = "Unikatowe produkcje i instrumentale"
                         },
                         new
                         {
                             IdAdvert = new Guid("8cb96d43-a8a9-4010-8613-f721ecedb8b3"),
                             CoverImageKey = new Guid("0c318716-7c49-4735-9ce2-9eb499377e8a"),
-                            Description = "Michał combines both in-the-box precision and analog warmth to achieve a balanced, lively mix. He employs gain-riding automation, mid/side processing, and parallel compression to bring out the emotion in your performance. With fluency across Pro Tools, Logic Pro, and Ableton Live, he adapts to your session templates and plugin suites seamlessly. You’ll receive detailed session notes, dry/wet stems, and high-resolution WAV master ready for distribution. Whether it’s a cinematic score or an underground hip-hop track, Michał’s mixes translate beautifully across car stereos, club systems, and earbuds.",
+                            Description = "Hej, jestem Michał, jestem inżynierem dźwięku, realizatorem nagrań i reżyserem dźwięku w TVP. W wolnym czasie miksuje utwory dla klientów - robię to z pasji, a nie dla pieniędzy, bo kocham to robić! Pracuje nad różnymi utworami, ale moja specjalizacja to Rock. Jestem biegły w pracy na Reaperze, ale znam również Pro Tools'a i FL Studio. Jeśli wybierzesz mnie, możesz być pewien, że twój miks będzie brzmiał dobrze niezależnie od miejsca - w samochodzie, na słuchawkach, czy w klubie!",
                             IdAdvertCategory = new Guid("e6ddd487-8b56-4c8f-b289-2f04babbabda"),
                             IdAdvertLog = new Guid("24ba6029-f88c-4b12-9a63-bf00c2d9f3e4"),
                             IdUser = new Guid("3fb9e066-38b7-42ae-900c-d7ab5ae280f0"),
                             PortfolioUrl = "https://open.spotify.com/playlist/3eoncc59w7c8t1PnKtSOh6",
                             Price = 450.0,
-                            Title = "Advanced mixing workflows by Michał"
+                            Title = "Miksy z pazurem"
                         },
                         new
                         {
                             IdAdvert = new Guid("18809be2-b063-4ada-a7a4-81f9fa107322"),
                             CoverImageKey = new Guid("504cd9ce-5804-4f76-b6bf-706aae87a1b0"),
-                            Description = "Katarzyna offers specialized mastering for both vinyl pressings and digital platforms. She carefully sequences tracks, applies EQ to prevent low-end overmodulation, and optimizes side-chain compression for needle-friendly dynamics. For streaming masters, she fine-tunes loudness to meet platform standards (Spotify, Apple Music, Tidal) while preserving headroom and musicality. You’ll get final masters in DDP, WAV, and MP3 formats, plus an analytical Loudness Unit Full Scale (LUFS) report. Elevate your project with a mastering engineer who understands the nuances of different playback mediums.",
+                            Description = "Cześć jestem Kasia i masteruje utwory. Miałeś kiedyś tak, że po wrzuceniu utworu na platformy streamingowe był cichy? Nie uderzał tak mocno jak inne utwory? To kwestia masteringu, albo jego braku! Jeśli nie wiesz co zrobić, to wystarczy, że do mnie napiszesz, prześlesz swoje pliki, a ja powiem Tobie co jest nie tak - dobry mastering to nie tylko kwestia dobrego masteringowca, ale też dobrego miksu. Gdyby coś było nie tak, odrazu dam Tobie znać, bo chodzi o to, żebyś miał najlepszy efekt finalny!",
                             IdAdvertCategory = new Guid("80c20081-c580-4aaf-a346-2587ccfdebf5"),
                             IdAdvertLog = new Guid("fe0d1832-793e-4cf8-983a-bbe09d7e0fa2"),
                             IdUser = new Guid("ac89f1a4-6988-4211-8136-fbf9b45e4cf2"),
                             PortfolioUrl = "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6?si=abcd3456ef90",
                             Price = 320.0,
-                            Title = "Mastering for vinyl & streaming—Katarzyna"
+                            Title = "Najgłośniejsze mastery"
                         },
                         new
                         {
                             IdAdvert = new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"),
                             CoverImageKey = new Guid("ef11919d-3e86-4c08-a594-03800f613fd8"),
-                            Description = "Krzysztof specializes in crafting genre-blending beats—from trap and lo-fi to funk and soul. Each beat comes with full MIDI programming, drum samples, and multitrack stems so you can rearrange or remix at will. He also offers vocal comping and editing as an add-on, ensuring your performance sits perfectly in the groove. Expect high-quality WAVs, labeled session files, and a quick turnaround. Perfect for rappers, singers, and producers looking for fresh, customizable sound beds.",
+                            Description = "Hej, specjalizuje się w produkcji instrumentali, mam w tym duże doświadczenie, bo jestem w branży już od 15 lat. Możliwe, że mnie znasz chociażby z produkcji dla Pezeta, czy Żabsona. Lubie pracować nad trapowymi produkcjami, ale nie ograniczam się tylko do nich - potrafię również robić bity pop'owe. Jeśli szukasz czegoś ciekawego, albo chciałbyś, żebym wykonał dla Ciebie produkcję inspirowaną innym utworem, wystarczy, że do mnie napiszesz, a ja poprowadzę Cię za rękę!",
                             IdAdvertCategory = new Guid("b8785564-e008-4889-b633-7f5d3558eb92"),
                             IdAdvertLog = new Guid("993648ca-9d51-419a-85e8-046e8fc3162b"),
                             IdUser = new Guid("07434fd4-3450-4a01-a8c4-c371ed011e48"),
                             PortfolioUrl = "https://open.spotify.com/playlist/2UZk7JjJnbTut1w8fqs3JL",
                             Price = 900.0,
-                            Title = "Beat production & stems by Krzysztof"
+                            Title = "Trapowe bity"
                         },
                         new
                         {
                             IdAdvert = new Guid("33545021-1ffb-4f46-9df8-6242b8f0786f"),
                             CoverImageKey = new Guid("d98dd161-cd11-4397-b6b2-48a5656c20a3"),
-                            Description = "Agnieszka takes a surgical approach to mixing: corrective EQ, transparent compression, and creative spatial effects that serve your song. She communicates clearly, providing time-stamped revision notes and A/B comparisons. Using analog summing and high-end outboard gear, she injects warmth and depth, then returns to the box for final automation rides. You receive both instrumental and vocal stems plus a mastered reference for quick upload. Ideal for artists who demand both technical accuracy and emotional impact in their mixes.",
+                            Description = "Cześć, jestem inżynierem audio, który dobrze wie, co zrobić, żeby twój utwór brzmiał najlepiej. Pracuje tylko z najlepszymi emulacjami sprzętu analogowego (UAD, Slate i Waves) i bardzo cenie sobie dobrą organizację pracy. Preferuje pracę z klientami, którzy potrafią mi trafnie wypunktować poprawki do utworów, nad którymi pracujemy, dlatego proszę też, abyś liczył się z tym, że nie będę z Tobą pracować, jeśli nie będziesz potrafił/a tego zaakceptować. Jeśli szukasz profesjonalisty, trafiłeś idealnie! ",
                             IdAdvertCategory = new Guid("e6ddd487-8b56-4c8f-b289-2f04babbabda"),
                             IdAdvertLog = new Guid("c8ab7e20-e7dd-4616-8862-d15dad3c986a"),
                             IdUser = new Guid("e07bc534-3324-4af4-8d97-faee7242e896"),
                             PortfolioUrl = "https://open.spotify.com/playlist/37i9dQZF1DWXRqgorJj26U?si=4567abcd1234",
                             Price = 480.0,
-                            Title = "Mix engineering—Agnieszka’s precision approach"
+                            Title = "Basowe miksy :)"
                         },
                         new
                         {
                             IdAdvert = new Guid("a79c87d0-276b-48bd-b23c-9af67afd4c41"),
                             CoverImageKey = new Guid("c2363242-295c-4435-867c-90d9b96b085a"),
-                            Description = "Paweł provides a full delivery package: mastered WAV, high-quality MP3, and separated stems for remixers or video post-production. He focuses on dynamic control, spectral balance, and proper headroom for broadcast. He also embeds metadata (ISRC, artist name, album art) so you can deliver directly to digital distributors with confidence. Comprehensive test masters are supplied so you can preview on headphones, car, and club systems. Get radio-ready masters that truly represent your artistic vision.",
+                            Description = "Cześć, jestem Paweł, masteruje piosenki już 5 lat. Wiem, że to niedużo, ale zaufaj mi, że dobrze wiem co robię. Troche o mnie - jestem absolwentem Akademii Realizacji Dźwięku w Warszawie (2020 rok ukończenia) i doskonale wiem, co to znaczy profesjonalny master. Przez długi czas pracowałem jak estradowiec, głównie na koncertach rock'owych, dlatego też, wiem jak ważne jest dobry mastering utworu - jeśli jest słaby, to utwór będzie brzmiał kiepsko na koncercie. Serdecznie zapraszam Cię do współpracy, razem zrobimy coś świetnego!",
                             IdAdvertCategory = new Guid("80c20081-c580-4aaf-a346-2587ccfdebf5"),
                             IdAdvertLog = new Guid("70820368-d390-4c01-af1f-9e7b8e8413d2"),
                             IdUser = new Guid("1d31a511-8d38-4223-96a0-f2b15cc90794"),
                             PortfolioUrl = "https://open.spotify.com/playlist/37i9dQZF1DWY4xHQp97fN6?si=bcdef7890123",
                             Price = 350.0,
-                            Title = "Mastering & delivery by Paweł"
+                            Title = "Mastering na poziomie!"
                         });
                 });
 
@@ -268,7 +273,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdAdvertLog = new Guid("24ba6029-f88c-4b12-9a63-bf00c2d9f3e4"),
-                            DateCreated = new DateTime(2026, 6, 12, 9, 23, 0, 0, DateTimeKind.Utc),
+                            DateCreated = new DateTime(2025, 6, 12, 9, 23, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false
                         },
@@ -282,14 +287,14 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdAdvertLog = new Guid("993648ca-9d51-419a-85e8-046e8fc3162b"),
-                            DateCreated = new DateTime(2025, 6, 13, 23, 12, 0, 0, DateTimeKind.Utc),
+                            DateCreated = new DateTime(2025, 8, 13, 23, 12, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false
                         },
                         new
                         {
                             IdAdvertLog = new Guid("c8ab7e20-e7dd-4616-8862-d15dad3c986a"),
-                            DateCreated = new DateTime(2025, 4, 3, 12, 11, 0, 0, DateTimeKind.Utc),
+                            DateCreated = new DateTime(2025, 9, 3, 12, 11, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false
                         },
@@ -384,16 +389,16 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdReview = new Guid("dbe3112c-8914-44b1-8011-d58cb2ba4270"),
-                            Content = "I feel like the engineer could not really achieve what I have wanted, however I think they were really patient and creative ;)",
+                            Content = "Krzysiek dobrze wie co robi, zna się na rzeczy, dlatego też moja ocena to 5! Już pierwsza wersją miksu mi się podobała :)",
                             IdAdvert = new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"),
                             IdReviewLog = new Guid("d9de48fd-0abc-4b52-8371-f9f6959fdc46"),
                             IdUser = new Guid("5bfc9c8d-4789-4065-99d9-81ec5b58c0f5"),
-                            SatisfactionLevel = (byte)3
+                            SatisfactionLevel = (byte)5
                         },
                         new
                         {
                             IdReview = new Guid("f88cb211-6464-4b28-aa48-75f257624d86"),
-                            Content = "Excellent mixes, I have never worked with such a talented engineer in my life. I will recommend working with him all the way!",
+                            Content = "Super miks, Krzychu zna się na rzeczy, w mojej opinii nie ma nikogo lepszego od niego w branży!",
                             IdAdvert = new Guid("72ac8a29-19e2-4b7b-b810-418d638b5356"),
                             IdReviewLog = new Guid("1f642c35-dbfb-4062-ae75-7cf0e3f27f6f"),
                             IdUser = new Guid("fdf7bda4-f40f-484f-bc40-adbf8aa98985"),
@@ -402,7 +407,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdReview = new Guid("649406c7-a59a-4102-b7cb-c39d16bc7117"),
-                            Content = "They way I was treated was great. I will most definitely visit this engineer in the studio again!",
+                            Content = "Praca z Piotrem to czysta przyjemność, poinstruował mnie jak wysyłać mu pliki, a sam miks wysłał mi bardzo szybko.",
                             IdAdvert = new Guid("aff251d8-9e58-4f5c-ba43-4c6597fc8a08"),
                             IdReviewLog = new Guid("9473bb77-cff3-42d7-bd0e-2807aa2fef52"),
                             IdUser = new Guid("156765b0-84a0-4389-af75-78f2f36dea04"),
@@ -411,7 +416,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdReview = new Guid("fbd98612-7ccd-4b83-afaa-7084e758e746"),
-                            Content = "Poor judgement, does not understand the music I like and hates on doing some additional revisions of a master, I can't recommend this person...",
+                            Content = "Ehh, strasznie arogancki gość, jeśli chcesz stracić czas to trafiłeś super, bez komentarza...",
                             IdAdvert = new Guid("aff251d8-9e58-4f5c-ba43-4c6597fc8a08"),
                             IdReviewLog = new Guid("0d38bc51-218b-4e12-8e39-6bef8654419b"),
                             IdUser = new Guid("655887cb-b3cd-40da-b2bb-48b5e84239f9"),
@@ -420,7 +425,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdReview = new Guid("2d7fe610-9fb0-4a8e-923c-2f7a8afe2a78"),
-                            Content = "I feel like this person knows their craft and is capable of delivering a good mix. I can most definitely recommend working with them :)",
+                            Content = "Polecam każdemu, kto chce mieć master na szybko, w przystępnej cenie i dobrej jakości.",
                             IdAdvert = new Guid("7bfd7cfa-5fde-42e2-ac56-9ee1040b708f"),
                             IdReviewLog = new Guid("39cc7997-692f-40f4-a3ec-68b00940f6a6"),
                             IdUser = new Guid("fdf7bda4-f40f-484f-bc40-adbf8aa98985"),
@@ -429,7 +434,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdReview = new Guid("5f3bcc4b-d484-44cc-baa2-339373b7d0f0"),
-                            Content = "Great production skills, I am very happy with the final result!",
+                            Content = "Piękna produkcja! Naprawdę jestem w szoku, że tak szybko dostałem już w pełni gotowego bita, mega!",
                             IdAdvert = new Guid("8370e2eb-2ea0-4c4e-99e5-b9e719427f03"),
                             IdReviewLog = new Guid("60bb7ac9-88de-4bd4-933b-ce3e71d9cb45"),
                             IdUser = new Guid("5bfc9c8d-4789-4065-99d9-81ec5b58c0f5"),
@@ -438,7 +443,7 @@ namespace AudioEngineersPlatformBackend.Infrastructure.Persistence.Migrations
                         new
                         {
                             IdReview = new Guid("a1b2c3d4-e5f6-7a8b-9c0d-e1f2a3b4c5d6"),
-                            Content = "The mix was good, but I expected more attention to detail. Overall, a decent experience.",
+                            Content = "Miks był okej, ale miałem nadzieje, że Ania bardziej przyłoży się do przeczyszczenia ścieżek, na których było dużo pogłosu!",
                             IdAdvert = new Guid("31ba89aa-f10f-40e7-b4b0-7375da567997"),
                             IdReviewLog = new Guid("3461a295-b612-4526-aaf1-205ea3a6beff"),
                             IdUser = new Guid("156765b0-84a0-4389-af75-78f2f36dea04"),

@@ -45,7 +45,7 @@ WebApplication app = builder.Build();
 app.ConfigurePipeline(app.Environment);
 
 // Ensure running migrations.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     using IServiceScope scope = app.Services.CreateScope();
 

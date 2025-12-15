@@ -49,6 +49,7 @@ public class GetAllAdvertsSummariesQueryHandlerTests
                 UserLastName = "Kowalska",
                 DateCreated = new DateTime(2025, 12, 12),
                 Description = "Some description",
+                DescriptionShort = "Some",
                 Price = 350,
                 CategoryName = "Mixing",
                 CoverImageKey = Guid.Parse("df0f7b35-b8c2-4246-b7f7-ccc82d4a3a7e"),
@@ -95,9 +96,10 @@ public class GetAllAdvertsSummariesQueryHandlerTests
             (exp => exp.FindAdvertSummariesAsync
                 (
                     It.IsAny<string>(),
-                    It.IsAny<int>(),
-                    It.IsAny<int>(),
                     It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
                     It.IsAny<CancellationToken>()
                 )
             )
