@@ -71,7 +71,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginCommandRes
             (
                 "Error from Class {ClassName}, Method {MethodName}: User with provided email address {EmailAddress} does not exist.",
                 nameof(LoginCommandHandler),
-                nameof(Handle),
+                nameof(Handle), 
                 loginCommand.Email
             );
 
