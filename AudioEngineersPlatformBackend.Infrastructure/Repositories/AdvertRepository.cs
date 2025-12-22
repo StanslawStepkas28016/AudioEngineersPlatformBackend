@@ -222,6 +222,7 @@ public class AdvertRepository : IAdvertRepository
                     DateCreated = r.ReviewLog.DateCreated
                 }
             )
+            .OrderByDescending(r => r.DateCreated)
             .AsQueryable();
 
         return await PagedListDtoExtension.ToPagedListAsync(queryable, page, pageSize, cancellationToken);

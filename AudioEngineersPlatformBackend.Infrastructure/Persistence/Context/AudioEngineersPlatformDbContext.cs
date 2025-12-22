@@ -469,7 +469,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             "Specjalizuje się w masteringu utworów, głównie dla wytwórni, ale wykonuje również indywidualne zlecenia. Pracuje hybrydowo - ze sprzętem analogowym, ale też z cyfrowymi emulacjami pluginów, tak żeby każdy utwór mógł brzmieć możliwie najlepiej. " +
             "Masteringiem zajmuje się od 10 lat i ciągle staram się udoskonalać swoje umiejętności. Pracowałam ze Szpakiem, Matą i innymi topowymi artystami z Polskiego podwórka! " +
             "Możesz być pewien, że utwór z pod mojej ręki, będzie brzmiał najlepiej.",
-            Guid.Parse("2de15e61-0ab9-49eb-b5e2-cf909809d22f"),
+            Guid.Parse("c8e2e5d4-90a5-4df4-8d04-7d4f642bd226"),
             "https://open.spotify.com/playlist/37i9dQZF1DWTcaP2wCKa4K?si=abcdef123456",
             300.00,
             u5.IdUser,
@@ -529,7 +529,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             "Cześć jestem Kasia i masteruje utwory. Miałeś kiedyś tak, że po wrzuceniu utworu na platformy streamingowe był cichy? Nie uderzał tak mocno jak inne utwory? To kwestia masteringu, albo jego braku! " +
             "Jeśli nie wiesz co zrobić, to wystarczy, że do mnie napiszesz, prześlesz swoje pliki, a ja powiem Tobie co jest nie tak - dobry mastering to nie tylko kwestia dobrego masteringowca, ale też dobrego miksu. " +
             "Gdyby coś było nie tak, odrazu dam Tobie znać, bo chodzi o to, żebyś miał najlepszy efekt finalny!",
-            Guid.Parse("504cd9ce-5804-4f76-b6bf-706aae87a1b0"),
+            Guid.Parse("be9ee3c6-0d6b-4a8d-9017-6366def2862e"),
             "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6?si=abcd3456ef90",
             320.00,
             u8.IdUser,
@@ -564,7 +564,6 @@ public class AudioEngineersPlatformDbContext : DbContext
         );
 
         // TODO: Change advert photos, and add reviews for the most recent adverts.
-        // TODO: Change labels under emails to match soundbest.pl instead of AudioEngineersPlatform.
         Advert a8 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("33545021-1FFB-4F46-9DF8-6242B8F0786F"),
@@ -572,7 +571,7 @@ public class AudioEngineersPlatformDbContext : DbContext
             "Cześć, jestem inżynierem audio, który dobrze wie, co zrobić, żeby twój utwór brzmiał najlepiej. Pracuje tylko z najlepszymi emulacjami sprzętu analogowego (UAD, Slate i Waves) i bardzo cenie sobie dobrą organizację pracy. " +
             "Preferuje pracę z klientami, którzy potrafią mi trafnie wypunktować poprawki do utworów, nad którymi pracujemy, dlatego proszę też, abyś liczył się z tym, że nie będę z Tobą pracować, jeśli nie będziesz potrafił/a tego zaakceptować. " +
             "Jeśli szukasz profesjonalisty, trafiłeś idealnie! ",
-            Guid.Parse("d98dd161-cd11-4397-b6b2-48a5656c20a3"),
+            Guid.Parse("09ec9e49-6a75-4e4a-bb68-3f64daa8cc29"),
             "https://open.spotify.com/playlist/37i9dQZF1DWXRqgorJj26U?si=4567abcd1234",
             480.00,
             u10.IdUser,
@@ -673,6 +672,18 @@ public class AudioEngineersPlatformDbContext : DbContext
             new DateTime(2025, 4, 24, 19, 30, 0, DateTimeKind.Utc)
         );
 
+        ReviewLog rl8 = ReviewLog.CreateWithIdAndStaticData
+        (
+            Guid.Parse("9B565901-99E9-4890-AB9A-C6856268FBD3"),
+            new DateTime(2025, 11, 24, 14, 33, 0, DateTimeKind.Utc)
+        );
+
+        ReviewLog rl9 = ReviewLog.CreateWithIdAndStaticData
+        (
+            Guid.Parse("A805622E-EF58-4DA7-A43A-7D6ED345279F"),
+            new DateTime(2025, 9, 21, 13, 12, 0, DateTimeKind.Utc)
+        );
+
         modelBuilder
             .Entity<ReviewLog>()
             .HasData
@@ -683,7 +694,9 @@ public class AudioEngineersPlatformDbContext : DbContext
                 rl4,
                 rl5,
                 rl6,
-                rl7
+                rl7,
+                rl8,
+                rl9
             );
 
         // Seed Review Entity.
@@ -757,6 +770,27 @@ public class AudioEngineersPlatformDbContext : DbContext
             3
         );
 
+        Review r8 = Review.CreateWithIdAndStaticData
+        (
+            Guid.Parse("CA172A9A-CACE-4A8B-B5D9-40F66BF05831"),
+            a8.IdAdvert,
+            rl8.IdReviewLog,
+            u14.IdUser,
+            "Agnieszka popisała się umiejętnościami :) Bardzo podobało mi się analogowe brzmienie, które wyciągnęła z moich kiepskich nagrań, polecam ją każdemu!",
+            4
+        );
+
+        Review r9 = Review.CreateWithIdAndStaticData
+        (
+            Guid.Parse("9517E133-299D-444A-AB79-F4DCC694A6C5"),
+            a8.IdAdvert,
+            rl9.IdReviewLog,
+            u13.IdUser,
+            "Podobało mi się bardzo profesjonalne podejście Agnieszki. Pracowałem z nią nad kilkoma utworami, tak jak z początku było mi ciężko," +
+            " bo miała dużo wymagań, to z perspektywy czasu wiem, że było warto się tak napocić, płyta brzmi pięknie.",
+            5
+        );
+
         modelBuilder
             .Entity<Review>()
             .HasData
@@ -767,7 +801,9 @@ public class AudioEngineersPlatformDbContext : DbContext
                 r4,
                 r5,
                 r6,
-                r7
+                r7,
+                r8,
+                r9
             );
 
         // Seed SocialMediaName Entity.
