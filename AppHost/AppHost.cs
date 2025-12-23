@@ -27,8 +27,6 @@ var db = builder
         true
     );
 
-// Add all configurations.
-
 // Configure API.
 var api = builder
     .AddProject<AudioEngineersPlatformBackend_API>("soundbest-api")

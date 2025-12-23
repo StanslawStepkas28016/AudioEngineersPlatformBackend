@@ -10,12 +10,12 @@ namespace AudioEngineersPlatformBackend.Infrastructure.External.SesService;
 
 public class SesService : ISesService
 {
-    private readonly SesSettings _settings;
+    private readonly AwsSettings _settings;
     private readonly IAmazonSimpleEmailService _sesClient;
     private readonly IStringLocalizer<EmailMessages> _localizer;
 
     public SesService(
-        IOptions<SesSettings> settings,
+        IOptions<AwsSettings> settings,
         IAmazonSimpleEmailService sesClient,
         IStringLocalizer<EmailMessages> localizer
     )

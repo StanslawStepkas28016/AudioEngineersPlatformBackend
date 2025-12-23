@@ -10,11 +10,11 @@ namespace AudioEngineersPlatformBackend.Infrastructure.External.S3Service;
 
 public class S3Service : IS3Service
 {
-    private readonly S3Settings _settings;
+    private readonly AwsSettings _settings;
     private readonly IAmazonS3 _s3Client;
 
     public S3Service(
-        IOptions<S3Settings> settings,
+        IOptions<AwsSettings> settings,
         IAmazonS3 s3Client
     )
     {
