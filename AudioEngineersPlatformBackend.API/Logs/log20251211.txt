@@ -1,1 +1,0 @@
-2025-12-11T08:41:33.6747590+01:00 [ERR] (//) An error occurred using the connection to database '"audio-engineers-platform-db"' on server '"tcp://localhost:5432"'.
