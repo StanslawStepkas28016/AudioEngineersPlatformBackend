@@ -15,7 +15,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Microsoft.AspNetCore.SignalR"/>
-<!--        <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore"/>-->
+        <PackageReference Include="Npgsql.OpenTelemetry" />
         <PackageReference Include="Serilog"/>
         <PackageReference Include="Serilog.AspNetCore"/>
         <PackageReference Include="Serilog.Sinks.OpenTelemetry"/>

@@ -5,7 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Aspire -->
-    <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.4.2" />
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.1.0" />
+    <PackageVersion Include="Aspire.Hosting.Docker" Version="13.1.0-preview.1.25616.3" />
+    <PackageVersion Include="Aspire.Hosting.JavaScript" Version="13.1.0" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="9.5.1" />
     <PackageVersion Include="AutoMapper" Version="15.0.1" />
     <PackageVersion Include="FluentValidation" Version="12.0.0" />
@@ -13,11 +15,12 @@
     <PackageVersion Include="MediatR" Version="13.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.7.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="9.4.2" />
+    <PackageVersion Include="Npgsql.OpenTelemetry" Version="10.0.1" />
     <PackageVersion Include="OpenTelemetry" Version="1.13.0" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.13.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.13.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />
-<!--    <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.12.0-beta.2" />-->
+    <!--    <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.12.0-beta.2" />-->
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
     <!-- Communication -->
@@ -29,13 +32,13 @@
     <!-- Db -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <!-- Util -->
     <PackageVersion Include="libphonenumber-csharp" Version="9.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Features" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.17" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageVersion Include="RestSharp" Version="112.1.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <!-- Configuration -->

@@ -37,3 +37,5 @@ Desktop.ini
 
 # Docker compose for vps preview deployment.
 docker-compose-vps.yml
+scripts-soundbest/
+nginx.conf
