@@ -26,7 +26,7 @@ public static class DependencyInjection
         // Add DbContext.
         services.AddDbContext<AudioEngineersPlatformDbContext>
         (builder => builder
-            .UseNpgsql(configuration.GetConnectionString("DevDB"))
+            .UseNpgsql(configuration.GetConnectionString("Db"))
         );
 
         // Add Repositories.
@@ -36,11 +36,11 @@ public static class DependencyInjection
         services.AddScoped<IChatRepository, ChatRepository>();
 
         // Add AWS SES.
-        services.Configure<SesSettings>(configuration.GetSection(nameof(SesSettings)));
+        services.Configure<AwsSettings>(configuration.GetSection(nameof(AwsSettings)));
         services.AddSingleton<IAmazonSimpleEmailService>
         (sp =>
             {
-                SesSettings sesSettings = sp.GetRequiredService<IOptions<SesSettings>>()
+                AwsSettings sesSettings = sp.GetRequiredService<IOptions<AwsSettings>>()
                     .Value;
 
                 BasicAWSCredentials credentials = new BasicAWSCredentials(sesSettings.AccessKey, sesSettings.SecretKey);
@@ -56,18 +56,18 @@ public static class DependencyInjection
         services.AddScoped<ISesService, SesService>();
 
         // Add AWS S3.
-        services.Configure<S3Settings>(configuration.GetSection(nameof(S3Settings)));
+        services.Configure<AwsSettings>(configuration.GetSection(nameof(AwsSettings)));
         services.AddSingleton<IAmazonS3>
         (sp =>
             {
-                S3Settings s3Settings = sp.GetRequiredService<IOptions<S3Settings>>()
+                AwsSettings awsSettings = sp.GetRequiredService<IOptions<AwsSettings>>()
                     .Value;
 
-                BasicAWSCredentials credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
+                BasicAWSCredentials credentials = new BasicAWSCredentials(awsSettings.AccessKey, awsSettings.SecretKey);
 
                 AmazonS3Config config = new AmazonS3Config
                 {
-                    RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
+                    RegionEndpoint = RegionEndpoint.GetBySystemName(awsSettings.Region)
                 };
 
                 return new AmazonS3Client(credentials, config);
