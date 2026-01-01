@@ -26,7 +26,7 @@ public static class DependencyInjection
         // Add DbContext.
         services.AddDbContext<AudioEngineersPlatformDbContext>
         (builder => builder
-            .UseNpgsql(configuration.GetConnectionString("DevDB"))
+            .UseNpgsql(configuration.GetConnectionString("Db"))
         );
 
         // Add Repositories.
