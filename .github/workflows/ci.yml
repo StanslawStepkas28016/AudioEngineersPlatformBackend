@@ -4,6 +4,7 @@ on:
     branches: [ main ]
 
 jobs:
+  # Adding random comment to add changes for merging test-actions. 
   build_and_push_to_dockerhub:
     runs-on: ubuntu-latest
 
