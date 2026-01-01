@@ -35,6 +35,7 @@ var db = builder
         true
     )
     .WithHostPort(5432)
+    .WithDataVolume()
     .PublishAsDockerComposeService
     ((
             _,
@@ -56,10 +57,6 @@ var db = builder
             };
         }
     );
-
-// TODO: Add CI/CD pipeline for backend.
-// TODO: Add volume for data persistence in docker-compose.
-// TODO: When logging out, let the user logout even if there is no data present - this is needed for CI/CD pipeline to work correctly. This might be related to volume for docker-compose.
 
 // Configure API.
 var env = builder.AddParameter("Env", builder.Environment.EnvironmentName);
