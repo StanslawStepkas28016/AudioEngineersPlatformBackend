@@ -563,7 +563,6 @@ public class AudioEngineersPlatformDbContext : DbContext
             new DateTime(2025, 9, 3, 12, 11, 0, DateTimeKind.Utc)
         );
 
-        // TODO: Change advert photos, and add reviews for the most recent adverts.
         Advert a8 = Advert.CreateWithIdAndStaticData
         (
             Guid.Parse("33545021-1FFB-4F46-9DF8-6242B8F0786F"),

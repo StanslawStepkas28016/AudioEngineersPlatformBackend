@@ -39,3 +39,5 @@ Desktop.ini
 docker-compose-vps.yml
 scripts-soundbest/
 nginx.conf
+AppHost/compose-artifacts/
+.secrets
