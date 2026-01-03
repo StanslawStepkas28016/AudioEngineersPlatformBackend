@@ -20,6 +20,7 @@ RUN dotnet test --no-restore
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+WORKDIR "/src/AudioEngineersPlatformBackend.API"
 RUN dotnet publish "./AudioEngineersPlatformBackend.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
