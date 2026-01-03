@@ -154,74 +154,74 @@ public class GetChatQueryHandlerTests
             .Should()
             .BeGreaterThanOrEqualTo(generatedMessagesList.Count);
 
-        chatMessageDtos[0]
+        chatMessageDtos[1]
             .IdMessage
             .Should()
             .NotBeEmpty();
 
-        chatMessageDtos[0]
+        chatMessageDtos[1]
             .IdUserSender
             .ToString()
             .Should()
             .BeEquivalentTo(query.IdUserRecipient.ToString());
 
-        chatMessageDtos[0]
+        chatMessageDtos[1]
             .TextContent
             .Should()
             .BeEquivalentTo("This is a text message.");
 
-        chatMessageDtos[0]
+        chatMessageDtos[1]
             .FileKey
             .Should()
             .BeEmpty();
 
-        chatMessageDtos[0]
+        chatMessageDtos[1]
             .FileName
             .Should()
             .BeEmpty();
 
-        chatMessageDtos[0]
+        chatMessageDtos[1]
             .FileUrl
             .Should()
             .BeEmpty();
 
-        chatMessageDtos[0]
+        chatMessageDtos[1]
             .DateSent
             .Should()
             .NotBeAfter(DateTime.UtcNow);
-        
+
         chatMessageDtos[0]
             .IdMessage
             .Should()
             .NotBeEmpty();
 
-        chatMessageDtos[1]
+        chatMessageDtos[0]
             .IdUserSender
             .ToString()
             .Should()
             .BeEquivalentTo(query.IdUserSender.ToString());
 
-        chatMessageDtos[1]
+        chatMessageDtos[0]
             .TextContent
             .Should()
             .BeEmpty();
 
-        chatMessageDtos[1]
+        chatMessageDtos[0]
             .FileKey
             .Should()
             .NotBeEmpty();
 
-        chatMessageDtos[1]
+        chatMessageDtos[0]
             .FileName
             .Should()
             .NotBeEmpty();
 
-        chatMessageDtos[1]
+        chatMessageDtos[0]
             .FileUrl
             .Should()
             .NotBeEmpty();
 
-        chatMessageDtos[1]
+        chatMessageDtos[0]
             .DateSent
             .Should()
             .NotBeAfter(DateTime.UtcNow);
