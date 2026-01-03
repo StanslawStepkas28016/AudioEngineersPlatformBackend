@@ -139,7 +139,7 @@ public class ForgotPasswordCommandHandlerTests
         await func
             .Should()
             .ThrowExactlyAsync<BusinessRelatedException>()
-            .WithMessage("User does not exist.");
+            .WithMessage("User not found.");
     }
 
     [Fact]

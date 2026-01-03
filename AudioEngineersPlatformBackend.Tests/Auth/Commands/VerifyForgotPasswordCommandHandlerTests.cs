@@ -172,7 +172,7 @@ public class VerifyForgotPasswordCommandHandlerTests
         await func
             .Should()
             .ThrowExactlyAsync<BusinessRelatedException>()
-            .WithMessage("New password must be differ from the old password.");
+            .WithMessage("New password must be different from the old password.");
     }
 
     [Fact]
