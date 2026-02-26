@@ -6,7 +6,42 @@ following [client application](https://github.com/StanslawStepkas28016/audio-eng
 
 The thesis is written in Polish, as part of the Engineers of IT studies at PJATK.
 
-## Installation guide
+**Happy to announce that as of Today (26.02.2026) the thesis got an A (5) mark :)**
+
+## API Docs
+
+The API consists of 3 distinct controllers:
+
+- `AuthController` - responsible for user authentication actions such as: **Registration, Logging in, Verifying account
+  registration, Resetting and verifying credential changes, Checking authentication status and Reminding forgotten
+  credentials**.
+- `AdvertController` - used for posting user adverts, enabling managing (**creating, reading, deleting**) their
+  information. It also enables posting reviews under adverts.
+- `ChatController` - used for sending real-time messages (**chatting**) to clients using `SignalR` and utilizing
+  `AWS S3` for creating pre-signed URL's used for uploading files shared via messages.
+
+## Technologies
+
+The server application utilizes following technologies:
+
+- ASP .NET Core 8
+    - PostgreSQL (database)
+    - EF.Core (ORM)
+    - MediatR (supporting CQRS pattern)
+    - AutoMapper (supporting CQRS pattern)
+    - FluentValidation (input data validation)
+    - SignalR (real-time messaging)
+    - Serilog (logging)
+    - XUnit (testing framework)
+    - Moq (mocking test objects)
+    - .NET Aspire (supporting deployment to VPS)
+- AWS
+    - S3 (for storing user files)
+    - SES (for sending e-mails to users)
+- Azure
+    - VPS (for deployment)
+
+## Installation and deployment guide
 
 1. Build a Docker image using docker CLI.
 
